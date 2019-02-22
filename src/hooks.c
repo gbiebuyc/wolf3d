@@ -6,13 +6,13 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/02/22 17:19:45 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/02/22 19:52:39 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-#define ARROW_SENSITIVITY 20
+#define ARROW_SENSITIVITY 0.2
 
 int		key_press(int keycode, t_data *d)
 {
@@ -23,13 +23,14 @@ int		key_press(int keycode, t_data *d)
 		exit(EXIT_SUCCESS);
 	}
 	if (keycode == 65361 || keycode == 123)
-		printf("left\n");
+		d->p.pos.x -= ARROW_SENSITIVITY;
 	else if (keycode == 65362 || keycode == 126)
-		printf("up\n");
+		d->p.pos.y -= ARROW_SENSITIVITY;
 	else if (keycode == 65363 || keycode == 124)
-		printf("right\n");
+		d->p.pos.x += ARROW_SENSITIVITY;
 	else if (keycode == 65364 || keycode == 125)
-		printf("down\n");
+		d->p.pos.y += ARROW_SENSITIVITY;
+	refresh_minimap(d);
 	return (0);
 }
 

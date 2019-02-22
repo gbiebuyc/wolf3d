@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/02/22 17:52:09 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/02/22 19:46:21 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ void	init_mlx(t_data *d)
 			!(d->win = mlx_new_window(d->mlx, WIDTH, HEIGHT, "wolf3d")) ||
 			!(d->img = mlx_new_image(d->mlx, WIDTH, HEIGHT)) ||
 			!(d->pixels = (uint32_t*)mlx_get_data_addr(
-					d->img, &junk, &junk, &junk)))
+					d->img, &junk, &junk, &junk)) ||
+			!(d->minimapimg = mlx_new_image(d->mlx, SQUARE_W * MAPSIZE, SQUARE_W * MAPSIZE)) ||
+			!(d->minimappixels = (uint32_t*)mlx_get_data_addr(d->minimapimg,
+				&junk, &junk, &junk)))
 	{
 		ft_putstr_fd("rip mlx\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
@@ -60,6 +63,12 @@ void	init_map(t_data *d)
 	}
 }
 
+void	init_player(t_player *p)
+{
+	p->pos = (t_vec2f){5, 5};
+	p->dir = (t_vec2f){0,1};
+}
+
 int		main(int ac, char **av)
 {
 	t_data		d;
@@ -67,6 +76,8 @@ int		main(int ac, char **av)
 	(void)ac;
 	(void)av;
 	init_map(&d);
+	init_player(&d.p);
 	init_mlx(&d);
+	refresh_minimap(&d);
 	mlx_loop(d.mlx);
 }
