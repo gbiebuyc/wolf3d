@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/02/22 17:17:45 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/02/22 17:52:09 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,41 @@ void	init_mlx(t_data *d)
 	mlx_hook(d->win, 17, 1L << 17, destroy_event, d);
 }
 
+void	init_map(t_data *d)
+{
+	int i;	
+	int j;	
+
+	i = 0;
+	while (i < MAPSIZE)
+	{
+		j = 0;
+		while (j < MAPSIZE)
+		{
+			if (i == 0)
+				d->map[i][j] = '1';
+			else if (i == MAPSIZE - 1)
+				d->map[i][j] = '1';
+			else if (j == 0)
+				d->map[i][j] = '1';
+			else if (j == MAPSIZE - 1)
+				d->map[i][j] = '1';
+			else
+				d->map[i][j] = '0';
+			printf((j == MAPSIZE - 1 ? "%c\n": "%c"), (char)d->map[i][j]);
+			j++;
+		}
+		i++;
+	}
+}
+
 int		main(int ac, char **av)
 {
 	t_data		d;
 
 	(void)ac;
 	(void)av;
+	init_map(&d);
 	init_mlx(&d);
 	mlx_loop(d.mlx);
 }

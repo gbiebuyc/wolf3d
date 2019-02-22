@@ -6,12 +6,12 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/02/22 17:16:51 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/02/22 18:09:14 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACTOL_H
-# define FRACTOL_H
+#ifndef WOLF3D_H
+# define WOLF3D_H
 
 # include <mlx.h>
 # include <libft.h>
@@ -21,6 +21,10 @@
 # include <stdbool.h>
 
 # include <stdio.h> // for debug
+
+# define MAPSIZE 10
+# define WIDTH 1024
+# define HEIGHT 768
 
 typedef struct	s_vec2
 {
@@ -34,7 +38,7 @@ typedef struct	s_vec2f
 	double		y;
 }				t_vec2f;
 
-typedef struct	s_state
+typedef struct	s_data
 {
 	void		*mlx;
 	void		*win;
@@ -42,17 +46,16 @@ typedef struct	s_state
 	uint32_t	*pixels;
 	int			mouse_btn;
 	t_vec2		mouse_lastpos;
+	char		map[MAPSIZE + 1][MAPSIZE + 1];
 }				t_data;
 
-# define WIDTH 1024
-# define HEIGHT 768
 
-int				key_press(int keycode, t_data *st);
-int				mouse_press(int btn, int x, int y, t_data *st);
-int				mouse_release(int btn, int x, int y, t_data *st);
-int				mouse_move(int x, int y, t_data *st);
-int				destroy_event(t_data *st);
-int				loop_hook(t_data *st);
+int				key_press(int keycode, t_data *d);
+int				mouse_press(int btn, int x, int y, t_data *d);
+int				mouse_release(int btn, int x, int y, t_data *d);
+int				mouse_move(int x, int y, t_data *d);
+int				destroy_event(t_data *d);
+int				loop_hook(t_data *d);
 t_vec2			sub_vec2(t_vec2 v1, t_vec2 v2);
 t_vec2			add_vec2(t_vec2 v1, t_vec2 v2);
 
