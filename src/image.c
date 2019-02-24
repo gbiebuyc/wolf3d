@@ -6,13 +6,27 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 18:40:06 by nallani           #+#    #+#             */
-/*   Updated: 2019/02/24 15:38:28 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/02/24 20:13:15 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void	put_block(uint32_t *minimap, int x, int y, int colo)
+void	putpixel(t_img *img, int x, int y, uint32_t color)
+{
+	static bool printed_warning;
+
+	if (x >= 0 && x < img->w && y >= 0 && y < img->h)
+		img->pixels[x + y * img->w] = color;
+	else if (!printed_warning)
+	{
+		ft_putstr("pixel outside image\n");
+		printed_warning = true;
+	}
+
+}
+
+void	put_block(t_img *minimap, int x, int y, int colo)
 {
 	int		i;
 	int		j;
@@ -26,10 +40,10 @@ void	put_block(uint32_t *minimap, int x, int y, int colo)
 		while (j < SQUARE_W)
 		{
 			if (i == 0 || j == 0 || i == SQUARE_W - 1 || j == SQUARE_W - 1)
-		minimap[x+i + (y+j) * SQUARE_W * MAPSIZE] = 0; 
+				putpixel(minimap, x + i, y + j, 0);
 			else
-		minimap[x+i + (y+j) * SQUARE_W * MAPSIZE] = colo; 
-		j++;
+				putpixel(minimap, x + i, y + j, colo);
+			j++;
 		}
 		i++;
 	}
@@ -50,8 +64,8 @@ void	refresh_player(t_data *d)
 	int		dy;
 	int		radius;
 
-	x = (int)(d->p.pos.x / 10 * SQUARE_W * MAPSIZE);
-	y = (int)(d->p.pos.y / 10 * SQUARE_W * MAPSIZE);
+	x = (int)(d->p.pos.x * SQUARE_W);
+	y = (int)(d->p.pos.y * SQUARE_W);
 	radius = 7;
 	dx = -radius;
 	while (dx <= radius)
@@ -59,8 +73,8 @@ void	refresh_player(t_data *d)
 		dy = (int)sqrt(radius*radius - dx*dx);
 		while (dy >= 0)
 		{
-			d->minimappixels[x + dx + (y + dy) * SQUARE_W * MAPSIZE] = 0xFF;
-			d->minimappixels[x + dx + (y - dy) * SQUARE_W * MAPSIZE] = 0xFF;
+			putpixel(&d->minimap, x + dx, y + dy, 0xFF);
+			putpixel(&d->minimap, x + dx, y - dy, 0xFF);
 			dy--;
 		}
 		dx++;
@@ -73,19 +87,19 @@ void	refresh_minimap(t_data *d)
 	int		y;
 
 	x = 0; // a calculer en fonction de la position du joueur voir des bords
-	ft_memset(d->minimappixels, 0, SQUARE_W * MAPSIZE * SQUARE_W * MAPSIZE * sizeof(uint32_t));
+	ft_memset(d->minimap.pixels, 0, d->minimap.w * d->minimap.h * sizeof(uint32_t));
 	refresh_player(d);
-	while (x < MAPSIZE)
+	while (x < d->mapsize.x)
 	{
 		y = 0; // a calculer en fonction de la position du joueur voir des bords
-		while (y < MAPSIZE)
+		while (y < d->mapsize.y)
 		{
-			if (d->map[x][y] != '0')
-			put_block(d->minimappixels, x, y, find_colo_mini(d->map[x][y]));
-		y++;
+			if (d->map[x + y * d->mapsize.y] != '0')
+				put_block(&d->minimap, x, y,
+						find_colo_mini(d->map[x + y * d->mapsize.y]));
+			y++;
 		}
 		x++;
 	}
-	mlx_put_image_to_window(d->mlx, d->win, d->minimapimg, WIDTH - (SQUARE_W
-				* MAPSIZE), 0);
+	mlx_put_image_to_window(d->mlx, d->win, d->minimap.img, WIDTH - d->minimap.w, 0);
 }

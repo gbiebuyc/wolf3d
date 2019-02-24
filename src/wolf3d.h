@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/02/24 20:27:23 by nallani          ###   ########.fr       */
+/*   Updated: 2019/02/24 21:15:46 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 # define WIDTH 1024
 # define HEIGHT 768
 # define SQUARE_DIST 100
-# define MAPSIZE 10
 # define SQUARE_W 32
 
 typedef struct	s_vec2
@@ -46,17 +45,24 @@ typedef struct	s_player
 	t_vec2f		dir;
 }				t_player;
 
+typedef struct	s_img
+{
+	int			w;
+	int			h;
+	uint32_t	*pixels;
+	void		*img;
+}				t_img;
+
 typedef struct	s_data
 {
 	void		*mlx;
 	void		*win;
-	void		*img;
-	uint32_t	*pixels;
-	void		*minimapimg;
-	uint32_t	*minimappixels;
+	t_img		camera;
+	t_img		minimap;
 	int			mouse_btn;
 	t_vec2		mouse_lastpos;
-	char		map[MAPSIZE + 1][MAPSIZE + 1];
+	char		*map;
+	t_vec2		mapsize;
 	t_player	p;
 }				t_data;
 

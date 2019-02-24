@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/02/22 19:46:21 by nallani          ###   ########.fr       */
+/*   Updated: 2019/02/24 20:05:35 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,19 @@ void	init_mlx(t_data *d)
 {
 	int		junk;
 
+	d->camera.w = WIDTH;
+	d->camera.h = HEIGHT;
+	d->minimap.w = d->mapsize.x * SQUARE_W;
+	d->minimap.h = d->mapsize.y * SQUARE_W;
 	if (!(d->mlx = mlx_init()) ||
 			!(d->win = mlx_new_window(d->mlx, WIDTH, HEIGHT, "wolf3d")) ||
-			!(d->img = mlx_new_image(d->mlx, WIDTH, HEIGHT)) ||
-			!(d->pixels = (uint32_t*)mlx_get_data_addr(
-					d->img, &junk, &junk, &junk)) ||
-			!(d->minimapimg = mlx_new_image(d->mlx, SQUARE_W * MAPSIZE, SQUARE_W * MAPSIZE)) ||
-			!(d->minimappixels = (uint32_t*)mlx_get_data_addr(d->minimapimg,
+			!(d->camera.img = mlx_new_image(
+					d->mlx, WIDTH, HEIGHT)) ||
+			!(d->camera.pixels = (uint32_t*)mlx_get_data_addr(
+					d->camera.img, &junk, &junk, &junk)) ||
+			!(d->minimap.img = mlx_new_image(
+					d->mlx, d->minimap.w, d->minimap.h)) ||
+			!(d->minimap.pixels = (uint32_t*)mlx_get_data_addr(d->minimap.img,
 				&junk, &junk, &junk)))
 	{
 		ft_putstr_fd("rip mlx\n", STDERR_FILENO);
@@ -37,35 +43,22 @@ void	init_mlx(t_data *d)
 
 void	init_map(t_data *d)
 {
-	int i;	
-	int j;	
-
-	i = 0;
-	while (i < MAPSIZE)
-	{
-		j = 0;
-		while (j < MAPSIZE)
-		{
-			if (i == 0)
-				d->map[i][j] = '1';
-			else if (i == MAPSIZE - 1)
-				d->map[i][j] = '1';
-			else if (j == 0)
-				d->map[i][j] = '1';
-			else if (j == MAPSIZE - 1)
-				d->map[i][j] = '1';
-			else
-				d->map[i][j] = '0';
-			printf((j == MAPSIZE - 1 ? "%c\n": "%c"), (char)d->map[i][j]);
-			j++;
-		}
-		i++;
-	}
+	static char *m =
+		"11111111"
+		"10100001"
+		"10000101"
+		"10000101"
+		"10000001"
+		"10001111"
+		"11000001"
+		"11111111";
+	d->map = m;
+	d->mapsize = (t_vec2){8, 8};
 }
 
 void	init_player(t_player *p)
 {
-	p->pos = (t_vec2f){5, 5};
+	p->pos = (t_vec2f){3.5, 3.5};
 	p->dir = (t_vec2f){0,1};
 }
 

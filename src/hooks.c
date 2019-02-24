@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/02/24 21:09:05 by nallani          ###   ########.fr       */
+/*   Updated: 2019/02/24 21:15:36 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ int		key_press(int keycode, t_data *d)
 {
 	if (keycode == 65307 || keycode == 53)
 	{
-		mlx_destroy_image(d->mlx, d->img);
+		mlx_destroy_image(d->mlx, d->camera.img);
+		mlx_destroy_image(d->mlx, d->minimap.img);
 		mlx_destroy_window(d->mlx, d->win);
 		exit(EXIT_SUCCESS);
 	}
@@ -90,7 +91,8 @@ int		mouse_move(int x, int y, t_data *d)
 
 int		destroy_event(t_data *d)
 {
-	mlx_destroy_image(d->mlx, d->img);
+	mlx_destroy_image(d->mlx, d->camera.img);
+	mlx_destroy_image(d->mlx, d->minimap.img);
 	mlx_destroy_window(d->mlx, d->win);
 	exit(EXIT_SUCCESS);
 	return (0);
