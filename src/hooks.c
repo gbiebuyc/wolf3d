@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/02/22 19:52:39 by nallani          ###   ########.fr       */
+/*   Updated: 2019/02/24 21:09:05 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,24 @@
 
 #define ARROW_SENSITIVITY 0.2
 
+/*
+**  fonction suivante a changer de fichier
+*/
+
+void	actualize_dir(double diff, t_vec2f *dir)
+{
+	double	x;
+	double	y;
+
+	x = dir->x;
+	y = dir->y;
+	dir->x = x * cos(diff) - y * sin(diff);
+	dir->y = x * sin(diff) + y * cos(diff);
+	printf("x: %f\ny: %f\n", dir->x, dir->y);
+}
+/*
+** fin a supp
+*/
 int		key_press(int keycode, t_data *d)
 {
 	if (keycode == 65307 || keycode == 53)
@@ -23,13 +41,13 @@ int		key_press(int keycode, t_data *d)
 		exit(EXIT_SUCCESS);
 	}
 	if (keycode == 65361 || keycode == 123)
-		d->p.pos.x -= ARROW_SENSITIVITY;
+		actualize_dir(-0.174, &(d->p.dir));
 	else if (keycode == 65362 || keycode == 126)
-		d->p.pos.y -= ARROW_SENSITIVITY;
+		d->p.pos = sub_vec2f(d->p.pos, d->p.dir);// Arriere
 	else if (keycode == 65363 || keycode == 124)
-		d->p.pos.x += ARROW_SENSITIVITY;
+		actualize_dir(0.174, &(d->p.dir));
 	else if (keycode == 65364 || keycode == 125)
-		d->p.pos.y += ARROW_SENSITIVITY;
+		d->p.pos = add_vec2f(d->p.pos, d->p.dir);// Avant
 	refresh_minimap(d);
 	return (0);
 }
@@ -59,7 +77,7 @@ int		mouse_release(int btn, int x, int y, t_data *d)
 
 int		mouse_move(int x, int y, t_data *d)
 {
-	t_vec2	delta;
+	t_vec2		delta;
 
 	if (d->mouse_btn == 1)
 	{
