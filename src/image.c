@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 18:40:06 by nallani           #+#    #+#             */
-/*   Updated: 2019/02/22 20:04:12 by nallani          ###   ########.fr       */
+/*   Updated: 2019/02/24 15:38:28 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,22 +46,24 @@ void	refresh_player(t_data *d)
 {
 	int		x;
 	int		y;
-	int		count;
-	int		count2;
+	int		dx;
+	int		dy;
+	int		radius;
 
 	x = (int)(d->p.pos.x / 10 * SQUARE_W * MAPSIZE);
 	y = (int)(d->p.pos.y / 10 * SQUARE_W * MAPSIZE);
-
-	count = SQUARE_W / -4;
-	while (count < SQUARE_W / 2 - 1)
-	{	
-		count2 = SQUARE_W / -4;
-		while (count2 < SQUARE_W / 2 - 1)
+	radius = 7;
+	dx = -radius;
+	while (dx <= radius)
+	{
+		dy = (int)sqrt(radius*radius - dx*dx);
+		while (dy >= 0)
 		{
-		d->minimappixels[x + count + (y + count2) * SQUARE_W * MAPSIZE] = 0xFF;
-		count2++;
+			d->minimappixels[x + dx + (y + dy) * SQUARE_W * MAPSIZE] = 0xFF;
+			d->minimappixels[x + dx + (y - dy) * SQUARE_W * MAPSIZE] = 0xFF;
+			dy--;
 		}
-		count++;
+		dx++;
 	}
 }
 
