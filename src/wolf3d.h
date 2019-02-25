@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/02/24 21:15:46 by nallani          ###   ########.fr       */
+/*   Updated: 2019/02/25 18:51:42 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,9 @@ int				destroy_event(t_data *d);
 int				loop_hook(t_data *d);
 t_vec2			sub_vec2(t_vec2 v1, t_vec2 v2);
 t_vec2			add_vec2(t_vec2 v1, t_vec2 v2);
-t_vec2f			sub_vec2f(t_vec2f v1, t_vec2f v2); //test
-t_vec2f			add_vec2f(t_vec2f v1, t_vec2f v2); //test
+t_vec2f			sub_vec2f(t_vec2f v1, t_vec2f v2);
+t_vec2f			add_vec2f(t_vec2f v1, t_vec2f v2);
+t_vec2f			mul_vec2f(t_vec2f v, double scalar);
 void			refresh_minimap(t_data *d);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/02/24 21:15:36 by nallani          ###   ########.fr       */
+/*   Updated: 2019/02/25 18:51:05 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ int		key_press(int keycode, t_data *d)
 	}
 	if (keycode == 65361 || keycode == 123)
 		actualize_dir(-0.174, &(d->p.dir));
-	else if (keycode == 65362 || keycode == 126)
-		d->p.pos = sub_vec2f(d->p.pos, d->p.dir);// Arriere
+	else if (keycode == 65362 || keycode == 126) // Arriere
+		d->p.pos = sub_vec2f(d->p.pos, mul_vec2f(d->p.dir, 0.2));
 	else if (keycode == 65363 || keycode == 124)
 		actualize_dir(0.174, &(d->p.dir));
-	else if (keycode == 65364 || keycode == 125)
-		d->p.pos = add_vec2f(d->p.pos, d->p.dir);// Avant
+	else if (keycode == 65364 || keycode == 125) // Avant
+		d->p.pos = add_vec2f(d->p.pos, mul_vec2f(d->p.dir, 0.2));
 	refresh_minimap(d);
 	return (0);
 }
