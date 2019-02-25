@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/02/25 18:59:50 by nallani          ###   ########.fr       */
+/*   Updated: 2019/02/25 19:20:01 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,7 @@ t_vec2f			sub_vec2f(t_vec2f v1, t_vec2f v2);
 t_vec2f			add_vec2f(t_vec2f v1, t_vec2f v2);
 t_vec2f			mul_vec2f(t_vec2f v, double scalar);
 void			refresh_minimap(t_data *d);
+void			draw_ray(t_img *img, t_vec2 v1, t_vec2 v2, uint32_t color);
+void			putpixel(t_img *img, int x, int y, uint32_t color);
 
 #endif

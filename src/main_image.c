@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 18:20:52 by nallani           #+#    #+#             */
-/*   Updated: 2019/02/25 18:49:56 by nallani          ###   ########.fr       */
+/*   Updated: 2019/02/25 19:19:05 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,18 @@ int		change_mmap_into_color(int i)
 
 void	refresh_image(t_data *d)
 {
+	t_vec2f		start;
+	t_vec2f		dif;
+	t_vec2f		end;
+
 	ft_memset(data->camera.pixels, 0, WIDTH * HEIGHT * 4);
-	//
-	
+	start = d->pos.dir;
+	actualize_dir(-0.25 * M_PI, start);
+	end = d->pos.dir;
+	actualize_dir(0.2 * M_PI, start);
+	dif.x = end.x - start.x;
+	dif.y = end.y - start.y;
+
 
 
 	mlx_put_image_to_window(d->mlx, d->win, d->camera.img, 0, 0);
