@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/02/25 18:51:42 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/02/25 18:59:50 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # define HEIGHT 768
 # define SQUARE_DIST 100
 # define SQUARE_W 32
+# define GROUND_COLOR 0x9370DB
+# define SKY_COLOR 0x00CED1
 
 typedef struct	s_vec2
 {

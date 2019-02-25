@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/02/24 20:05:35 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/02/25 18:48:15 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,16 @@ void	init_mlx(t_data *d)
 			!(d->win = mlx_new_window(d->mlx, WIDTH, HEIGHT, "wolf3d")) ||
 			!(d->camera.img = mlx_new_image(
 					d->mlx, WIDTH, HEIGHT)) ||
-			!(d->camera.pixels = (uint32_t*)mlx_get_data_addr(
-					d->camera.img, &junk, &junk, &junk)) ||
 			!(d->minimap.img = mlx_new_image(
-					d->mlx, d->minimap.w, d->minimap.h)) ||
-			!(d->minimap.pixels = (uint32_t*)mlx_get_data_addr(d->minimap.img,
-				&junk, &junk, &junk)))
+					d->mlx, d->minimap.w, d->minimap.h)))
 	{
 		ft_putstr_fd("rip mlx\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
+	d->camera.pixels = (uint32_t*)mlx_get_data_addr(
+					d->camera.img, &junk, &junk, &junk)
+	d->minimap.pixels = (uint32_t*)mlx_get_data_addr(d->minimap.img,
+				&junk, &junk, &junk)
 	mlx_hook(d->win, 2, 1L << 0, key_press, d);
 	mlx_hook(d->win, 4, 1L << 2, mouse_press, d);
 	mlx_hook(d->win, 5, 1L << 3, mouse_release, d);
