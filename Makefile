@@ -6,7 +6,7 @@
 #    By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/05 15:21:27 by gbiebuyc          #+#    #+#              #
-#    Updated: 2019/02/22 19:14:35 by nallani          ###   ########.fr        #
+#    Updated: 2019/02/25 19:11:43 by gbiebuyc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ NAME = wolf3d
 SRC = src/main.c \
 	  src/hooks.c \
 	  src/vec2.c \
+	  src/ray.c \
 	  src/image.c
 OBJ = $(SRC:.c=.o)
 FT_DIR = libft
