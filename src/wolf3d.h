@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/02/25 19:20:01 by nallani          ###   ########.fr       */
+/*   Updated: 2019/02/26 20:01:16 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 # define SQUARE_W 32
 # define GROUND_COLOR 0x9370DB
 # define SKY_COLOR 0x00CED1
+# define WALL_CHAR '1'
+# define EMPTY_SQUARE ' '
 
 typedef struct	s_vec2
 {
@@ -41,18 +43,12 @@ typedef struct	s_vec2f
 	double		y;
 }				t_vec2f;
 
-typedef struct	s_player
-{
-	t_vec2f		pos;
-	t_vec2f		dir;
-}				t_player;
-
 typedef struct	s_img
 {
 	int			w;
 	int			h;
 	uint32_t	*pixels;
-	void		*img;
+	void		*mlximg;
 }				t_img;
 
 typedef struct	s_data
@@ -65,7 +61,9 @@ typedef struct	s_data
 	t_vec2		mouse_lastpos;
 	char		*map;
 	t_vec2		mapsize;
-	t_player	p;
+	t_vec2f		pos;
+	t_vec2f		dir;
+	t_vec2f		plane;
 }				t_data;
 
 
@@ -81,7 +79,10 @@ t_vec2f			sub_vec2f(t_vec2f v1, t_vec2f v2);
 t_vec2f			add_vec2f(t_vec2f v1, t_vec2f v2);
 t_vec2f			mul_vec2f(t_vec2f v, double scalar);
 void			refresh_minimap(t_data *d);
-void			draw_ray(t_img *img, t_vec2 v1, t_vec2 v2, uint32_t color);
+void			draw_ray(t_img *img, t_vec2f v1, t_vec2f v2, uint32_t color);
 void			putpixel(t_img *img, int x, int y, uint32_t color);
+t_vec2			convert_vec2f(t_vec2f v);
+void			refresh_all(t_data *d);
+void			actualize_dir(double angle, t_vec2f *vec);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/02/25 18:51:05 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/02/26 16:24:47 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	actualize_dir(double diff, t_vec2f *dir)
 	y = dir->y;
 	dir->x = x * cos(diff) - y * sin(diff);
 	dir->y = x * sin(diff) + y * cos(diff);
-	printf("x: %f\ny: %f\n", dir->x, dir->y);
 }
 /*
 ** fin a supp
@@ -42,14 +41,20 @@ int		key_press(int keycode, t_data *d)
 		exit(EXIT_SUCCESS);
 	}
 	if (keycode == 65361 || keycode == 123)
-		actualize_dir(-0.174, &(d->p.dir));
-	else if (keycode == 65362 || keycode == 126) // Arriere
-		d->p.pos = sub_vec2f(d->p.pos, mul_vec2f(d->p.dir, 0.2));
+	{
+		actualize_dir(-0.174533, &d->dir);
+		actualize_dir(-0.174533, &d->plane);
+	}
+	else if (keycode == 65362 || keycode == 126) // Avant
+		d->pos = add_vec2f(d->pos, mul_vec2f(d->dir, 0.2));
 	else if (keycode == 65363 || keycode == 124)
-		actualize_dir(0.174, &(d->p.dir));
-	else if (keycode == 65364 || keycode == 125) // Avant
-		d->p.pos = add_vec2f(d->p.pos, mul_vec2f(d->p.dir, 0.2));
-	refresh_minimap(d);
+	{
+		actualize_dir(0.174533, &d->dir);
+		actualize_dir(0.174533, &d->plane);
+	}
+	else if (keycode == 65364 || keycode == 125) // Arriere
+		d->pos = sub_vec2f(d->pos, mul_vec2f(d->dir, 0.2));
+	refresh_all(d);
 	return (0);
 }
 

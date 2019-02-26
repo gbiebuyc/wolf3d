@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 18:40:06 by nallani           #+#    #+#             */
-/*   Updated: 2019/02/24 20:13:15 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/02/26 20:01:52 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	putpixel(t_img *img, int x, int y, uint32_t color)
 		ft_putstr("pixel outside image\n");
 		printed_warning = true;
 	}
-
 }
 
 void	put_block(t_img *minimap, int x, int y, int colo)
@@ -51,7 +50,7 @@ void	put_block(t_img *minimap, int x, int y, int colo)
 
 int		find_colo_mini(char block)
 {
-	if (block == '1')
+	if (block == WALL_CHAR)
 		return (0xFF00);
 	return (0);
 }
@@ -64,8 +63,8 @@ void	refresh_player(t_data *d)
 	int		dy;
 	int		radius;
 
-	x = (int)(d->p.pos.x * SQUARE_W);
-	y = (int)(d->p.pos.y * SQUARE_W);
+	x = (int)(d->pos.x * SQUARE_W);
+	y = (int)(d->pos.y * SQUARE_W);
 	radius = 7;
 	dx = -radius;
 	while (dx <= radius)
@@ -94,12 +93,12 @@ void	refresh_minimap(t_data *d)
 		y = 0; // a calculer en fonction de la position du joueur voir des bords
 		while (y < d->mapsize.y)
 		{
-			if (d->map[x + y * d->mapsize.y] != '0')
+			if (d->map[x + y * d->mapsize.y] != EMPTY_SQUARE)
 				put_block(&d->minimap, x, y,
 						find_colo_mini(d->map[x + y * d->mapsize.y]));
 			y++;
 		}
 		x++;
 	}
-	mlx_put_image_to_window(d->mlx, d->win, d->minimap.img, WIDTH - d->minimap.w, 0);
+	//mlx_put_image_to_window(d->mlx, d->win, d->minimap.mlximg, WIDTH - d->minimap.w, 0);
 }
