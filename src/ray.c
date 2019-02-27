@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 18:20:05 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/02/26 19:44:09 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/02/27 03:50:15 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,24 +34,122 @@ void	draw_ray(t_img *img, t_vec2f v1, t_vec2f v2, uint32_t color)
 	}
 }
 
-/* not finished
-char	find_intersection(t_data *d, t_vec2f *ray)
+char	check_on_minimap_down(t_vec2f pos, t_data *d)
 {
-	t_vec2	curr_square;
+	t_vec2	truepos;
+
+	truepos = convert_vec2f(pos);
+	if (!(truepos.x < d->mapsize.x && truepos.y < d->mapsize.y && truepos.x > 0 && truepos.y > 0))
+		return (-1);
+		if (d->map[truepos.x + truepos.y * d->mapsize.y] != EMPTY_SQUARE)
+		{
+			return (d->map[truepos.x + truepos.y * d->mapsize.y]);	
+		}
+//	printf("check.x: %f check.y: %f\n",pos.x, pos.y);
+	return (0);
+}
+
+char	check_on_minimap_up(t_vec2f pos, t_data *d)
+{
+	t_vec2	truepos;
+
+	truepos = convert_vec2f(pos);
+	if (!(truepos.x < d->mapsize.x && truepos.y < d->mapsize.y && truepos.x > 0 && truepos.y > 0))
+		return (-1);
+	truepos.y -=1; // super magic trick
+		if (d->map[truepos.x + truepos.y * d->mapsize.y] != EMPTY_SQUARE)
+		{
+			return (d->map[truepos.x + truepos.y * d->mapsize.y]);	
+		}
+//	printf("check.x: %f check.y: %f\n",pos.x, pos.y);
+	return (0);
+}
+
+char	check_on_minimap_left(t_vec2f pos, t_data *d)
+{
+	t_vec2	truepos;
+
+	truepos = convert_vec2f(pos);
+	if (!(truepos.x < d->mapsize.x && truepos.y < d->mapsize.y && truepos.x > 0 && truepos.y > 0))
+		return (-1);
+	truepos.x -=1; // super magic trick
+		if (d->map[truepos.x + truepos.y * d->mapsize.y] != EMPTY_SQUARE)
+		{
+			return (d->map[truepos.x + truepos.y * d->mapsize.y]);	
+		}
+//	printf("check.x: %f check.y: %f\n",pos.x, pos.y);
+	return (0);
+}
+
+char	check_on_minimap_right(t_vec2f pos, t_data *d)
+{
+	t_vec2	truepos;
+
+	truepos = convert_vec2f(pos);
+	if (!(truepos.x < d->mapsize.x && truepos.y < d->mapsize.y && truepos.x > 0 && truepos.y > 0))
+		return (-1);
+		if (d->map[truepos.x + truepos.y * d->mapsize.y] != EMPTY_SQUARE)
+		{
+			return (d->map[truepos.x + truepos.y * d->mapsize.y]);	
+		}
+//	printf("check.x: %f check.y: %f\n",pos.x, pos.y);
+	return (0);
+}
+
+t_inter	find_intersection_hor(t_data *d, t_vec2f ray, int count, t_vec2f added_dist)
+{
 	t_vec2f	side_dist;
 	t_vec2f	delta_dist;
+	char	result;
 
-	curr_square = (t_vec2){(int)d->pos.x, (int)d->pos.y};
-	if (ray->x > 0)
-	{
-
+	if (ray.y < 0)
+		side_dist.y = (int)d->pos.y - d->pos.y;
+	if (ray.y > 0)
+		side_dist.y = (int)(d->pos.y + 1) - d->pos.y;
+	if (ray.y == 0)
+		return ((t_inter){10000, 0, added_dist}); // super length
+	side_dist.x = side_dist.y * (ray.x / ray.y);
+	delta_dist.x = ray.x / fabs(ray.y);
+	delta_dist.y = ray.y > 0 ? 1 : -1;
+	while (count++ < 100)
+	{		
+		if (ray.y > 0 && (result = check_on_minimap_down(add_vec2f(add_vec2f(d->pos, side_dist), added_dist), d)))
+			break ;
+		if (ray.y < 0 && (result = check_on_minimap_up(add_vec2f(add_vec2f(d->pos, side_dist), added_dist), d)))
+			break ;
+		added_dist = add_vec2f(added_dist, delta_dist);
 	}
-	while (42)
-	{
-		if (ray.x * ray.x + ray.y * ray.y >= MAX_RAY_LENGTH * MAX_RAY_LENGTH)
-			return (EMPTY_SQUARE);
-		else if (d->map[curr_square.x + curr_square.y * d->mapsize.y] != EMPTY_SQUARE)
-			return (d->map[curr_square.x + curr_square.y * d->mapsize.y]);
-	}
+//	printf("%c pos.x: %f  pos.y:%f\n", result, add_vec2f(add_vec2f(d->pos, side_dist), added_dist).x, add_vec2f(add_vec2f(d->pos, side_dist), added_dist).y);
+	if (result == -1)
+		return ((t_inter){10000, 0, added_dist}); // super length
+	return ((t_inter){get_vec2f_length(add_vec2f(added_dist, side_dist)), result, add_vec2f(add_vec2f(d->pos, side_dist), added_dist)});
 }
-*/
+
+t_inter	find_intersection_ver(t_data *d, t_vec2f ray, int count, t_vec2f added_dist)
+{
+	t_vec2f	side_dist;
+	t_vec2f	delta_dist;
+	char	result;
+
+	if (ray.x < 0)
+		side_dist.x = (int)d->pos.x - d->pos.x;
+	if (ray.x > 0)
+		side_dist.x = (int)(d->pos.x + 1) - d->pos.x;
+	if (ray.x == 0)
+		return ((t_inter){10000, 0, added_dist}); // super length
+	side_dist.y = side_dist.x * (ray.y / ray.x);
+	delta_dist.y = ray.y / fabs(ray.x);
+	delta_dist.x = ray.x > 0 ? 1 : -1;
+	while (count++ < 100)
+	{		
+		if (ray.x > 0 && (result = check_on_minimap_right(add_vec2f(add_vec2f(d->pos, side_dist), added_dist), d)))
+			break ;
+		if (ray.x < 0 && (result = check_on_minimap_left(add_vec2f(add_vec2f(d->pos, side_dist), added_dist), d)))
+			break ;
+		added_dist = add_vec2f(added_dist, delta_dist);
+	}
+//	printf("%c pos.x: %f  pos.y:%f\n", result, add_vec2f(add_vec2f(d->pos, side_dist), added_dist).x, add_vec2f(add_vec2f(d->pos, side_dist), added_dist).y);
+	if (result == -1)
+		return ((t_inter){10000, 0, added_dist}); // super length
+	return ((t_inter){get_vec2f_length(add_vec2f(added_dist, side_dist)), result, add_vec2f(add_vec2f(d->pos, side_dist), added_dist)});
+}

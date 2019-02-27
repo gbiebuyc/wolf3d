@@ -6,7 +6,7 @@
 #    By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/05 15:21:27 by gbiebuyc          #+#    #+#              #
-#    Updated: 2019/02/25 19:51:50 by nallani          ###   ########.fr        #
+#    Updated: 2019/02/27 03:00:12 by nallani          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ else
 	LDFLAGS = -lm -L $(FT_DIR) -lft -L $(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
 endif
 CFLAGS = -I $(FT_DIR) -I $(MLX_DIR) -Wall -Wextra -Werror
+# CFLAGS used ?
 .PHONY: all clean fclean re
 
 all: $(NAME)

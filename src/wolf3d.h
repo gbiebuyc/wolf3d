@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/02/26 20:01:16 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/02/27 02:58:18 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,13 @@ typedef struct	s_vec2f
 	double		y;
 }				t_vec2f;
 
+typedef struct	s_inter
+{
+	float		l;
+	char		c;
+	t_vec2f		vec;
+}				t_inter; // retour find_intersection, contient le char, longueur (rajouter endroit touche ?)
+
 typedef struct	s_img
 {
 	int			w;
@@ -78,11 +85,15 @@ t_vec2			add_vec2(t_vec2 v1, t_vec2 v2);
 t_vec2f			sub_vec2f(t_vec2f v1, t_vec2f v2);
 t_vec2f			add_vec2f(t_vec2f v1, t_vec2f v2);
 t_vec2f			mul_vec2f(t_vec2f v, double scalar);
+float			get_vec2f_length(t_vec2f v);
 void			refresh_minimap(t_data *d);
 void			draw_ray(t_img *img, t_vec2f v1, t_vec2f v2, uint32_t color);
 void			putpixel(t_img *img, int x, int y, uint32_t color);
 t_vec2			convert_vec2f(t_vec2f v);
 void			refresh_all(t_data *d);
 void			actualize_dir(double angle, t_vec2f *vec);
+int				destroy_event(t_data *d);
+t_inter			find_intersection_hor(t_data *d, t_vec2f ray, int count, t_vec2f added_dist);
+t_inter			find_intersection_ver(t_data *d, t_vec2f ray, int count, t_vec2f added_dist);
 
 #endif

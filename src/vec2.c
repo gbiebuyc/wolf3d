@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 21:13:49 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/02/25 21:50:51 by nallani          ###   ########.fr       */
+/*   Updated: 2019/02/27 01:43:28 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,9 @@ t_vec2f	mul_vec2f(t_vec2f v, double scalar)
 t_vec2 convert_vec2f(t_vec2f v)
 {
 	return ((t_vec2){(int)v.x, (int)v.y});
+}
+
+float	get_vec2f_length(t_vec2f v)
+{
+	return (v.x * v.x + v.y * v.y); // skip sqrt pour perf
 }

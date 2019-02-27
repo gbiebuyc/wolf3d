@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 18:40:06 by nallani           #+#    #+#             */
-/*   Updated: 2019/02/26 20:01:52 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/02/27 04:39:13 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,11 @@ int		find_colo_mini(char block)
 {
 	if (block == WALL_CHAR)
 		return (0xFF00);
+	if (block == '2')
+		return (0xFF);
+	if (block == '3')
+		return (0xCC7700);
+	printf("debug find_colo%c\n", block);
 	return (0);
 }
 
