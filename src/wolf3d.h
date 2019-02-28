@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/02/27 02:58:18 by nallani          ###   ########.fr       */
+/*   Updated: 2019/02/28 05:22:31 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ t_vec2			convert_vec2f(t_vec2f v);
 void			refresh_all(t_data *d);
 void			actualize_dir(double angle, t_vec2f *vec);
 int				destroy_event(t_data *d);
-t_inter			find_intersection_hor(t_data *d, t_vec2f ray, int count, t_vec2f added_dist);
-t_inter			find_intersection_ver(t_data *d, t_vec2f ray, int count, t_vec2f added_dist);
+t_inter			find_intersection_hor(t_vec2f ray, t_data *d);
+t_inter			find_intersection_ver(t_vec2f ray, t_data *d);
+double			get_vec2f_angle(t_vec2f v1, t_vec2f v2);
 
 #endif

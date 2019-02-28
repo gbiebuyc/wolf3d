@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 21:13:49 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/02/27 01:43:28 by nallani          ###   ########.fr       */
+/*   Updated: 2019/02/28 06:15:37 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,9 @@ t_vec2 convert_vec2f(t_vec2f v)
 float	get_vec2f_length(t_vec2f v)
 {
 	return (v.x * v.x + v.y * v.y); // skip sqrt pour perf
+}
+
+double	get_vec2f_angle(t_vec2f v1, t_vec2f v2)
+{
+	return (atan2(v1.x * v2.y - v1.y * v2.x, v1.x * v2.x + v1.y * v2.y));
 }
