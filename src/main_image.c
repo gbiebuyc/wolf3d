@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 18:20:52 by nallani           #+#    #+#             */
-/*   Updated: 2019/02/28 06:16:52 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/01 17:56:06 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	find_intersection(t_data *d, t_vec2f ray_dir, int x, double angle)
 
 	c1 = find_intersection_ver(ray_dir, d);
 	c2 = find_intersection_hor(ray_dir, d);
+	dist = 0.0;
 	if (c1.c != EMPTY_SQUARE && c1.l < c2.l) // Vertical intersection ray is shorter
 	{
 		draw_ray(&d->minimap, d->pos, c1.vec, 0xFF0000);
