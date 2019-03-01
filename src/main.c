@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/02/27 04:34:07 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/01 20:06:05 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	init_map(t_data *d)
 		"1    1 1"
 		"1    1 1"
 		"1      1"
-		"1   3211"
+		"1   1111"
 		"11     1"
 		"11111111";
 	d->map = m;
@@ -63,6 +63,36 @@ void	init_player(t_data *d)
 	d->plane = (t_vec2f){0.66,0};
 }
 
+void	load_textures(t_data *d)
+{
+	int	junk;
+
+	if (!(d->textures[0][NORTH].mlximg =
+				mlx_xpm_file_to_image(d->mlx, "textures/north.xpm",
+					&d->textures[0][NORTH].w, &d->textures[0][NORTH].h)) ||	
+			!(d->textures[0][SOUTH].mlximg =
+				mlx_xpm_file_to_image(d->mlx, "textures/south.xpm",
+					&d->textures[0][SOUTH].w, &d->textures[0][SOUTH].h)) ||	
+			!(d->textures[0][EAST].mlximg =
+				mlx_xpm_file_to_image(d->mlx, "textures/east.xpm",
+					&d->textures[0][EAST].w, &d->textures[0][EAST].h)) ||	
+			!(d->textures[0][WEST].mlximg =
+				mlx_xpm_file_to_image(d->mlx, "textures/west.xpm",
+					&d->textures[0][WEST].w, &d->textures[0][WEST].h)))
+	{
+		ft_putstr_fd("rip textures\n", STDERR_FILENO);
+		exit(EXIT_FAILURE);
+	}
+	d->textures[0][NORTH].pixels = (uint32_t*)mlx_get_data_addr(
+			d->textures[0][NORTH].mlximg, &junk, &junk, &junk);
+	d->textures[0][SOUTH].pixels = (uint32_t*)mlx_get_data_addr(
+			d->textures[0][SOUTH].mlximg, &junk, &junk, &junk);
+	d->textures[0][EAST].pixels = (uint32_t*)mlx_get_data_addr(
+			d->textures[0][EAST].mlximg, &junk, &junk, &junk);
+	d->textures[0][WEST].pixels = (uint32_t*)mlx_get_data_addr(
+			d->textures[0][WEST].mlximg, &junk, &junk, &junk);
+}
+
 int		main(int ac, char **av)
 {
 	t_data		d;
@@ -72,6 +102,7 @@ int		main(int ac, char **av)
 	init_map(&d);
 	init_player(&d);
 	init_mlx(&d);
+	load_textures(&d);
 	refresh_all(&d);
 	mlx_loop(d.mlx);
 }

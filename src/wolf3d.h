@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/02/28 05:22:31 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/01 19:54:18 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,11 @@
 # define WALL_CHAR '1'
 # define EMPTY_SQUARE ' '
 
+# define NORTH 0
+# define EAST 1
+# define SOUTH 2
+# define WEST 3
+
 typedef struct	s_vec2
 {
 	int			x;
@@ -48,6 +53,8 @@ typedef struct	s_inter
 	float		l;
 	char		c;
 	t_vec2f		vec;
+	int			orientation;
+	double		xtexture;
 }				t_inter; // retour find_intersection, contient le char, longueur (rajouter endroit touche ?)
 
 typedef struct	s_img
@@ -71,6 +78,7 @@ typedef struct	s_data
 	t_vec2f		pos;
 	t_vec2f		dir;
 	t_vec2f		plane;
+	t_img		textures[3][4];
 }				t_data;
 
 

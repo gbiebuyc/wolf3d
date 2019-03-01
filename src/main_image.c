@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 18:20:52 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/01 17:56:06 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/01 20:37:24 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,31 @@ int	get_asset(char c) // a voir avec find_colo_mini
 	return (0);
 }
 
-void	draw_column(t_data *d, int block_h, int x, char c)
+void	draw_column(t_data *d, int block_h, int x, t_inter inter)
 {
 	int		start;
 	int		y;
+	int		scaled_width;
+	float	increment;
+	float	real_y;
 
 	start = d->camera.h / 2 - block_h / 2;
 	y = 0;
+	scaled_width = inter.xtexture * d->textures[inter.c - '1'][inter.orientation].w;
+	increment = (float)d->textures[inter.c - '1'][inter.orientation].h / (float)block_h;
+	//real_y = start < -start * increment ? : 0;
+	real_y = start <0 ? -start * increment : 0;
 	while (y < d->camera.h)
 	{
 		if (y > start && block_h)
 		{
-			if (x > 0 && y > 0 && y < d->camera.h && x < d->camera.w)
-				d->camera.pixels[x + y * d->camera.w] = get_asset(c);
+			if (x >= 0 && y >= 0 && y < d->camera.h && x < d->camera.w)
+			{
+				d->camera.pixels[x + y * d->camera.w] =
+					d->textures[inter.c - '1'][inter.orientation].pixels[scaled_width +
+					(int)(real_y) * d->textures[inter.c - '1'][inter.orientation].w];
+			}
+			real_y += increment;
 			block_h--;
 		}
 		y++;
@@ -68,7 +80,7 @@ void	find_intersection(t_data *d, t_vec2f ray_dir, int x, double angle)
 
 	dist *= cos(angle); // correction de la distortion
 	if (c1.c != EMPTY_SQUARE)
-		draw_column(d, d->camera.h / dist /* sqrt(get_vec2f_length(d->dir))*/, x, c1.c); // remettre com si dir change (sqrt(1))
+		draw_column(d, d->camera.h / dist /* sqrt(get_vec2f_length(d->dir))*/, x, c1); // remettre com si dir change (sqrt(1))
 	// besoin de modifier le vecteur dir (dont delete me)
 	// modifier calcul 2eme argument en mutipliant par cos(angle) pour enlever effet aquarium
 }
@@ -79,14 +91,15 @@ void	refresh_image(t_data *d)
 	t_vec2f	ray_dir;
 
 	x = 0;
+	
 	while (x < WIDTH)
 	{
 		// ray_dir = dir + plane * x / w
 		ray_dir = add_vec2f(d->dir,
 				mul_vec2f(d->plane, 2.0 * x / WIDTH - 1.0));
 //		if (x == WIDTH / 2) // DEBUG LINE ONLY ONE RAY
-		find_intersection(d, ray_dir, WIDTH - x, get_vec2f_angle(d->dir, ray_dir)); // width - x sinon s'affiche a l'envers (? car axe Y a l'envers ?)
 		x++;
+		find_intersection(d, ray_dir, WIDTH - x, get_vec2f_angle(d->dir, ray_dir)); // width - x sinon s'affiche a l'envers (? car axe Y a l'envers ?)
 	}
 }
 
@@ -124,5 +137,9 @@ void	refresh_all(t_data *d)
 	refresh_minimap(d);
 	refresh_image(d);
 	mlx_put_image_to_window(d->mlx, d->win, d->camera.mlximg, 0, 0);
+	for (int i = 0; i < d->minimap.w * d->minimap.h; i++)
+	{
+		d->minimap.pixels[i] += 0x88000000;
+	}
 	mlx_put_image_to_window(d->mlx, d->win, d->minimap.mlximg, WIDTH - d->minimap.w, 0);
 }
