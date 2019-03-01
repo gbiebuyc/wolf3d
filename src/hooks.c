@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/02/26 21:54:29 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/01 23:26:12 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,23 @@ void	actualize_dir(double diff, t_vec2f *dir)
 /*
 ** fin a supp
 */
+
+# define COLLISION_DIST 0.2 // max 0.5 car c'est la moitie d'un bloc.
+
+void	move(t_data *d, t_vec2f dir)
+{
+	d->pos.x += dir.x;
+	if (get_map_char(d->pos.x + (dir.x > 0 ? COLLISION_DIST : -COLLISION_DIST),
+				d->pos.y, d) != EMPTY_SQUARE)
+		d->pos.x = (dir.x > 0) ?
+			ceil(d->pos.x) - COLLISION_DIST : floor(d->pos.x) + COLLISION_DIST;
+	d->pos.y += dir.y;
+	if (get_map_char(d->pos.x, d->pos.y + (dir.y > 0 ?
+				COLLISION_DIST : -COLLISION_DIST), d) != EMPTY_SQUARE)
+		d->pos.y = (dir.y > 0) ?
+			ceil(d->pos.y) - COLLISION_DIST : floor(d->pos.y) + COLLISION_DIST;
+}
+
 int		key_press(int keycode, t_data *d)
 {
 	if (keycode == 65307 || keycode == 53)
@@ -41,14 +58,14 @@ int		key_press(int keycode, t_data *d)
 		actualize_dir(-0.174533, &d->plane);
 	}
 	else if (keycode == 65362 || keycode == 126) // Avant
-		d->pos = add_vec2f(d->pos, mul_vec2f(d->dir, 0.2));
+		move(d, mul_vec2f(d->dir, 0.2));
 	else if (keycode == 65363 || keycode == 124)
 	{
 		actualize_dir(0.174533, &d->dir);
 		actualize_dir(0.174533, &d->plane);
 	}
 	else if (keycode == 65364 || keycode == 125) // Arriere
-		d->pos = sub_vec2f(d->pos, mul_vec2f(d->dir, 0.2));
+		move(d, mul_vec2f(d->dir, -0.2));
 	refresh_all(d);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/01 22:54:39 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/01 23:30:37 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,10 @@ int				destroy_event(t_data *d);
 t_inter			find_intersection_hor(t_vec2f ray, t_data *d);
 t_inter			find_intersection_ver(t_vec2f ray, t_data *d);
 double			get_vec2f_angle(t_vec2f v1, t_vec2f v2);
+<<<<<<< Updated upstream
 void			init_map(t_data *d, char *tab, int cout, int fd);
+=======
+char			get_map_char(int x, int y, t_data *d);
+>>>>>>> Stashed changes
 
 #endif
