@@ -6,7 +6,7 @@
 #    By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/05 15:21:27 by gbiebuyc          #+#    #+#              #
-#    Updated: 2019/02/27 03:00:12 by nallani          ###   ########.fr        #
+#    Updated: 2019/03/01 22:46:33 by nallani          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ SRC = src/main.c \
 	  src/vec2.c \
 	  src/ray.c \
 	  src/image.c \
-	  src/main_image.c
+	  src/main_image.c \
+	  src/map.c
 OBJ = $(SRC:.c=.o)
 FT_DIR = libft
 # On Ubuntu, install libxext-dev package beforehand.

@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/01 20:06:05 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/01 22:53:19 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,6 @@ void	init_mlx(t_data *d)
 	mlx_hook(d->win, 5, 1L << 3, mouse_release, d);
 	mlx_hook(d->win, 6, 1L << 6, mouse_move, d);
 	mlx_hook(d->win, 17, 1L << 17, destroy_event, d);
-}
-
-void	init_map(t_data *d)
-{
-	static char *m =
-		"11111111"
-		"1 1    1"
-		"1    1 1"
-		"1    1 1"
-		"1      1"
-		"1   1111"
-		"11     1"
-		"11111111";
-	d->map = m;
-	d->mapsize = (t_vec2){8, 8};
 }
 
 void	init_player(t_data *d)
@@ -99,7 +84,7 @@ int		main(int ac, char **av)
 
 	(void)ac;
 	(void)av;
-	init_map(&d);
+	init_map(&d, "", 0, 0);
 	init_player(&d);
 	init_mlx(&d);
 	load_textures(&d);

@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/01 19:54:18 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/01 22:54:39 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <math.h>
 # include <stdint.h>
 # include <stdbool.h>
+# include <pthread.h>
+# include <fcntl.h>
 
 # include <stdio.h> // for debug
 
@@ -35,6 +37,8 @@
 # define EAST 1
 # define SOUTH 2
 # define WEST 3
+# define PATH "./maps/map1"
+# define GOOD_CHARS " 1"
 
 typedef struct	s_vec2
 {
@@ -81,6 +85,15 @@ typedef struct	s_data
 	t_img		textures[3][4];
 }				t_data;
 
+typedef	struct	s_args
+{
+	t_data		*d;
+	t_vec2f		ray_dir;
+	int			x;
+	double		angle;
+	float		dist;
+	t_inter		inter[2];
+}				t_args;
 
 int				key_press(int keycode, t_data *d);
 int				mouse_press(int btn, int x, int y, t_data *d);
@@ -104,5 +117,6 @@ int				destroy_event(t_data *d);
 t_inter			find_intersection_hor(t_vec2f ray, t_data *d);
 t_inter			find_intersection_ver(t_vec2f ray, t_data *d);
 double			get_vec2f_angle(t_vec2f v1, t_vec2f v2);
+void			init_map(t_data *d, char *tab, int cout, int fd);
 
 #endif

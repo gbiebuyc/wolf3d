@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 18:20:52 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/01 20:37:24 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/01 21:38:50 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,51 +55,64 @@ void	draw_column(t_data *d, int block_h, int x, t_inter inter)
 	}
 }
 
-void	find_intersection(t_data *d, t_vec2f ray_dir, int x, double angle)
+void	find_intersection(t_args *args)
 {
-	t_inter	c1; // nouvelle structure
-	t_inter	c2;
-	float	dist;
-
-	c1 = find_intersection_ver(ray_dir, d);
-	c2 = find_intersection_hor(ray_dir, d);
-	dist = 0.0;
-	if (c1.c != EMPTY_SQUARE && c1.l < c2.l) // Vertical intersection ray is shorter
+	args->inter[0] = find_intersection_ver(args->ray_dir, args->d);
+	args->inter[1] = find_intersection_hor(args->ray_dir, args->d);
+	args->dist = 0.0;
+	if (args->inter[0].c != EMPTY_SQUARE && args->inter[0].l < args->inter[1].l) // Vertical intersection ray is shorter
 	{
-		draw_ray(&d->minimap, d->pos, c1.vec, 0xFF0000);
-		dist = sqrt(c1.l);
+		draw_ray(&args->d->minimap, args->d->pos, args->inter[0].vec, 0xFF0000);
+		args->dist = sqrt(args->inter[0].l);
 	}
-	else if (c2.c != EMPTY_SQUARE) // Horizontal ray is shorter
+	else if (args->inter[1].c != EMPTY_SQUARE) // Horizontal ray is shorter
 	{
-		draw_ray(&d->minimap, d->pos, c2.vec, 0xFF);
-		dist = sqrt(c2.l);
-		c1 = c2; // argument envoye a draw_column
+		draw_ray(&args->d->minimap, args->d->pos, args->inter[1].vec, 0xFF);
+		args->dist = sqrt(args->inter[1].l);
+		args->inter[0] = args->inter[1]; // argument envoye a draw_column
 	}
 //	printf("ver: %f   hor: %f\n", c1.l, c2.l); // debug
 //	printf("%c\n", c1.c); // debug
 
-	dist *= cos(angle); // correction de la distortion
-	if (c1.c != EMPTY_SQUARE)
-		draw_column(d, d->camera.h / dist /* sqrt(get_vec2f_length(d->dir))*/, x, c1); // remettre com si dir change (sqrt(1))
+	args->dist *= cos(args->angle); // correction de la distortion
+	if (args->inter[0].c != EMPTY_SQUARE)
+		draw_column(args->d, args->d->camera.h / args->dist /* sqrt(get_vec2f_length(d->dir))*/, args->x, args->inter[0]); // remettre com si dir change (sqrt(1))
 	// besoin de modifier le vecteur dir (dont delete me)
 	// modifier calcul 2eme argument en mutipliant par cos(angle) pour enlever effet aquarium
 }
 
+void	set_args(t_args	*args, t_data *d, t_vec2f ray_dir, int x)
+{
+	args->d = d;
+	args->ray_dir = ray_dir;
+	args->x = x;
+	args->angle = get_vec2f_angle(d->dir, ray_dir);
+}
+
 void	refresh_image(t_data *d)
 {
-	int		x;
-	t_vec2f	ray_dir;
+	t_vec2		coord;
+	t_vec2f		ray_dir;
+	pthread_t	id[4];
+	t_args		args[4];
 
-	x = 0;
-	
-	while (x < WIDTH)
+	coord.x = 0;	
+	while (coord.x < WIDTH && !(coord.y = 0))
 	{
+		while (++coord.y < 5 && (coord.x + coord.y <= WIDTH))
+		{
 		// ray_dir = dir + plane * x / w
-		ray_dir = add_vec2f(d->dir,
-				mul_vec2f(d->plane, 2.0 * x / WIDTH - 1.0));
-//		if (x == WIDTH / 2) // DEBUG LINE ONLY ONE RAY
-		x++;
-		find_intersection(d, ray_dir, WIDTH - x, get_vec2f_angle(d->dir, ray_dir)); // width - x sinon s'affiche a l'envers (? car axe Y a l'envers ?)
+		ray_dir = add_vec2f(d->dir, mul_vec2f(d->plane,
+					2.0 * (coord.x  + coord.y)/ WIDTH - 1.0));
+		set_args(&args[coord.y - 1], d, ray_dir, WIDTH - coord.x - coord.y);
+		if (pthread_create(&id[coord.y - 1], NULL, (void *)&find_intersection, &args[coord.y - 1]))
+			exit(EXIT_FAILURE);
+		}
+		coord.x += 4;
+		pthread_join(id[0], NULL);
+		pthread_join(id[1], NULL);
+		pthread_join(id[2], NULL);
+		pthread_join(id[3], NULL);
 	}
 }
 
