@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 18:20:52 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/01 21:38:50 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/02 00:29:46 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ void	refresh_all(t_data *d)
 	mlx_put_image_to_window(d->mlx, d->win, d->camera.mlximg, 0, 0);
 	for (int i = 0; i < d->minimap.w * d->minimap.h; i++)
 	{
-		d->minimap.pixels[i] += 0x88000000;
+		d->minimap.pixels[i] += 0x00000000;
 	}
 	mlx_put_image_to_window(d->mlx, d->win, d->minimap.mlximg, WIDTH - d->minimap.w, 0);
 }

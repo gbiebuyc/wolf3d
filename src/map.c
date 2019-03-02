@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 21:52:27 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/01 22:54:21 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/02 00:01:17 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,16 @@ void	check_str(char	*str)
 		while (good_chars[j])
 		{
 			if (good_chars[j] == str[i])
-				return ;
+				break ;
 			j++;
 		}
+		if (!(good_chars[j]))
+		{
+			ft_putstr_fd("invalid_characters_in_map\n", 2);
+			exit(EXIT_FAILURE);
+		}
 		i++;
-	}
-	ft_putstr_fd("invalid_characters_in_map\n", 2);
-	exit(EXIT_FAILURE);
+	 }
 }
 
 void	error_test(int i, int mod, int *fd)
@@ -95,12 +98,14 @@ void	init_map(t_data *d, char *map, int count, int fd)
 	while ((i = get_next_line(fd, &str) > 0))
 	{
 		tmp = map;
-		map = ft_strjoin(map, str);
+		if (!(map = ft_strjoin(map, str)))
+			; //err
 		if (count)
-		free(tmp);
+			free(tmp);
 		free(str);
 		count++;
 	}
 	error_test(i, 1, NULL);
 	d->map = map;
+	printf("%s\n", d->map);
 }

@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 18:40:06 by nallani           #+#    #+#             */
-/*   Updated: 2019/02/27 04:39:13 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/02 00:03:18 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,9 @@ void	refresh_minimap(t_data *d)
 		y = 0; // a calculer en fonction de la position du joueur voir des bords
 		while (y < d->mapsize.y)
 		{
-			if (d->map[x + y * d->mapsize.y] != EMPTY_SQUARE)
+			if (d->map[x + y * d->mapsize.x] != EMPTY_SQUARE)
 				put_block(&d->minimap, x, y,
-						find_colo_mini(d->map[x + y * d->mapsize.y]));
+						find_colo_mini(d->map[x + y * d->mapsize.x]));
 			y++;
 		}
 		x++;

@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 18:20:05 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/01 19:55:41 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/02 00:02:11 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	get_map_char(int x, int y, t_data *d)
 {
 	if (!(x >= 0 && y >= 0 && x < d->mapsize.x && y < d->mapsize.y))
 		return (EMPTY_SQUARE);
-	return (d->map[x + y * d->mapsize.y]);
+	return (d->map[x + y * d->mapsize.x]);
 }
 
 t_inter	find_intersection_hor(t_vec2f ray, t_data *d)
