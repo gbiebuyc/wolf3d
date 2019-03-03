@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 18:20:52 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/03 23:38:49 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/03 23:46:28 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,17 @@ void	draw_column(t_data *d, int block_h, int x, t_inter inter)
 	int		start;
 	int		y;
 	int		scaled_width;
-	float	increment;
-	float	real_y;
+	double	increment;
+	double	real_y;
 
-	start = d->camera.h / 2 - block_h / 2;
+	start = d->hooks.middle_screen - block_h / 2;
 	y = 0;
 	scaled_width = inter.xtexture * d->textures[inter.c - '1'][inter.orientation].w;
-	increment = (float)d->textures[inter.c - '1'][inter.orientation].h / (float)block_h;
-	//real_y = start < -start * increment ? : 0;
-	real_y = start <0 ? -start * increment : 0;
-	while (y < d->camera.h)
+	increment = (double)d->textures[inter.c - '1'][inter.orientation].h / (float)block_h;
+	real_y = start < 0 ? -start * increment : 0;
+	while (y < d->camera.h && block_h > 0)
 	{
-		if (y > start && block_h)
+		if (y > start)
 		{
 			if (x >= 0 && y >= 0 && y < d->camera.h && x < d->camera.w)
 			{
@@ -49,6 +48,9 @@ void	draw_column(t_data *d, int block_h, int x, t_inter inter)
 					(int)(real_y) * d->textures[inter.c - '1'][inter.orientation].w];
 			}
 			real_y += increment;
+			if ((int)real_y >=
+					d->textures[inter.c - '1'][inter.orientation].h)
+				break;
 			block_h--;
 		}
 		y++;
@@ -113,7 +115,6 @@ void	find_intersection(t_args *args)
 		draw_column(args->d, args->d->camera.h / args->dist /* sqrt(get_vec2f_length(d->dir))*/, args->x, args->inter[0]); // remettre com si dir change (sqrt(1))
 	draw_floor(args->d, args->x, args->d->camera.h / args->dist, args->inter[0], args->angle);
 	// besoin de modifier le vecteur dir (dont delete me)
-	// modifier calcul 2eme argument en mutipliant par cos(angle) pour enlever effet aquarium
 }
 
 void	set_args(t_args	*args, t_data *d, t_vec2f ray_dir, int x)
@@ -157,7 +158,7 @@ void	reset_camera(t_data *d) // permet de reinitialiser l'image avec le sol et l
 	int		y;
 
 	y = 0;
-	while (y < d->camera.h / 2)
+	while (y < d->hooks.middle_screen)
 	{
 		x = 0;
 		while (x < d->camera.w)
@@ -182,6 +183,7 @@ void	reset_camera(t_data *d) // permet de reinitialiser l'image avec le sol et l
 void	refresh_all(t_data *d)
 {
 	//reset_camera(d); // reset l'image de la camera // remplacé par textures sky et floor
+	if (d->hooks.minimap)
 	refresh_minimap(d);
 	refresh_image(d);
 	mlx_put_image_to_window(d->mlx, d->win, d->camera.mlximg, 0, 0);
@@ -189,5 +191,6 @@ void	refresh_all(t_data *d)
 	{
 		d->minimap.pixels[i] += 0x00000000;
 	}
+	if (d->hooks.minimap)
 	mlx_put_image_to_window(d->mlx, d->win, d->minimap.mlximg, WIDTH - d->minimap.w, 0);
 }
