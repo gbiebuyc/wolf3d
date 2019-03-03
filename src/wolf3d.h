@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/01 23:38:01 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/03 23:11:58 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef struct	s_data
 	t_vec2f		dir;
 	t_vec2f		plane;
 	t_img		textures[3][4];
+	t_img		sky_texture;
 }				t_data;
 
 typedef	struct	s_args
@@ -107,6 +108,7 @@ t_vec2f			sub_vec2f(t_vec2f v1, t_vec2f v2);
 t_vec2f			add_vec2f(t_vec2f v1, t_vec2f v2);
 t_vec2f			mul_vec2f(t_vec2f v, double scalar);
 float			get_vec2f_length(t_vec2f v);
+double			vec2f_length(t_vec2f v);
 void			refresh_minimap(t_data *d);
 void			draw_ray(t_img *img, t_vec2f v1, t_vec2f v2, uint32_t color);
 void			putpixel(t_img *img, int x, int y, uint32_t color);

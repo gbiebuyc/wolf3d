@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 18:20:52 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/02 00:29:46 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/03 23:38:49 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,40 @@ void	draw_column(t_data *d, int block_h, int x, t_inter inter)
 	}
 }
 
+uint32_t	getpixel(t_img *texture, double x, double y)
+{
+	return (texture->pixels[(int)(texture->w * x) +
+			(int)(texture->h * y) * texture->w]);
+}
+
+void	draw_floor(t_data *d, int x, int block_h, t_inter inter, double angle)
+{
+	t_vec2f	ray;
+	t_vec2f	pos_floor;
+	t_vec2f	pos_sky;
+	int		y;
+
+	ray = sub_vec2f(inter.vec, d->pos);
+	ray = mul_vec2f(ray, 1.0 / vec2f_length(ray));
+	y = ft_max(block_h / 2, 1);
+	while (y <= (d->camera.h / 2))
+	{
+		pos_floor = add_vec2f(d->pos, mul_vec2f(ray,
+					1.0 / (((double)y / (d->camera.h / 2)) * cos(angle))));
+		pos_sky = add_vec2f(mul_vec2f(d->pos, 0.3), mul_vec2f(ray,
+					1.0 / (((double)y / (d->camera.h / 2)) * cos(angle))));
+		pos_floor.x -= floor(pos_floor.x);
+		pos_floor.y -= floor(pos_floor.y);
+		pos_sky.x = pos_sky.x / 8 - floor(pos_sky.x / 8);
+		pos_sky.y = pos_sky.y / 8 - floor(pos_sky.y / 8);
+		putpixel(&d->camera, x, (d->camera.h / 2 + y),
+				getpixel(&d->textures[0][1], pos_floor.x, pos_floor.y));
+		putpixel(&d->camera, x, (d->camera.h / 2 - y),
+				getpixel(&d->sky_texture, pos_sky.x, pos_sky.y));
+		y++;
+	}
+}
+
 void	find_intersection(t_args *args)
 {
 	args->inter[0] = find_intersection_ver(args->ray_dir, args->d);
@@ -77,6 +111,7 @@ void	find_intersection(t_args *args)
 	args->dist *= cos(args->angle); // correction de la distortion
 	if (args->inter[0].c != EMPTY_SQUARE)
 		draw_column(args->d, args->d->camera.h / args->dist /* sqrt(get_vec2f_length(d->dir))*/, args->x, args->inter[0]); // remettre com si dir change (sqrt(1))
+	draw_floor(args->d, args->x, args->d->camera.h / args->dist, args->inter[0], args->angle);
 	// besoin de modifier le vecteur dir (dont delete me)
 	// modifier calcul 2eme argument en mutipliant par cos(angle) pour enlever effet aquarium
 }
@@ -146,7 +181,7 @@ void	reset_camera(t_data *d) // permet de reinitialiser l'image avec le sol et l
 
 void	refresh_all(t_data *d)
 {
-	reset_camera(d); // reset l'image de la camera
+	//reset_camera(d); // reset l'image de la camera // remplacé par textures sky et floor
 	refresh_minimap(d);
 	refresh_image(d);
 	mlx_put_image_to_window(d->mlx, d->win, d->camera.mlximg, 0, 0);

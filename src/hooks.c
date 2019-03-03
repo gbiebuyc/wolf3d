@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/02 01:57:19 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/03 23:03:44 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,30 +39,30 @@ void	move(t_data *d, t_vec2f dir)
 	if (fabs(dir.x) > fabs(dir.y))
 	{
 		d->pos.x += dir.x;
-	if (get_map_char(d->pos.x + (dir.x > 0 ? COLLISION_DIST : -COLLISION_DIST),
-				d->pos.y + (dir.y > 0 ?
-				-COLLISION_DIST : COLLISION_DIST), d) != EMPTY_SQUARE)
-		d->pos.x = (dir.x > 0) ?
-			ceil(d->pos.x - dir.x) - COLLISION_DIST : floor(d->pos.x - dir.x) + COLLISION_DIST;
+		if (get_map_char(d->pos.x + (dir.x > 0 ? COLLISION_DIST : -COLLISION_DIST),
+					d->pos.y + (dir.y > 0 ?
+						-COLLISION_DIST : COLLISION_DIST), d) != EMPTY_SQUARE)
+			d->pos.x = (dir.x > 0) ?
+				ceil(d->pos.x - dir.x) - COLLISION_DIST : floor(d->pos.x - dir.x) + COLLISION_DIST;
 		d->pos.y += dir.y;
-	if (get_map_char(d->pos.x, d->pos.y + (dir.y > 0 ?
-				COLLISION_DIST : -COLLISION_DIST), d) != EMPTY_SQUARE)
-		d->pos.y = (dir.y > 0) ?
-			ceil(d->pos.y - dir.y) - COLLISION_DIST : floor(d->pos.y - dir.y) + COLLISION_DIST;
+		if (get_map_char(d->pos.x, d->pos.y + (dir.y > 0 ?
+						COLLISION_DIST : -COLLISION_DIST), d) != EMPTY_SQUARE)
+			d->pos.y = (dir.y > 0) ?
+				ceil(d->pos.y - dir.y) - COLLISION_DIST : floor(d->pos.y - dir.y) + COLLISION_DIST;
 	}
 	else
 	{
 		d->pos.y += dir.y;
-	if (get_map_char(d->pos.x, d->pos.y + (dir.y > 0 ?
-				COLLISION_DIST : -COLLISION_DIST), d) != EMPTY_SQUARE)
-		d->pos.y = (dir.y > 0) ?
-			ceil(d->pos.y - dir.y) - COLLISION_DIST : floor(d->pos.y - dir.y) + COLLISION_DIST;
+		if (get_map_char(d->pos.x, d->pos.y + (dir.y > 0 ?
+						COLLISION_DIST : -COLLISION_DIST), d) != EMPTY_SQUARE)
+			d->pos.y = (dir.y > 0) ?
+				ceil(d->pos.y - dir.y) - COLLISION_DIST : floor(d->pos.y - dir.y) + COLLISION_DIST;
 		d->pos.x += dir.x;
-	if (get_map_char(d->pos.x + (dir.x > 0 ? COLLISION_DIST : -COLLISION_DIST),
-				d->pos.y + (dir.y > 0 ?
-				COLLISION_DIST : -COLLISION_DIST), d) != EMPTY_SQUARE)
-		d->pos.x = (dir.x > 0) ?
-			ceil(d->pos.x - dir.x) - COLLISION_DIST : floor(d->pos.x - dir.x) + COLLISION_DIST;
+		if (get_map_char(d->pos.x + (dir.x > 0 ? COLLISION_DIST : -COLLISION_DIST),
+					d->pos.y + (dir.y > 0 ?
+						COLLISION_DIST : -COLLISION_DIST), d) != EMPTY_SQUARE)
+			d->pos.x = (dir.x > 0) ?
+				ceil(d->pos.x - dir.x) - COLLISION_DIST : floor(d->pos.x - dir.x) + COLLISION_DIST;
 	}
 /*	if (get_map_char(d->pos.x + (dir.x > 0 ? COLLISION_DIST : -COLLISION_DIST),
 				d->pos.y, d) != EMPTY_SQUARE)

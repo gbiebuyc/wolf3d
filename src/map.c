@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 21:52:27 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/02 00:01:17 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/03 23:04:28 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	init_map(t_data *d, char *map, int count, int fd)
 	{
 		tmp = map;
 		if (!(map = ft_strjoin(map, str)))
-			; //err
+		{}; //err
 		if (count)
 			free(tmp);
 		free(str);

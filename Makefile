@@ -6,7 +6,7 @@
 #    By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/05 15:21:27 by gbiebuyc          #+#    #+#              #
-#    Updated: 2019/03/01 22:46:33 by nallani          ###   ########.fr        #
+#    Updated: 2019/03/03 22:53:59 by gbiebuyc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ FT_DIR = libft
 # On Ubuntu, install libxext-dev package beforehand.
 ifeq ($(shell uname), Linux)
 	MLX_DIR = minilibx_linux
-	LDFLAGS = -lm -L $(FT_DIR) -lft -L $(MLX_DIR) -lmlx -lXext -lX11
+	LDFLAGS = -lm -L $(FT_DIR) -lft -L $(MLX_DIR) -lmlx -lXext -lX11 -lpthread
 else
 	MLX_DIR = minilibx_macos
 	LDFLAGS = -lm -L $(FT_DIR) -lft -L $(MLX_DIR) -lmlx -framework OpenGL -framework AppKit

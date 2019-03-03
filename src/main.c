@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/01 23:56:42 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/03 18:10:20 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,9 @@ void	load_textures(t_data *d)
 					&d->textures[0][EAST].w, &d->textures[0][EAST].h)) ||	
 			!(d->textures[0][WEST].mlximg =
 				mlx_xpm_file_to_image(d->mlx, "textures/west.xpm",
-					&d->textures[0][WEST].w, &d->textures[0][WEST].h)))
+					&d->textures[0][WEST].w, &d->textures[0][WEST].h)) ||
+			!(d->sky_texture.mlximg = mlx_xpm_file_to_image(d->mlx,
+					"textures/sky.xpm", &d->sky_texture.w, &d->sky_texture.h)))
 	{
 		ft_putstr_fd("rip textures\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
@@ -76,6 +78,8 @@ void	load_textures(t_data *d)
 			d->textures[0][EAST].mlximg, &junk, &junk, &junk);
 	d->textures[0][WEST].pixels = (uint32_t*)mlx_get_data_addr(
 			d->textures[0][WEST].mlximg, &junk, &junk, &junk);
+	d->sky_texture.pixels = (uint32_t*)mlx_get_data_addr(
+			d->sky_texture.mlximg, &junk, &junk, &junk);
 }
 
 int		main(int ac, char **av)
