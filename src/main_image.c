@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 18:20:52 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/03 23:46:28 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/04 00:30:24 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void	draw_column(t_data *d, int block_h, int x, t_inter inter)
 	double	increment;
 	double	real_y;
 
-	start = d->hooks.middle_screen - block_h / 2;
+	// start = d->hooks.middle_screen - block_h / 2; // sorry pas le choix
+	start = d->camera.h / 2 - block_h / 2;
 	y = 0;
 	scaled_width = inter.xtexture * d->textures[inter.c - '1'][inter.orientation].w;
 	increment = (double)d->textures[inter.c - '1'][inter.orientation].h / (float)block_h;
