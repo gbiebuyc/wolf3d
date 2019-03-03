@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/03 08:47:03 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/03 09:24:26 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ int				key_release(int keycode, t_data *d);
 int				mouse_press(int btn, int x, int y, t_data *d);
 int				mouse_release(int btn, int x, int y, t_data *d);
 int				mouse_move(int x, int y, t_data *d);
-int				destroy_event(t_data *d);
 int				loop_hook(t_data *d);
 t_vec2			sub_vec2(t_vec2 v1, t_vec2 v2);
 t_vec2			add_vec2(t_vec2 v1, t_vec2 v2);
@@ -135,5 +134,12 @@ double			get_vec2f_angle(t_vec2f v1, t_vec2f v2);
 void			init_map(t_data *d, char *tab, int cout, int fd);
 char			get_map_char(int x, int y, t_data *d);
 int				refresh_loop(t_data *d);
+
+/*
+** exit.c
+*/
+
+int				proper_exit(t_data *d);
+void			err_exit(t_data *d, int mod, char *msg, int exit_code);
 
 #endif

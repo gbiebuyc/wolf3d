@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/03 08:41:07 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/03 09:26:31 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,22 +80,22 @@ void	move(t_data *d, t_vec2f dir)
 int		key_press(int keycode, t_data *d)
 {
 	if (keycode == 65307 || keycode == 53)
-		destroy_event(d);
-	if (keycode == 65361 || keycode == 123)
+		proper_exit(d);
+	if (keycode == 65361 || keycode == 123 || keycode == 0)
 	{
 		d->hooks.strafe_dir = LEFT_STRAFE;
 //		actualize_dir(-0.174533, &d->dir); old rot
 //		actualize_dir(-0.174533, &d->plane); old rot
 	}
-	else if (keycode == 65362 || keycode == 126) // Avant
+	else if (keycode == 65362 || keycode == 126 || keycode == 13) // Avant
 		d->hooks.dir = FORWARD;
-	else if (keycode == 65363 || keycode == 124)
+	else if (keycode == 65363 || keycode == 124 || keycode == 2)
 	{
 		d->hooks.strafe_dir = RIGHT_STRAFE;
 //		actualize_dir(0.174533, &d->dir); old rot
 //		actualize_dir(0.174533, &d->plane); old rot
 	}
-	else if (keycode == 65364 || keycode == 125) // Arriere
+	else if (keycode == 65364 || keycode == 125 || keycode == 1) // Arriere
 		d->hooks.dir = BACKWARD;
 	if (keycode == 257 || keycode == 258) // both shift
 		d->hooks.run = 1;
@@ -107,13 +107,13 @@ int		key_release(int keycode, t_data *d)
 {
 	if (keycode == 46)
 		d->hooks.minimap = !(d->hooks.minimap); // GERER TRACE RAYON // COM A NE PAS SUPP
-	if ((keycode == 65362 || keycode == 126) && d->hooks.dir == FORWARD) // Avant	
+	if ((keycode == 65362 || keycode == 126 || keycode == 13) && d->hooks.dir == FORWARD) // Avant	
 		d->hooks.dir = 0;
-	if ((keycode == 65364 || keycode == 125) && d->hooks.dir == BACKWARD) // Arriere
+	if ((keycode == 65364 || keycode == 125 || keycode == 1) && d->hooks.dir == BACKWARD) // Arriere
 		d->hooks.dir = 0;
-	if ((keycode == 65361 || keycode == 123) && d->hooks.strafe_dir == LEFT_STRAFE) //gauche
+	if ((keycode == 65361 || keycode == 123 || keycode == 0) && d->hooks.strafe_dir == LEFT_STRAFE) //gauche
 		d->hooks.strafe_dir = 0;
-	if ((keycode == 65363 || keycode == 124) && d->hooks.strafe_dir == RIGHT_STRAFE) //droite
+	if ((keycode == 65363 || keycode == 124 || keycode == 2) && d->hooks.strafe_dir == RIGHT_STRAFE) //droite
 		d->hooks.strafe_dir = 0;
 	if (keycode == 257 || keycode == 258)
 		d->hooks.run = 0;
@@ -217,13 +217,4 @@ int		mouse_move(int x, int y, t_data *d)
 		oldy = y;
 	}
 	return (0);	
-}
-
-int		destroy_event(t_data *d)
-{
-	mlx_destroy_image(d->mlx, d->camera.mlximg);
-	mlx_destroy_image(d->mlx, d->minimap.mlximg);
-	mlx_destroy_window(d->mlx, d->win);
-	exit(EXIT_SUCCESS);
-	return (0);
 }
