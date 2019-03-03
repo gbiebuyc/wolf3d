@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/02 01:57:19 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/03 08:41:07 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,19 +83,40 @@ int		key_press(int keycode, t_data *d)
 		destroy_event(d);
 	if (keycode == 65361 || keycode == 123)
 	{
-		actualize_dir(-0.174533, &d->dir);
-		actualize_dir(-0.174533, &d->plane);
+		d->hooks.strafe_dir = LEFT_STRAFE;
+//		actualize_dir(-0.174533, &d->dir); old rot
+//		actualize_dir(-0.174533, &d->plane); old rot
 	}
 	else if (keycode == 65362 || keycode == 126) // Avant
-		move(d, mul_vec2f(d->dir, 0.2));
+		d->hooks.dir = FORWARD;
 	else if (keycode == 65363 || keycode == 124)
 	{
-		actualize_dir(0.174533, &d->dir);
-		actualize_dir(0.174533, &d->plane);
+		d->hooks.strafe_dir = RIGHT_STRAFE;
+//		actualize_dir(0.174533, &d->dir); old rot
+//		actualize_dir(0.174533, &d->plane); old rot
 	}
 	else if (keycode == 65364 || keycode == 125) // Arriere
-		move(d, mul_vec2f(d->dir, -0.2));
-	refresh_all(d);
+		d->hooks.dir = BACKWARD;
+	if (keycode == 257 || keycode == 258) // both shift
+		d->hooks.run = 1;
+	//refresh_all(d);
+	return (0);
+}
+
+int		key_release(int keycode, t_data *d)
+{
+	if (keycode == 46)
+		d->hooks.minimap = !(d->hooks.minimap); // GERER TRACE RAYON // COM A NE PAS SUPP
+	if ((keycode == 65362 || keycode == 126) && d->hooks.dir == FORWARD) // Avant	
+		d->hooks.dir = 0;
+	if ((keycode == 65364 || keycode == 125) && d->hooks.dir == BACKWARD) // Arriere
+		d->hooks.dir = 0;
+	if ((keycode == 65361 || keycode == 123) && d->hooks.strafe_dir == LEFT_STRAFE) //gauche
+		d->hooks.strafe_dir = 0;
+	if ((keycode == 65363 || keycode == 124) && d->hooks.strafe_dir == RIGHT_STRAFE) //droite
+		d->hooks.strafe_dir = 0;
+	if (keycode == 257 || keycode == 258)
+		d->hooks.run = 0;
 	return (0);
 }
 
@@ -122,9 +143,52 @@ int		mouse_release(int btn, int x, int y, t_data *d)
 	return (0);
 }
 
+int		refresh_loop(t_data *d)
+{
+	t_vec2f		tmp;
+
+	tmp = d->dir;
+	if (d->hooks.dir == FORWARD && d->hooks.strafe_dir == 0)
+		move(d, mul_vec2f(d->dir, 0.05 * (d->hooks.run ? 2 : 1)));
+	if (d->hooks.dir == BACKWARD && d->hooks.strafe_dir == 0)
+		move(d, mul_vec2f(d->dir, -0.05 * (d->hooks.run ? 2 : 1)));
+	if (d->hooks.strafe_dir == LEFT_STRAFE)
+	{
+		if (d->hooks.dir == 0)
+			actualize_dir(-M_PI / 2, &tmp);
+		else
+			actualize_dir(d->hooks.dir == FORWARD ?
+					-M_PI / 4 : -3 * M_PI / 4, &tmp);
+		move(d, mul_vec2f(tmp, 0.05 * (d->hooks.run ? 2 : 1)));
+	}
+	if (d->hooks.strafe_dir == RIGHT_STRAFE)
+	{
+		if (d->hooks.dir == 0)
+			actualize_dir(1 * M_PI / 2, &tmp);
+		else
+			actualize_dir(d->hooks.dir == BACKWARD ?
+					-M_PI / 4 : -3 * M_PI / 4, &tmp);
+		move(d, mul_vec2f(tmp,(!(d->hooks.dir) ? 0.05: -0.05 * (d->hooks.run ? 2 : 1))));
+	}
+//	if (d->hooks.strafe_dir == RIGHT_STRAFE)
+//	{
+//		if (d->hooks.dir == 0)
+//			actualize_dir(M_PI / 2, &tmp);
+//		else
+//			actualize_dir(d->hooks.dir == FORWARD ?
+//					M_PI / 4 : 3 * M_PI / 4, &tmp);
+//		actualize_dir(-M_PI / 2, &tmp);
+//		move(d, mul_vec2f(tmp, -0.05));
+//	}
+	refresh_all(d);
+	return (0);
+}
+
 int		mouse_move(int x, int y, t_data *d)
 {
 	t_vec2		delta;
+	static int	oldx;
+	static int	oldy;
 
 	if (d->mouse_btn == 1)
 	{
@@ -132,7 +196,27 @@ int		mouse_move(int x, int y, t_data *d)
 		d->mouse_lastpos = (t_vec2){x, y};
 		printf("mouse move %d, %d\n", delta.x, delta.y);
 	}
-	return (0);
+	if (oldx == 0 && oldy == 0) 
+	{
+		oldx = x;
+		oldy = y;
+	}
+	if (x != oldx)
+	{
+	actualize_dir(0.0174533 * (x - oldx) / 5, &d->dir);
+	actualize_dir(0.0174533 * (x - oldx) / 5, &d->plane);
+	oldx = x;
+	}
+	if (y != oldy)
+	{
+		d->hooks.middle_screen -= (y - oldy);
+//		if (d->hooks.middle_screen < HEIGHT / 2)
+//			d->hooks.middle_screen = HEIGHT / 2;
+		if (d->hooks.middle_screen > HEIGHT)
+			d->hooks.middle_screen = HEIGHT;
+		oldy = y;
+	}
+	return (0);	
 }
 
 int		destroy_event(t_data *d)

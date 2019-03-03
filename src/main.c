@@ -6,7 +6,11 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/01 23:56:42 by nallani          ###   ########.fr       */
+<<<<<<< Updated upstream
+/*   Updated: 2019/03/03 08:41:21 by nallani          ###   ########.fr       */
+=======
+/*   Updated: 2019/02/25 18:48:15 by nallani          ###   ########.fr       */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +26,37 @@ void	init_mlx(t_data *d)
 	d->minimap.h = d->mapsize.y * SQUARE_W;
 	if (!(d->mlx = mlx_init()) ||
 			!(d->win = mlx_new_window(d->mlx, WIDTH, HEIGHT, "wolf3d")) ||
+<<<<<<< Updated upstream
 			!(d->camera.mlximg = mlx_new_image(
 					d->mlx, d->camera.w, d->camera.h)) ||
 			!(d->minimap.mlximg = mlx_new_image(
+=======
+			!(d->camera.img = mlx_new_image(
+					d->mlx, WIDTH, HEIGHT)) ||
+			!(d->minimap.img = mlx_new_image(
+>>>>>>> Stashed changes
 					d->mlx, d->minimap.w, d->minimap.h)))
 	{
 		ft_putstr_fd("rip mlx\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
 	d->camera.pixels = (uint32_t*)mlx_get_data_addr(
+<<<<<<< Updated upstream
 			d->camera.mlximg, &junk, &junk, &junk);
 	d->minimap.pixels = (uint32_t*)mlx_get_data_addr(
 			d->minimap.mlximg, &junk, &junk, &junk);
+=======
+					d->camera.img, &junk, &junk, &junk)
+	d->minimap.pixels = (uint32_t*)mlx_get_data_addr(d->minimap.img,
+				&junk, &junk, &junk)
+>>>>>>> Stashed changes
 	mlx_hook(d->win, 2, 1L << 0, key_press, d);
+	mlx_hook(d->win, 3, 1L << 1, key_release, d);
 	mlx_hook(d->win, 4, 1L << 2, mouse_press, d);
 	mlx_hook(d->win, 5, 1L << 3, mouse_release, d);
 	mlx_hook(d->win, 6, 1L << 6, mouse_move, d);
 	mlx_hook(d->win, 17, 1L << 17, destroy_event, d);
+	mlx_loop_hook(d->mlx, &refresh_loop, d);
 }
 
 void	init_player(t_data *d)
@@ -46,6 +64,11 @@ void	init_player(t_data *d)
 	d->pos = (t_vec2f){3.5, 3.5};
 	d->dir = (t_vec2f){0,1};
 	d->plane = (t_vec2f){0.66,0};
+	d->hooks.dir = 0;
+	d->hooks.minimap = 1;
+	d->hooks.strafe_dir = 0;
+	d->hooks.middle_screen = HEIGHT / 2;
+	d->hooks.run = 0;
 }
 
 void	load_textures(t_data *d)
