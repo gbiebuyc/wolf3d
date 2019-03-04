@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/04 05:33:24 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/04 09:36:04 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,11 @@ int		key_press(int keycode, t_data *d)
 		d->hooks.strafe_dir = LEFT_STRAFE;
 //		actualize_dir(-0.174533, &d->dir); old rot
 //		actualize_dir(-0.174533, &d->plane); old rot
+	}
+	if (keycode == 14)
+	{
+		actualize_dir(-0.174533, &d->dir);
+		actualize_dir(-0.174533, &d->plane);
 	}
 	else if (keycode == 65362 || keycode == 126 || keycode == 13) // Avant
 		d->hooks.dir = FORWARD;
@@ -168,13 +173,14 @@ int		refresh_loop(t_data *d)
 		else
 			actualize_dir(d->hooks.dir == BACKWARD ?
 					-M_PI / 4 : -3 * M_PI / 4, &tmp);
-		move(d, mul_vec2f(tmp,(!(d->hooks.dir) ? 0.05: -0.05 * (d->hooks.run ? 2 : 1))));
+			move(d, mul_vec2f(tmp,(!(d->hooks.dir) ? 0.05: -0.05) * (d->hooks.run ? 2 : 1)));
 	}
-	d->hooks.scroll += SCROLL_SPEED;
-	if ((int)d->hooks.scroll == 1)
-	{
-		d->hooks.scroll = 0;
-	}
+	d->hooks.scroll.x += SCROLL_SPEED;
+	d->hooks.scroll.y += SCROLL_SPEED / 4;
+	if ((int)d->hooks.scroll.x == 1)
+		d->hooks.scroll.x = 0;
+	if ((int)d->hooks.scroll.y == 1)
+		d->hooks.scroll.y = 0;
 //	if (d->hooks.strafe_dir == RIGHT_STRAFE)
 //	{
 //		if (d->hooks.dir == 0)

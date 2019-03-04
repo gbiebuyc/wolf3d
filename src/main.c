@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/04 06:48:39 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/04 10:39:37 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,15 @@ void	init_mlx(t_data *d)
 void	init_player(t_data *d)
 {
 	d->pos = (t_vec2f){3.5, 3.5};
-	d->dir = (t_vec2f){0,1};
+	d->dir = (t_vec2f){0,1}; // wtf can't be changed?
 	d->plane = (t_vec2f){0.66,0};
 	d->hooks.dir = 0;
 	d->hooks.minimap = 1;
 	d->hooks.strafe_dir = 0;
 	d->hooks.middle_screen = HEIGHT / 2;
 	d->hooks.run = 0;
-	d->hooks.scroll = 0;
+	d->hooks.scroll.x = 0;
+	d->hooks.scroll.y = 0;
 }
 
 void	modify_img(uint32_t *colo)
@@ -76,7 +77,6 @@ void	load_textures(t_data *d)
 	srand(time(NULL));
 	superjunk = rand(); // CHEAT
 	superjunk %= 4;
-	printf("%d \n", superjunk);
 	if (!(d->textures[0][NORTH].mlximg =
 				mlx_xpm_file_to_image(d->mlx, "textures/north.xpm",
 					&d->textures[0][NORTH].w, &d->textures[0][NORTH].h)))

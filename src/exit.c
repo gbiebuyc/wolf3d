@@ -6,13 +6,13 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 08:50:40 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/04 06:25:01 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/04 09:59:35 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-int	proper_exit(t_data *d)
+int		proper_exit(t_data *d)
 {
 	int	i;
 
@@ -35,7 +35,7 @@ int	proper_exit(t_data *d)
 void	err_exit(t_data *d, int mod, char *msg, int exit_code) // UNTESTED
 {
 	ft_putendl_fd(msg, STDERR_FILENO);
-	if (mod > 9) // unused so far
+	if (mod > 9)
 		mlx_destroy_image(d->mlx, d->sky_texture.mlximg);
 	if (mod > 8)
 		mlx_destroy_image(d->mlx, d->textures[0][WEST].mlximg);

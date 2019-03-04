@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/04 05:47:20 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/04 09:54:38 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
 # include <stdbool.h>
 # include <pthread.h>
 # include <fcntl.h>
-
+# include <string.h>
+# include <errno.h>
 # include <stdio.h> // for debug
 
 # define WIDTH 1024
@@ -43,7 +44,7 @@
 # define RIGHT_STRAFE 4
 # define PATH "./maps/map2"
 # define GOOD_CHARS " 1"
-# define SCROLL_SPEED 0.001
+# define SCROLL_SPEED 0.01
 
 typedef struct	s_vec2
 {
@@ -81,7 +82,7 @@ typedef	struct	s_hooks
 	char		minimap;
 	int			middle_screen; //stocker quelque part ailleurs ?
 	char		run;
-	float		scroll;
+	t_vec2f		scroll;
 }				t_hook;
 
 typedef struct	s_data

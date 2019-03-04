@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 18:20:52 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/04 06:01:44 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/04 10:47:48 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ uint32_t	getpixel(t_img *texture, double x, double y)
 			(int)(texture->h * y) * texture->w]);
 }
 
-void	draw_floor(t_data *d, int x, int block_h, t_inter inter, double angle)
+void	draw_floor(t_data *d, int x, int block_h, t_inter inter, double angle) // ligne(hor) milieu ecran not refreshed
 {
 	t_vec2f	ray;
 	t_vec2f	pos_floor;
@@ -78,18 +78,21 @@ void	draw_floor(t_data *d, int x, int block_h, t_inter inter, double angle)
 	{
 		pos_sky = add_vec2f(mul_vec2f(d->pos, 0.3), mul_vec2f(ray,
 					1.0 / (((double)y / (d->camera.h / 2)) * cos(angle))));
-		pos_sky.x = pos_sky.x / 2 - floor(pos_sky.x / 2) + d->hooks.scroll;
-		pos_sky.y = pos_sky.y / 2 - floor(pos_sky.y / 2);
-		if (pos_sky.x * d->sky_texture.w > d->sky_texture.w)
-			pos_sky.x -= 1;
-		if (pos_sky.x + pos_sky.y * d->sky_texture.w > d->sky_texture.h)
-			pos_sky.y -= 1;
+		pos_sky.x = pos_sky.x / 2 - floor(pos_sky.x / 2) + d->hooks.scroll.x;
+		pos_sky.y = pos_sky.y / 2 - floor(pos_sky.y / 2) + d->hooks.scroll.y;
+		pos_sky.x -= ((int)pos_sky.x == 1 ? 1: 0);
+		pos_sky.y -= ((int)pos_sky.y == 1 ? 1: 0);
+		if ((int)(pos_sky.y * d->sky_texture.h) * d->sky_texture.w + (int)(pos_sky.x * d->sky_texture.w) >
+				d->sky_texture.w * d->sky_texture.h)
+		{
+			pos_sky.y = 0;
+		}
 		putpixel(&d->camera, x, (d->hooks.middle_screen - y),
 				getpixel(&d->sky_texture, pos_sky.x, pos_sky.y));
 		y++;
 	}
 	y = ft_max(block_h / 2, 1);
-	while (y + d->hooks.middle_screen <= d->camera.h) // floor
+	while (y + d->hooks.middle_screen < d->camera.h) // floor
 	{
 		pos_floor = add_vec2f(d->pos, mul_vec2f(ray,
 					1.0 / (((double)y / (d->camera.h / 2)) * cos(angle))));
@@ -105,7 +108,7 @@ void	draw_floor(t_data *d, int x, int block_h, t_inter inter, double angle)
 void	find_intersection(t_args *args)
 {
 	args->inter[0] = find_intersection_ver(args->ray_dir, args->d);
-	args->inter[1] = find_intersection_hor(args->ray_dir, args->d);
+	args->inter[1] = find_intersection_hor(args->ray_dir, args->d); // bug ligne milieu ecran // fixed ?
 	args->dist = 0.0;
 	if (args->inter[0].c != EMPTY_SQUARE && args->inter[0].l < args->inter[1].l) // Vertical intersection ray is shorter
 	{
@@ -120,6 +123,8 @@ void	find_intersection(t_args *args)
 		args->dist = sqrt(args->inter[1].l);
 		args->inter[0] = args->inter[1]; // argument envoye a draw_column
 	}
+	else
+		args->inter[0] = args->inter[(args->d->dir.x == 0 ? 1: 0)]; //magic fix if 0
 //	printf("ver: %f   hor: %f\n", c1.l, c2.l); // debug
 //	printf("%c\n", c1.c); // debug
 
@@ -154,8 +159,9 @@ void	refresh_image(t_data *d)
 		ray_dir = add_vec2f(d->dir, mul_vec2f(d->plane,
 					2.0 * (coord.x  + coord.y)/ WIDTH - 1.0));
 		set_args(&args[coord.y - 1], d, ray_dir, WIDTH - coord.x - coord.y);
+	//	if (WIDTH - coord.x - coord.y == WIDTH / 2) // middle_screen ray
 		if (pthread_create(&id[coord.y - 1], NULL, (void *)&find_intersection, &args[coord.y - 1]))
-			exit(EXIT_FAILURE);
+			err_exit(d, 10, strerror(errno), EXIT_FAILURE);
 		}
 		coord.x += 4;
 		pthread_join(id[0], NULL);
@@ -202,7 +208,7 @@ void	refresh_all(t_data *d)
 	mlx_put_image_to_window(d->mlx, d->win, d->camera.mlximg, 0, 0);
 	for (int i = 0; i < d->minimap.w * d->minimap.h; i++)
 	{
-		d->minimap.pixels[i] += 0x00000000;
+		d->minimap.pixels[i] += 0x00 << 24;
 	}
 	if (d->hooks.minimap)
 	mlx_put_image_to_window(d->mlx, d->win, d->minimap.mlximg, WIDTH - d->minimap.w, 0);
