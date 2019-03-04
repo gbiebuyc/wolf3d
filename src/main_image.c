@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 18:20:52 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/04 00:30:24 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/04 06:01:44 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ void	draw_column(t_data *d, int block_h, int x, t_inter inter)
 	double	increment;
 	double	real_y;
 
-	// start = d->hooks.middle_screen - block_h / 2; // sorry pas le choix
-	start = d->camera.h / 2 - block_h / 2;
+ start = d->hooks.middle_screen - block_h / 2; // sorry pas le choix
+//	start = d->camera.h / 2 - block_h / 2;
 	y = 0;
 	scaled_width = inter.xtexture * d->textures[inter.c - '1'][inter.orientation].w;
 	increment = (double)d->textures[inter.c - '1'][inter.orientation].h / (float)block_h;
@@ -74,22 +74,32 @@ void	draw_floor(t_data *d, int x, int block_h, t_inter inter, double angle)
 	ray = sub_vec2f(inter.vec, d->pos);
 	ray = mul_vec2f(ray, 1.0 / vec2f_length(ray));
 	y = ft_max(block_h / 2, 1);
-	while (y <= (d->camera.h / 2))
+	while (y <= (d->hooks.middle_screen)) // sky
 	{
-		pos_floor = add_vec2f(d->pos, mul_vec2f(ray,
-					1.0 / (((double)y / (d->camera.h / 2)) * cos(angle))));
 		pos_sky = add_vec2f(mul_vec2f(d->pos, 0.3), mul_vec2f(ray,
 					1.0 / (((double)y / (d->camera.h / 2)) * cos(angle))));
-		pos_floor.x -= floor(pos_floor.x);
-		pos_floor.y -= floor(pos_floor.y);
-		pos_sky.x = pos_sky.x / 8 - floor(pos_sky.x / 8);
-		pos_sky.y = pos_sky.y / 8 - floor(pos_sky.y / 8);
-		putpixel(&d->camera, x, (d->camera.h / 2 + y),
-				getpixel(&d->textures[0][1], pos_floor.x, pos_floor.y));
-		putpixel(&d->camera, x, (d->camera.h / 2 - y),
+		pos_sky.x = pos_sky.x / 2 - floor(pos_sky.x / 2) + d->hooks.scroll;
+		pos_sky.y = pos_sky.y / 2 - floor(pos_sky.y / 2);
+		if (pos_sky.x * d->sky_texture.w > d->sky_texture.w)
+			pos_sky.x -= 1;
+		if (pos_sky.x + pos_sky.y * d->sky_texture.w > d->sky_texture.h)
+			pos_sky.y -= 1;
+		putpixel(&d->camera, x, (d->hooks.middle_screen - y),
 				getpixel(&d->sky_texture, pos_sky.x, pos_sky.y));
 		y++;
 	}
+	y = ft_max(block_h / 2, 1);
+	while (y + d->hooks.middle_screen <= d->camera.h) // floor
+	{
+		pos_floor = add_vec2f(d->pos, mul_vec2f(ray,
+					1.0 / (((double)y / (d->camera.h / 2)) * cos(angle))));
+		pos_floor.x -= floor(pos_floor.x);
+		pos_floor.y -= floor(pos_floor.y);
+		putpixel(&d->camera, x, (d->hooks.middle_screen + y),
+				getpixel(&d->textures[0][1], pos_floor.x, pos_floor.y));
+		y++;
+	}
+
 }
 
 void	find_intersection(t_args *args)
@@ -99,11 +109,13 @@ void	find_intersection(t_args *args)
 	args->dist = 0.0;
 	if (args->inter[0].c != EMPTY_SQUARE && args->inter[0].l < args->inter[1].l) // Vertical intersection ray is shorter
 	{
+		if (args->d->hooks.minimap)
 		draw_ray(&args->d->minimap, args->d->pos, args->inter[0].vec, 0xFF0000);
 		args->dist = sqrt(args->inter[0].l);
 	}
 	else if (args->inter[1].c != EMPTY_SQUARE) // Horizontal ray is shorter
 	{
+		if (args->d->hooks.minimap)
 		draw_ray(&args->d->minimap, args->d->pos, args->inter[1].vec, 0xFF);
 		args->dist = sqrt(args->inter[1].l);
 		args->inter[0] = args->inter[1]; // argument envoye a draw_column
@@ -185,7 +197,7 @@ void	refresh_all(t_data *d)
 {
 	//reset_camera(d); // reset l'image de la camera // remplacé par textures sky et floor
 	if (d->hooks.minimap)
-	refresh_minimap(d);
+		refresh_minimap(d);
 	refresh_image(d);
 	mlx_put_image_to_window(d->mlx, d->win, d->camera.mlximg, 0, 0);
 	for (int i = 0; i < d->minimap.w * d->minimap.h; i++)

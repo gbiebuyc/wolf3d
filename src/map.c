@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 21:52:27 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/03 23:44:30 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/04 04:00:35 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,20 +54,17 @@ void	check_str(char	*str)
 			exit(EXIT_FAILURE);
 		}
 		i++;
-	 }
+	}
 }
 
 void	error_test(int i, int mod, int *fd)
 {
-	if (mod)
+	if (i < 0)
 	{
-		if (i < 0)
-		{
-			ft_putstr_fd("get_next_line_fail\n", 2);
-			exit(EXIT_FAILURE);
-		}
+		ft_putstr_fd("get_next_line_fail\n", 2);
+		exit(EXIT_FAILURE);
 	}
-	else
+	if (!(mod))
 		if (!(*fd = open(PATH, O_RDONLY)))
 		{
 			perror("error");
@@ -110,5 +107,4 @@ void	init_map(t_data *d, char *map, int count, int fd)
 	}
 	error_test(i, 1, NULL);
 	d->map = map;
-	printf("%s\n", d->map);
 }

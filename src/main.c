@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/03 23:47:54 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/04 06:48:39 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,32 @@ void	init_player(t_data *d)
 	d->hooks.strafe_dir = 0;
 	d->hooks.middle_screen = HEIGHT / 2;
 	d->hooks.run = 0;
+	d->hooks.scroll = 0;
+}
+
+void	modify_img(uint32_t *colo)
+{
+	int	red;
+	int	green;
+	int	blue;
+
+	red = *colo >> 16 & 0xFF;
+	green = *colo >> 8 & 0xFF;
+	blue = *colo & 0xFF;
+	*colo = ((red / 2) << 16 | (green / 2) << 8 | (blue / 2));
 }
 
 void	load_textures(t_data *d)
 {
 	int	junk;
+	int superjunk;
+	char *super_sky[4] = {"textures/Surprise.xpm", "textures/Surprise1.xpm",
+		"textures/Surprise2.xpm", "textures/Surprise3.xpm"};
 
+	srand(time(NULL));
+	superjunk = rand(); // CHEAT
+	superjunk %= 4;
+	printf("%d \n", superjunk);
 	if (!(d->textures[0][NORTH].mlximg =
 				mlx_xpm_file_to_image(d->mlx, "textures/north.xpm",
 					&d->textures[0][NORTH].w, &d->textures[0][NORTH].h)))
@@ -71,10 +91,11 @@ void	load_textures(t_data *d)
 	err_exit(d, 7, "mlx_xmp_file_to_image has failed", EXIT_FAILURE);	
 	if (!(d->textures[0][WEST].mlximg =
 				mlx_xpm_file_to_image(d->mlx, "textures/west.xpm",
-					&d->textures[0][WEST].w, &d->textures[0][WEST].h)) ||
-			!(d->sky_texture.mlximg = mlx_xpm_file_to_image(d->mlx,
-					"textures/sky.xpm", &d->sky_texture.w, &d->sky_texture.h)))
-	err_exit(d, 8, "mlx_xmp_file_to_image has failed", EXIT_FAILURE);	
+					&d->textures[0][WEST].w, &d->textures[0][WEST].h)))
+	err_exit(d, 8, "mlx_xmp_file_to_image has failed", EXIT_FAILURE);
+	if (!(d->sky_texture.mlximg = mlx_xpm_file_to_image(d->mlx,
+					super_sky[superjunk], &d->sky_texture.w, &d->sky_texture.h)))
+	err_exit(d, 9, "mlx_xmp_file_to_image has failed", EXIT_FAILURE);
 	d->textures[0][NORTH].pixels = (uint32_t*)mlx_get_data_addr(
 			d->textures[0][NORTH].mlximg, &junk, &junk, &junk);
 	d->textures[0][SOUTH].pixels = (uint32_t*)mlx_get_data_addr(
@@ -85,6 +106,15 @@ void	load_textures(t_data *d)
 			d->textures[0][WEST].mlximg, &junk, &junk, &junk);
 	d->sky_texture.pixels = (uint32_t*)mlx_get_data_addr(
 			d->sky_texture.mlximg, &junk, &junk, &junk);
+	if (superjunk != 2)
+	for (int i = 0; i < d->textures[0][NORTH].w; i++)
+	for (int j = 0; j < d->textures[0][NORTH].h; j++)
+	{
+	modify_img(&d->textures[0][NORTH].pixels[i + j * d->textures[0][NORTH].w]);
+	modify_img(&d->textures[0][WEST].pixels[i + j * d->textures[0][WEST].w]);
+	modify_img(&d->textures[0][EAST].pixels[i + j * d->textures[0][EAST].w]);
+	modify_img(&d->textures[0][SOUTH].pixels[i + j * d->textures[0][SOUTH].w]);
+	}
 }
 
 int		main(int ac, char **av)
