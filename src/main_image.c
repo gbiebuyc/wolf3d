@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 18:20:52 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/04 10:47:48 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/04 19:23:18 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,13 +113,13 @@ void	find_intersection(t_args *args)
 	if (args->inter[0].c != EMPTY_SQUARE && args->inter[0].l < args->inter[1].l) // Vertical intersection ray is shorter
 	{
 		if (args->d->hooks.minimap)
-		draw_ray(&args->d->minimap, args->d->pos, args->inter[0].vec, 0xFF0000);
+		draw_ray(args->d, args->inter[0].vec, 0xFF0000);
 		args->dist = sqrt(args->inter[0].l);
 	}
 	else if (args->inter[1].c != EMPTY_SQUARE) // Horizontal ray is shorter
 	{
 		if (args->d->hooks.minimap)
-		draw_ray(&args->d->minimap, args->d->pos, args->inter[1].vec, 0xFF);
+		draw_ray(args->d, args->inter[1].vec, 0xFF);
 		args->dist = sqrt(args->inter[1].l);
 		args->inter[0] = args->inter[1]; // argument envoye a draw_column
 	}

@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/04 11:21:54 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/04 20:10:19 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@
 # define PATH "./maps/map2"
 # define GOOD_CHARS " 1"
 # define SCROLL_SPEED 0.01
+# define MINIMAPSIZE 8
 
 typedef struct	s_vec2
 {
@@ -130,7 +131,7 @@ t_vec2f			mul_vec2f(t_vec2f v, double scalar);
 float			get_vec2f_length(t_vec2f v);
 double			vec2f_length(t_vec2f v);
 void			refresh_minimap(t_data *d);
-void			draw_ray(t_img *img, t_vec2f v1, t_vec2f v2, uint32_t color);
+void			draw_ray(t_data *d, t_vec2f v2, uint32_t color);
 void			putpixel(t_img *img, int x, int y, uint32_t color);
 t_vec2			convert_vec2f(t_vec2f v);
 void			refresh_all(t_data *d);

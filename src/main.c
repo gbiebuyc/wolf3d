@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/04 11:22:43 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/04 19:06:47 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	init_mlx(t_data *d)
 
 	d->camera.w = WIDTH;
 	d->camera.h = HEIGHT;
-	d->minimap.w = d->mapsize.x * SQUARE_W;
-	d->minimap.h = d->mapsize.y * SQUARE_W;
+	d->minimap.w = MINIMAPSIZE * SQUARE_W;
+	d->minimap.h = MINIMAPSIZE * SQUARE_W;
 	if (!(d->mlx = mlx_init()))
 	   err_exit(d, 1, "mlx_init has failed", EXIT_FAILURE);
 	if (!(d->win = mlx_new_window(d->mlx, WIDTH, HEIGHT, "wolf3d")))

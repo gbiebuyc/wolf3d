@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 18:40:06 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/04 08:01:23 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/04 20:07:17 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	putpixel(t_img *img, int x, int y, uint32_t color)
 	}
 }
 
-void	put_block(t_img *minimap, int x, int y, int colo)
+void	put_block(t_img *minimap, double x, double y, int colo)
 {
 	int		i;
 	int		j;
@@ -68,8 +68,8 @@ void	refresh_player(t_data *d)
 	int		dy;
 	int		radius;
 
-	x = (int)(d->pos.x * SQUARE_W);
-	y = (int)(d->pos.y * SQUARE_W);
+	x = d->minimap.w / 2;
+	y = d->minimap.h / 2;
 	radius = 7;
 	dx = -radius;
 	while (dx <= radius)
@@ -93,14 +93,15 @@ void	refresh_minimap(t_data *d)
 	x = 0; // a calculer en fonction de la position du joueur voir des bords
 	ft_memset(d->minimap.pixels, 0, d->minimap.w * d->minimap.h * sizeof(uint32_t));
 	refresh_player(d);
-	while (x < d->mapsize.x)
+	while (x < MINIMAPSIZE + 1)
 	{
 		y = 0; // a calculer en fonction de la position du joueur voir des bords
-		while (y < d->mapsize.y)
+		while (y < MINIMAPSIZE + 1)
 		{
-			if (d->map[x + y * d->mapsize.x] != EMPTY_SQUARE)
-				put_block(&d->minimap, x, y,
-						find_colo_mini(d->map[x + y * d->mapsize.x]));
+			if (get_map_char(floor(d->pos.x) + x - MINIMAPSIZE / 2,
+					   floor(d->pos.y) + y - MINIMAPSIZE / 2, d) != EMPTY_SQUARE)
+				put_block(&d->minimap, (double)x - (d->pos.x - floor(d->pos.x)),
+						(double)y - (d->pos.y - floor(d->pos.y)), 0xFF00);
 			y++;
 		}
 		x++;

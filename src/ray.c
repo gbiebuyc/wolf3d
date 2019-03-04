@@ -6,20 +6,21 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 18:20:05 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/04 10:37:02 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/04 19:23:01 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void	draw_ray(t_img *img, t_vec2f v1, t_vec2f v2, uint32_t color)
+void	draw_ray(t_data *d, t_vec2f v2, uint32_t color)
 {
+	t_vec2f	v1;
 	t_vec2	delta;
 	int		steps;
 	t_vec2f	increment;
 
-	v1 = mul_vec2f(v1, SQUARE_W);
-	v2 = mul_vec2f(v2, SQUARE_W);
+	v1 = (t_vec2f){d->minimap.w / 2, d->minimap.h / 2};
+	v2 = add_vec2f(v1, mul_vec2f(sub_vec2f(v2, d->pos), SQUARE_W));
 	delta.x = v2.x - v1.x;
 	delta.y = v2.y - v1.y;
 	steps = (abs(delta.x) > abs(delta.y)) ? abs(delta.x) : abs(delta.y);
@@ -27,7 +28,7 @@ void	draw_ray(t_img *img, t_vec2f v1, t_vec2f v2, uint32_t color)
 	increment.y = delta.y / (double)steps;
 	while (steps--)
 	{
-		putpixel(img, (int)v1.x, (int)v1.y, color);
+		putpixel(&d->minimap, (int)v1.x, (int)v1.y, color);
 		v1 = add_vec2f(v1, increment);
 	}
 }
