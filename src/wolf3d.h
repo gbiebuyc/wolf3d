@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/04 09:54:38 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/04 11:21:54 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include <string.h>
 # include <errno.h>
 # include <stdio.h> // for debug
+# include <ApplicationServices/ApplicationServices.h> // mouse
+
 
 # define WIDTH 1024
 # define HEIGHT 768
@@ -101,6 +103,7 @@ typedef struct	s_data
 	t_img		textures[3][4];
 	t_img		sky_texture;
 	t_hook		hooks;
+	CGDirectDisplayID wdw_id;
 }				t_data;
 
 typedef	struct	s_args

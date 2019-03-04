@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/04 10:39:37 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/04 11:22:43 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	init_player(t_data *d)
 	d->hooks.run = 0;
 	d->hooks.scroll.x = 0;
 	d->hooks.scroll.y = 0;
+	d->wdw_id = CGMainDisplayID();
 }
 
 void	modify_img(uint32_t *colo)
