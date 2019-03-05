@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 18:20:52 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/05 06:56:42 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/05 18:39:45 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,8 @@ void	draw_floor(t_data *d, int x, int block_h, t_inter inter, double angle) // l
 	{
 		pos_sky = add_vec2f(mul_vec2f(d->pos, 0.3), mul_vec2f(ray,
 					1.0 / (((double)y / (d->camera.h / 2)) * cos(angle))));
-		pos_sky.x = pos_sky.x / 2 - floor(pos_sky.x / 2) + d->hooks.scroll.x;
-		pos_sky.y = pos_sky.y / 2 - floor(pos_sky.y / 2) + d->hooks.scroll.y;
+		pos_sky.x = pos_sky.x * 4 - floor(pos_sky.x * 4) + d->hooks.scroll.x;
+		pos_sky.y = pos_sky.y * 4 - floor(pos_sky.y * 4) + d->hooks.scroll.y;
 		pos_sky.x -= ((int)pos_sky.x == 1 ? 1: 0);
 		pos_sky.y -= ((int)pos_sky.y == 1 ? 1: 0);
 		if ((int)(pos_sky.y * d->sky_texture.h) * d->sky_texture.w + (int)(pos_sky.x * d->sky_texture.w) >

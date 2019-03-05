@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/05 05:38:12 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/05 19:14:05 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include <string.h>
 # include <errno.h>
 # include <stdio.h> // for debug
-# include <ApplicationServices/ApplicationServices.h> // mouse
+//# include <ApplicationServices/ApplicationServices.h> // mouse
 
 
 # define WIDTH 1024
@@ -104,7 +104,6 @@ typedef struct	s_data
 	t_img		textures[3][4];
 	t_img		sky_texture;
 	t_hook		hooks;
-	CGDirectDisplayID wdw_id;
 	uint32_t	fog_color;
 }				t_data;
 

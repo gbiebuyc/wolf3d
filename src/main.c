@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/05 08:06:45 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/05 19:14:13 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	init_player(t_data *d)
 	d->hooks.run = 0;
 	d->hooks.scroll.x = 0;
 	d->hooks.scroll.y = 0;
-	d->wdw_id = CGMainDisplayID();
 }
 
 void	modify_img(uint32_t *colo)
@@ -81,19 +80,20 @@ void	load_textures(t_data *d)
 	superjunk = ((int)&d->mlx / 100) % 4; // random à partir d'une addr, à voir...
 	d->fog_color = (int[4]){0x433881, 0xe4b8dd, 0xffffff, 0x216c73}[superjunk];
 	if (!(d->textures[0][NORTH].mlximg =
-				mlx_xpm_file_to_image(d->mlx, "textures/north.xpm",
+				mlx_xpm_file_to_image(d->mlx, "./textures/north.xpm",
 					&d->textures[0][NORTH].w, &d->textures[0][NORTH].h)))
 	err_exit(d, 5, "mlx_xmp_file_to_image has failed", EXIT_FAILURE);	
+	printf("heyy\n");
 	if (!(d->textures[0][SOUTH].mlximg = 
-				mlx_xpm_file_to_image(d->mlx, "textures/south.xpm",
+				mlx_xpm_file_to_image(d->mlx, "./textures/south.xpm",
 					&d->textures[0][SOUTH].w, &d->textures[0][SOUTH].h)))
 	err_exit(d, 6, "mlx_xmp_file_to_image has failed", EXIT_FAILURE);	
 	if (!(d->textures[0][EAST].mlximg =
-				mlx_xpm_file_to_image(d->mlx, "textures/east.xpm",
+				mlx_xpm_file_to_image(d->mlx, "./textures/east.xpm",
 					&d->textures[0][EAST].w, &d->textures[0][EAST].h)))
 	err_exit(d, 7, "mlx_xmp_file_to_image has failed", EXIT_FAILURE);	
 	if (!(d->textures[0][WEST].mlximg =
-				mlx_xpm_file_to_image(d->mlx, "textures/west.xpm",
+				mlx_xpm_file_to_image(d->mlx, "./textures/west.xpm",
 					&d->textures[0][WEST].w, &d->textures[0][WEST].h)))
 	err_exit(d, 8, "mlx_xmp_file_to_image has failed", EXIT_FAILURE);
 	if (!(d->sky_texture.mlximg = mlx_xpm_file_to_image(d->mlx,
@@ -127,6 +127,7 @@ int		main(int ac, char **av)
 	(void)ac;
 	(void)av;
 	init_map(&d, "", 0, 0);
+	printf("%s\n", d.map);
 	init_player(&d);
 	init_mlx(&d);
 	load_textures(&d);

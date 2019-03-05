@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/04 11:54:50 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/05 19:17:36 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,7 @@ int		mouse_move(int x, int y, t_data *d)
 			d->hooks.middle_screen = HEIGHT;
 		oldy = y;
 	}
-	if (x < 0 || y < -10 || x > WIDTH || y > HEIGHT)
+	if (x <= 0 || y < -20 || x > WIDTH || y > HEIGHT)
 	{
 		mlx_mouse_move(d->win, WIDTH / 2, HEIGHT / 2);
 	oldx = WIDTH / 2;
