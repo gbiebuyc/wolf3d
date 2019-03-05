@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/05 19:17:36 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/05 21:52:30 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ int		mouse_release(int btn, int x, int y, t_data *d)
 int		refresh_loop(t_data *d)
 {
 	t_vec2f		tmp;
+	static int	time;
 
 	tmp = d->dir;
 	if (d->hooks.dir == FORWARD && d->hooks.strafe_dir == 0)
@@ -181,16 +182,32 @@ int		refresh_loop(t_data *d)
 		d->hooks.scroll.x = 0;
 	if ((int)d->hooks.scroll.y == 1)
 		d->hooks.scroll.y = 0;
-//	if (d->hooks.strafe_dir == RIGHT_STRAFE)
-//	{
-//		if (d->hooks.dir == 0)
-//			actualize_dir(M_PI / 2, &tmp);
-//		else
-//			actualize_dir(d->hooks.dir == FORWARD ?
-//					M_PI / 4 : 3 * M_PI / 4, &tmp);
-//		actualize_dir(-M_PI / 2, &tmp);
-//		move(d, mul_vec2f(tmp, -0.05));
-//	}
+	time++;
+	static int k;	
+	static t_img tmp2;
+   if (k == 0)
+	   tmp2 = d->textures[1][NORTH];
+	if (!(time % 25))
+	{
+		if (k%3 == 0 && k)
+		{
+			k = 0;
+			d->textures[1][NORTH] = tmp2;
+		}
+		else 
+		{
+			k++;
+			d->textures[1][NORTH] = *d->textures[1][NORTH].next;
+		}
+		// ajouter un for pour chaque texture et initaliser toutes les textures
+		// ptet faire en tableau pour la performance ?
+		printf("%p\n", d->textures[1][0].next);
+		d->textures[1][SOUTH] = *d->textures[1][SOUTH].next;
+		d->textures[1][EAST] = *d->textures[1][EAST].next;
+		d->textures[1][WEST] = *d->textures[1][WEST].next;
+	}
+	if (time == 1000)
+		time = 0;
 	refresh_all(d);
 	return (0);
 }
@@ -227,12 +244,11 @@ int		mouse_move(int x, int y, t_data *d)
 			d->hooks.middle_screen = HEIGHT;
 		oldy = y;
 	}
-	if (x <= 0 || y < -20 || x > WIDTH || y > HEIGHT)
+	if (oldx <= 0 || oldy < -20 || x > WIDTH || y > HEIGHT)
 	{
 		mlx_mouse_move(d->win, WIDTH / 2, HEIGHT / 2);
 	oldx = WIDTH / 2;
 	oldy = HEIGHT / 2;
-	// besoin de la position de la fenetre pour centrer
 	}
 	return (0);	
 }

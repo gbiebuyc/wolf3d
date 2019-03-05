@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/05 19:14:05 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/05 20:32:20 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@
 # define LEFT_STRAFE 3
 # define RIGHT_STRAFE 4
 # define PATH "./maps/map2"
-# define GOOD_CHARS " 1"
+# define GOOD_CHARS " 12"
 # define SCROLL_SPEED 0.01
 # define MINIMAPSIZE 8
 
@@ -76,6 +76,7 @@ typedef struct	s_img
 	int			h;
 	uint32_t	*pixels;
 	void		*mlximg;
+	struct s_img	*next;
 }				t_img;
 
 typedef	struct	s_hooks

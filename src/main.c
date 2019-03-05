@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/05 19:14:13 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/05 21:43:37 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,40 @@ void	modify_img(uint32_t *colo)
 	*colo = ((red / 2) << 16 | (green / 2) << 8 | (blue / 2));
 }
 
+void	test_anim(t_data *d)
+{
+	int	junk;
+	static t_img a[4];
+	static t_img b[4];
+	static t_img c[4];
+
+	for (int i = NORTH; i <= WEST; i++)
+	{
+	d->textures[1][i].mlximg = mlx_xpm_file_to_image(d->mlx, "./textures/pika/0.xpm", &d->textures[1][i].w,
+			&d->textures[1][i].h);
+	d->textures[1][i].pixels = (uint32_t*)mlx_get_data_addr(d->textures[1][i].mlximg, &junk, &junk, &junk);
+	// cant ini d->textures to take adress ? wtf
+	a[i].mlximg = mlx_xpm_file_to_image(d->mlx, "./textures/pika/1.xpm", &a[i].w,
+			&a[i].h);
+	a[i].pixels = (uint32_t*)mlx_get_data_addr(a[i].mlximg, &junk, &junk, &junk);
+	b[i].mlximg = mlx_xpm_file_to_image(d->mlx, "./textures/pika/2.xpm", &b[i].w,
+			&b[i].h);
+	b[i].pixels = (uint32_t*)mlx_get_data_addr(b[i].mlximg, &junk, &junk, &junk);
+	c[i].mlximg = mlx_xpm_file_to_image(d->mlx, "./textures/pika/3.xpm", &c[i].w,
+			&c[i].h);
+	c[i].pixels = (uint32_t*)mlx_get_data_addr(c[i].mlximg, &junk, &junk, &junk);
+	d->textures[1][i].next = &a[i];
+	a[i].next = &b[i];
+	b[i].next = &c[i];
+	c[i].next = &d->textures[1][i];
+	}
+	int i = 0;
+	printf("%p\n", &a[i].next);
+	printf("%p\n", &b[i].next);
+	printf("%p\n", &c[i].next);
+	printf("%p\n", &(d->textures[1][i]));
+}
+
 void	load_textures(t_data *d)
 {
 	int	junk;
@@ -118,6 +152,7 @@ void	load_textures(t_data *d)
 	modify_img(&d->textures[0][EAST].pixels[i + j * d->textures[0][EAST].w]);
 	modify_img(&d->textures[0][SOUTH].pixels[i + j * d->textures[0][SOUTH].w]);
 	}
+	test_anim(d);
 }
 
 int		main(int ac, char **av)
@@ -130,7 +165,9 @@ int		main(int ac, char **av)
 	printf("%s\n", d.map);
 	init_player(&d);
 	init_mlx(&d);
+	mlx_mouse_hide(); // used to hide mouse
 	load_textures(&d);
 //	refresh_all(&d);
+	printf("%p\n", &d.textures[1][0]);
 	mlx_loop(d.mlx);
 }
