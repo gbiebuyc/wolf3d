@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/05 21:52:30 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/05 22:55:55 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,28 +183,16 @@ int		refresh_loop(t_data *d)
 	if ((int)d->hooks.scroll.y == 1)
 		d->hooks.scroll.y = 0;
 	time++;
-	static int k;	
-	static t_img tmp2;
-   if (k == 0)
-	   tmp2 = d->textures[1][NORTH];
-	if (!(time % 25))
-	{
-		if (k%3 == 0 && k)
-		{
-			k = 0;
-			d->textures[1][NORTH] = tmp2;
-		}
-		else 
-		{
-			k++;
-			d->textures[1][NORTH] = *d->textures[1][NORTH].next;
-		}
 		// ajouter un for pour chaque texture et initaliser toutes les textures
 		// ptet faire en tableau pour la performance ?
-		printf("%p\n", d->textures[1][0].next);
-		d->textures[1][SOUTH] = *d->textures[1][SOUTH].next;
-		d->textures[1][EAST] = *d->textures[1][EAST].next;
-		d->textures[1][WEST] = *d->textures[1][WEST].next;
+	if (!(time % 2))
+	{
+		for (int i = NORTH; i <= WEST; i++)
+		{
+			if (!(time % 12))
+		d->textures[1][i] = d->textures[1][i]->next;
+		d->textures[2][i] = d->textures[2][i]->next;
+		}
 	}
 	if (time == 1000)
 		time = 0;

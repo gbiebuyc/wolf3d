@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/05 20:32:20 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/05 22:16:01 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@
 # define LEFT_STRAFE 3
 # define RIGHT_STRAFE 4
 # define PATH "./maps/map2"
-# define GOOD_CHARS " 12"
+# define GOOD_CHARS " 123"
 # define SCROLL_SPEED 0.01
 # define MINIMAPSIZE 8
 
@@ -102,7 +102,7 @@ typedef struct	s_data
 	t_vec2f		pos;
 	t_vec2f		dir;
 	t_vec2f		plane;
-	t_img		textures[3][4];
+	t_img		*textures[3][4];
 	t_img		sky_texture;
 	t_hook		hooks;
 	uint32_t	fog_color;
