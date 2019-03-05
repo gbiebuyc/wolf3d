@@ -6,11 +6,11 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 19:19:49 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/05 19:21:25 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/05 19:36:03 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		mlx_mouse_move(void *po, int poo, int pooooo);
+int		mlx_mouse_move(void *po, int poo, int pooooo)
 {
 	if (po)
 		poo = pooooo;

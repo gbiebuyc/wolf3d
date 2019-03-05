@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/05 19:17:36 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/05 19:32:47 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ int		refresh_loop(t_data *d)
 		else
 			actualize_dir(d->hooks.dir == BACKWARD ?
 					-M_PI / 4 : -3 * M_PI / 4, &tmp);
-			move(d, mul_vec2f(tmp,(!(d->hooks.dir) ? 0.05: -0.05) * (d->hooks.run ? 2 : 1)));
+		move(d, mul_vec2f(tmp,(!(d->hooks.dir) ? 0.05: -0.05) * (d->hooks.run ? 2 : 1)));
 	}
 	d->hooks.scroll.x += SCROLL_SPEED;
 	d->hooks.scroll.y += SCROLL_SPEED / 4;

@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/05 19:14:13 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/05 19:31:27 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ void	load_textures(t_data *d)
 	char *super_sky[4] = {"textures/Surprise.xpm", "textures/Surprise1.xpm",
 		"textures/Surprise2.xpm", "textures/Surprise3.xpm"};
 
-	//srand(time(NULL));
-	//superjunk = rand(); // CHEAT
-	//superjunk %= 4;
-	superjunk = ((int)&d->mlx / 100) % 4; // random à partir d'une addr, à voir...
+	srand(time(NULL));
+	superjunk = rand(); // CHEAT
+	superjunk %= 4;
+	//superjunk = ((int)&d->mlx / 100) % 4; // random à partir d'une addr, à voir...
 	d->fog_color = (int[4]){0x433881, 0xe4b8dd, 0xffffff, 0x216c73}[superjunk];
 	if (!(d->textures[0][NORTH].mlximg =
 				mlx_xpm_file_to_image(d->mlx, "./textures/north.xpm",
