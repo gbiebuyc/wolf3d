@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/04 19:06:47 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/05 08:06:45 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	init_mlx(t_data *d)
 void	init_player(t_data *d)
 {
 	d->pos = (t_vec2f){3.5, 3.5};
-	d->dir = (t_vec2f){0,1}; // wtf can't be changed?
+	d->dir = (t_vec2f){0,1};
 	d->plane = (t_vec2f){0.66,0};
 	d->hooks.dir = 0;
 	d->hooks.minimap = 1;
@@ -75,9 +75,11 @@ void	load_textures(t_data *d)
 	char *super_sky[4] = {"textures/Surprise.xpm", "textures/Surprise1.xpm",
 		"textures/Surprise2.xpm", "textures/Surprise3.xpm"};
 
-	srand(time(NULL));
-	superjunk = rand(); // CHEAT
-	superjunk %= 4;
+	//srand(time(NULL));
+	//superjunk = rand(); // CHEAT
+	//superjunk %= 4;
+	superjunk = ((int)&d->mlx / 100) % 4; // random à partir d'une addr, à voir...
+	d->fog_color = (int[4]){0x433881, 0xe4b8dd, 0xffffff, 0x216c73}[superjunk];
 	if (!(d->textures[0][NORTH].mlximg =
 				mlx_xpm_file_to_image(d->mlx, "textures/north.xpm",
 					&d->textures[0][NORTH].w, &d->textures[0][NORTH].h)))

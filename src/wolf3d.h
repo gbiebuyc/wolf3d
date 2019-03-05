@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/04 20:10:19 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/05 05:38:12 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ typedef struct	s_data
 	t_img		sky_texture;
 	t_hook		hooks;
 	CGDirectDisplayID wdw_id;
+	uint32_t	fog_color;
 }				t_data;
 
 typedef	struct	s_args

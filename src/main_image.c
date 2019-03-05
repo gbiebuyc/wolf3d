@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 18:20:52 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/04 19:23:18 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/05 06:56:42 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,35 @@ uint32_t	getpixel(t_img *texture, double x, double y)
 			(int)(texture->h * y) * texture->w]);
 }
 
+uint32_t	rgb_add(uint32_t a, uint32_t b)
+{
+	return ((ft_min(0xff, ((a >> 16) & 0xff) + ((b >> 16) & 0xff)) << 16) |
+			(ft_min(0xff, ((a >> 8) & 0xff) + ((b >> 8) & 0xff)) << 8) |
+			(ft_min(0xff, ((a >> 0) & 0xff) + ((b >> 0) & 0xff)) << 0));
+}
+
+uint32_t	rgb_sub(uint32_t a, uint32_t b)
+{
+	return ((ft_max(0, (int)((a >> 16) & 0xff) - (int)((b >> 16) & 0xff)) << 16) |
+			(ft_max(0, (int)((a >> 8) & 0xff) - (int)((b >> 8) & 0xff)) << 8) |
+			(ft_max(0, (int)((a >> 0) & 0xff) - (int)((b >> 0) & 0xff)) << 0));
+}
+
+uint32_t	rgb_mul(uint32_t a, double factor)
+{
+	if (factor < 0)
+		return (0);
+	return ((ft_min(0xff, ((a >> 16) & 0xff) * factor) << 16) |
+			(ft_min(0xff, ((a >> 8) & 0xff) * factor) << 8) |
+			(ft_min(0xff, ((a >> 0) & 0xff) * factor) << 0));
+}
+
+uint32_t	calculate_fog(int y, int max_y, uint32_t p, uint32_t fog_color)
+{
+		double factor = (double)(max_y - y * 3) / max_y;
+		return (rgb_add(p, rgb_mul(rgb_sub(fog_color, p), factor)));
+}
+
 void	draw_floor(t_data *d, int x, int block_h, t_inter inter, double angle) // ligne(hor) milieu ecran not refreshed
 {
 	t_vec2f	ray;
@@ -88,21 +117,22 @@ void	draw_floor(t_data *d, int x, int block_h, t_inter inter, double angle) // l
 			pos_sky.y = 0;
 		}
 		putpixel(&d->camera, x, (d->hooks.middle_screen - y),
-				getpixel(&d->sky_texture, pos_sky.x, pos_sky.y));
+				calculate_fog(y, d->hooks.middle_screen,
+					getpixel(&d->sky_texture, pos_sky.x, pos_sky.y), d->fog_color));
 		y++;
 	}
 	y = ft_max(block_h / 2, 1);
-	while (y + d->hooks.middle_screen < d->camera.h) // floor
+	while (y + d->hooks.middle_screen <= d->camera.h) // floor
 	{
 		pos_floor = add_vec2f(d->pos, mul_vec2f(ray,
 					1.0 / (((double)y / (d->camera.h / 2)) * cos(angle))));
 		pos_floor.x -= floor(pos_floor.x);
 		pos_floor.y -= floor(pos_floor.y);
-		putpixel(&d->camera, x, (d->hooks.middle_screen + y),
-				getpixel(&d->textures[0][1], pos_floor.x, pos_floor.y));
+		putpixel(&d->camera, x, (d->hooks.middle_screen - 1 + y),
+				calculate_fog(y, d->camera.h - d->hooks.middle_screen,
+					getpixel(&d->textures[0][1], pos_floor.x, pos_floor.y), d->fog_color));
 		y++;
 	}
-
 }
 
 void	find_intersection(t_args *args)
