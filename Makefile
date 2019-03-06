@@ -6,7 +6,7 @@
 #    By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/05 15:21:27 by gbiebuyc          #+#    #+#              #
-#    Updated: 2019/03/03 23:48:31 by gbiebuyc         ###   ########.fr        #
+#    Updated: 2019/03/06 05:14:55 by gbiebuyc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ SRC = src/main.c \
 	  src/image.c \
 	  src/main_image.c \
 	  src/map.c \
+	  src/fog.c \
 	  src/exit.c
 OBJ = $(SRC:.c=.o)
 FT_DIR = libft
@@ -30,12 +31,11 @@ else
 	LDFLAGS = -lm -L $(FT_DIR) -lft -L $(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
 endif
 CFLAGS = -I $(FT_DIR) -I $(MLX_DIR) -Wall -Wextra -Werror
-# CFLAGS used ?
 .PHONY: all clean fclean re
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJ) src/wolf3d.h
 	make -C $(FT_DIR)
 	make -C $(MLX_DIR)
 	$(CC) -o $(NAME) $(OBJ) $(LDFLAGS)

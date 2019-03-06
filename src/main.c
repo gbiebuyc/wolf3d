@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/05 19:31:27 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/06 04:15:52 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	init_player(t_data *d)
 	d->hooks.dir = 0;
 	d->hooks.minimap = 1;
 	d->hooks.strafe_dir = 0;
+	d->hooks.hor_rot = 0;
 	d->hooks.middle_screen = HEIGHT / 2;
 	d->hooks.run = 0;
 	d->hooks.scroll.x = 0;

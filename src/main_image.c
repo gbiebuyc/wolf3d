@@ -6,23 +6,11 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 18:20:52 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/05 18:39:45 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/06 04:33:09 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
-
-int	get_asset(char c) // a voir avec find_colo_mini
-{
-	if (c == '1')
-		return (0xFF00);
-	if (c == '2')
-		return (0xFF);
-	if (c == '3')
-		return (0xCC7700);
-	printf("debug get_asset%c\n", c);
-	return (0);
-}
 
 void	draw_column(t_data *d, int block_h, int x, t_inter inter)
 {
@@ -32,8 +20,7 @@ void	draw_column(t_data *d, int block_h, int x, t_inter inter)
 	double	increment;
 	double	real_y;
 
- start = d->hooks.middle_screen - block_h / 2; // sorry pas le choix
-//	start = d->camera.h / 2 - block_h / 2;
+	start = d->hooks.middle_screen - block_h / 2;
 	y = 0;
 	scaled_width = inter.xtexture * d->textures[inter.c - '1'][inter.orientation].w;
 	increment = (double)d->textures[inter.c - '1'][inter.orientation].h / (float)block_h;
@@ -45,8 +32,9 @@ void	draw_column(t_data *d, int block_h, int x, t_inter inter)
 			if (x >= 0 && y >= 0 && y < d->camera.h && x < d->camera.w)
 			{
 				d->camera.pixels[x + y * d->camera.w] =
-					d->textures[inter.c - '1'][inter.orientation].pixels[scaled_width +
-					(int)(real_y) * d->textures[inter.c - '1'][inter.orientation].w];
+					calculate_fog(d->hooks.middle_screen - start, d->camera.h / 2, d->fog_color,
+							d->textures[inter.c - '1'][inter.orientation].pixels[scaled_width +
+							(int)(real_y) * d->textures[inter.c - '1'][inter.orientation].w]);
 			}
 			real_y += increment;
 			if ((int)real_y >=
@@ -64,36 +52,7 @@ uint32_t	getpixel(t_img *texture, double x, double y)
 			(int)(texture->h * y) * texture->w]);
 }
 
-uint32_t	rgb_add(uint32_t a, uint32_t b)
-{
-	return ((ft_min(0xff, ((a >> 16) & 0xff) + ((b >> 16) & 0xff)) << 16) |
-			(ft_min(0xff, ((a >> 8) & 0xff) + ((b >> 8) & 0xff)) << 8) |
-			(ft_min(0xff, ((a >> 0) & 0xff) + ((b >> 0) & 0xff)) << 0));
-}
-
-uint32_t	rgb_sub(uint32_t a, uint32_t b)
-{
-	return ((ft_max(0, (int)((a >> 16) & 0xff) - (int)((b >> 16) & 0xff)) << 16) |
-			(ft_max(0, (int)((a >> 8) & 0xff) - (int)((b >> 8) & 0xff)) << 8) |
-			(ft_max(0, (int)((a >> 0) & 0xff) - (int)((b >> 0) & 0xff)) << 0));
-}
-
-uint32_t	rgb_mul(uint32_t a, double factor)
-{
-	if (factor < 0)
-		return (0);
-	return ((ft_min(0xff, ((a >> 16) & 0xff) * factor) << 16) |
-			(ft_min(0xff, ((a >> 8) & 0xff) * factor) << 8) |
-			(ft_min(0xff, ((a >> 0) & 0xff) * factor) << 0));
-}
-
-uint32_t	calculate_fog(int y, int max_y, uint32_t p, uint32_t fog_color)
-{
-		double factor = (double)(max_y - y * 3) / max_y;
-		return (rgb_add(p, rgb_mul(rgb_sub(fog_color, p), factor)));
-}
-
-void	draw_floor(t_data *d, int x, int block_h, t_inter inter, double angle) // ligne(hor) milieu ecran not refreshed
+void	draw_floor(t_data *d, int x, int block_h, t_inter inter, double angle)
 {
 	t_vec2f	ray;
 	t_vec2f	pos_floor;
@@ -105,10 +64,10 @@ void	draw_floor(t_data *d, int x, int block_h, t_inter inter, double angle) // l
 	y = ft_max(block_h / 2, 1);
 	while (y <= (d->hooks.middle_screen)) // sky
 	{
-		pos_sky = add_vec2f(mul_vec2f(d->pos, 0.3), mul_vec2f(ray,
+		pos_sky = add_vec2f(mul_vec2f(d->pos, 0.2), mul_vec2f(ray,
 					1.0 / (((double)y / (d->camera.h / 2)) * cos(angle))));
-		pos_sky.x = pos_sky.x * 4 - floor(pos_sky.x * 4) + d->hooks.scroll.x;
-		pos_sky.y = pos_sky.y * 4 - floor(pos_sky.y * 4) + d->hooks.scroll.y;
+		pos_sky.x = pos_sky.x - floor(pos_sky.x) + d->hooks.scroll.x;
+		pos_sky.y = pos_sky.y - floor(pos_sky.y) + d->hooks.scroll.y;
 		pos_sky.x -= ((int)pos_sky.x == 1 ? 1: 0);
 		pos_sky.y -= ((int)pos_sky.y == 1 ? 1: 0);
 		if ((int)(pos_sky.y * d->sky_texture.h) * d->sky_texture.w + (int)(pos_sky.x * d->sky_texture.w) >
@@ -117,8 +76,8 @@ void	draw_floor(t_data *d, int x, int block_h, t_inter inter, double angle) // l
 			pos_sky.y = 0;
 		}
 		putpixel(&d->camera, x, (d->hooks.middle_screen - y),
-				calculate_fog(y, d->hooks.middle_screen,
-					getpixel(&d->sky_texture, pos_sky.x, pos_sky.y), d->fog_color));
+				calculate_fog(y, d->camera.h / 2, d->fog_color,
+					getpixel(&d->sky_texture, pos_sky.x, pos_sky.y)));
 		y++;
 	}
 	y = ft_max(block_h / 2, 1);
@@ -129,8 +88,8 @@ void	draw_floor(t_data *d, int x, int block_h, t_inter inter, double angle) // l
 		pos_floor.x -= floor(pos_floor.x);
 		pos_floor.y -= floor(pos_floor.y);
 		putpixel(&d->camera, x, (d->hooks.middle_screen - 1 + y),
-				calculate_fog(y, d->camera.h - d->hooks.middle_screen,
-					getpixel(&d->textures[0][1], pos_floor.x, pos_floor.y), d->fog_color));
+				calculate_fog(y, d->camera.h / 2, d->fog_color,
+					getpixel(&d->textures[0][1], pos_floor.x, pos_floor.y)));
 		y++;
 	}
 }
@@ -238,7 +197,7 @@ void	refresh_all(t_data *d)
 	mlx_put_image_to_window(d->mlx, d->win, d->camera.mlximg, 0, 0);
 	for (int i = 0; i < d->minimap.w * d->minimap.h; i++)
 	{
-		d->minimap.pixels[i] += 0x00 << 24;
+		d->minimap.pixels[i] += 0x80 << 24;
 	}
 	if (d->hooks.minimap)
 	mlx_put_image_to_window(d->mlx, d->win, d->minimap.mlximg, WIDTH - d->minimap.w, 0);
