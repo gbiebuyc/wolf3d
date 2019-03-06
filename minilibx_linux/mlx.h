@@ -127,5 +127,6 @@ int	mlx_do_key_autorepeaton(void *mlx_ptr);
 int	mlx_do_sync(void *mlx_ptr);
 
 int mlx_mouse_move(void *win_ptr, int x, int y);
+int mlx_mouse_hide(void);
 
 #endif /* MLX_H */
