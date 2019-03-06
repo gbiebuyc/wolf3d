@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/06 22:54:13 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/06 23:28:41 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ void	init_player(t_data *d)
 	d->hooks.run = 0;
 	d->hooks.scroll.x = 0;
 	d->hooks.scroll.y = 0;
-	d->hook.can_i_move_x = 1;
-	d->hook.can_i_move_y = 1;
 }
 
 int		main(int ac, char **av)

@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/06 22:55:18 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/06 23:30:49 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,6 @@ typedef	struct	s_hooks
 	int			middle_screen; //stocker quelque part ailleurs ?
 	char		run;
 	t_vec2f		scroll;
-	char		can_i_move_x;
-	char		can_i_move_y;
 }				t_hook;
 
 typedef struct	s_data
@@ -167,6 +165,7 @@ void			load_textures(t_data *d);
 */
 
 void			anim_ryu(t_data *d);
+void			anim_pika(t_data *d);
 void			duplicate_faces(t_img *img);
 void			get_xpm_pos(int i, char *str, char **full_path);
 

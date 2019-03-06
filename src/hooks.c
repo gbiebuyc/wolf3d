@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/06 21:03:16 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/06 23:29:14 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	move(t_data *d, t_vec2f dir)
 {	
 //	if (fabs(dir.x) > fabs(dir.y))
 //	{
-		if (d->hooks.can_i_move_x)
 		d->pos.x += dir.x;
 /*		if (get_map_char(d->pos.x + (dir.x > 0 ? COLLISION_DIST : -COLLISION_DIST),
 					d->pos.y + (dir.y > 0 ?
@@ -53,7 +52,6 @@ void	move(t_data *d, t_vec2f dir)
 	}
 	else
 	{*/
-		if (d->hooks.can_i_move_y)
 		d->pos.y += dir.y;
 /*		if (get_map_char(d->pos.x, d->pos.y + (dir.y > 0 ?
 						COLLISION_DIST : -COLLISION_DIST), d) != EMPTY_SQUARE)
@@ -210,8 +208,6 @@ int		refresh_loop(t_data *d)
 	if (time == 1000)
 		time = 0;
 	refresh_all(d);
-	d->hooks.can_i_move_x = 1;
-	d->hooks.can_i_move_y = 1;
 	return (0);
 }
 
