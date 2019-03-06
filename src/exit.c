@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 08:50:40 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/05 22:10:22 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/06 16:34:31 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		proper_exit(t_data *d)
 	i = 0;
 	while (i <= WEST)
 	{
-		mlx_destroy_image(d->mlx, d->textures[0][i]->mlximg);
+		mlx_destroy_image(d->mlx, d->textures[0][i].mlximg);
 		i++;
 	}
 	mlx_destroy_image(d->mlx, d->sky_texture.mlximg);
@@ -38,13 +38,13 @@ void	err_exit(t_data *d, int mod, char *msg, int exit_code) // UNTESTED
 	if (mod > 9)
 		mlx_destroy_image(d->mlx, d->sky_texture.mlximg);
 	if (mod > 8)
-		mlx_destroy_image(d->mlx, d->textures[0][WEST]->mlximg);
+		mlx_destroy_image(d->mlx, d->textures[0][WEST].mlximg);
 	if (mod > 7)
-		mlx_destroy_image(d->mlx, d->textures[0][EAST]->mlximg);
+		mlx_destroy_image(d->mlx, d->textures[0][EAST].mlximg);
 	if (mod > 6)
-		mlx_destroy_image(d->mlx, d->textures[0][SOUTH]->mlximg);
+		mlx_destroy_image(d->mlx, d->textures[0][SOUTH].mlximg);
 	if (mod > 5)
-		mlx_destroy_image(d->mlx, d->textures[0][NORTH]->mlximg);
+		mlx_destroy_image(d->mlx, d->textures[0][NORTH].mlximg);
 	if (mod > 4)
 		mlx_destroy_image(d->mlx, d->minimap.mlximg);
 	if (mod > 3)

@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/06 16:15:15 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/06 21:02:08 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,153 +54,8 @@ void	init_player(t_data *d)
 	d->hooks.run = 0;
 	d->hooks.scroll.x = 0;
 	d->hooks.scroll.y = 0;
-}
-
-void	modify_img(uint32_t *colo)
-{
-	int	red;
-	int	green;
-	int	blue;
-
-	red = *colo >> 16 & 0xFF;
-	green = *colo >> 8 & 0xFF;
-	blue = *colo & 0xFF;
-	*colo = ((red / 2) << 16 | (green / 2) << 8 | (blue / 2));
-}
-
-void	test_anim(t_data *d)
-{
-	int	junk;
-	static t_img a[4];
-	static t_img b[4];
-	static t_img c[4];
-
-	for (int i = NORTH; i <= WEST; i++)
-	{
-	d->textures[1][i]->mlximg = mlx_xpm_file_to_image(d->mlx, "./textures/pika/0.xpm", &d->textures[1][i]->w,
-			&d->textures[1][i]->h);
-	d->textures[1][i]->pixels = (uint32_t*)mlx_get_data_addr(d->textures[1][i]->mlximg, &junk, &junk, &junk);
-	// cant ini d->textures to take adress ? wtf
-	a[i].mlximg = mlx_xpm_file_to_image(d->mlx, "./textures/pika/1.xpm", &a[i].w,
-			&a[i].h);
-	a[i].pixels = (uint32_t*)mlx_get_data_addr(a[i].mlximg, &junk, &junk, &junk);
-	b[i].mlximg = mlx_xpm_file_to_image(d->mlx, "./textures/pika/2.xpm", &b[i].w,
-			&b[i].h);
-	b[i].pixels = (uint32_t*)mlx_get_data_addr(b[i].mlximg, &junk, &junk, &junk);
-	c[i].mlximg = mlx_xpm_file_to_image(d->mlx, "./textures/pika/3.xpm", &c[i].w,
-			&c[i].h);
-	c[i].pixels = (uint32_t*)mlx_get_data_addr(c[i].mlximg, &junk, &junk, &junk);
-	d->textures[1][i]->next = &a[i];
-	a[i].next = &b[i];
-	b[i].next = &c[i];
-	c[i].next = d->textures[1][i];
-	}
-}
-
-char	*get_xpm_pos(int i, char *str)
-{
-	char	*full_path;
-	int		size_of_i;
-	int		tmp;
-	char	*_itoa_;
-
-	tmp = i;
-	_itoa_ = ft_itoa(i);
-	size_of_i = ft_strlen(_itoa_);
-	size_of_i++;
-	full_path = (char *)malloc(sizeof(char) * ft_strlen(str) + size_of_i + 4);
-	tmp = -1;
-	while (str[++tmp])
-		full_path[tmp] = str[tmp];
-	full_path[tmp] = 0;
-	ft_strcat(full_path, _itoa_);
-	free(_itoa_);
-	ft_strcat(full_path, ".xpm");
-	printf("%s\n", full_path);
-	return (full_path);
-}
-
-void	test_anim_v2(t_data *d)
-{
-	int		i;
-	static	t_img a[22];
-	char	*str;
-	int		junk;
-
-	i = 0;
-	while (i < 22)
-	{
-		str = get_xpm_pos(i, "./textures/SF2/");
-		a[i].mlximg = mlx_xpm_file_to_image(d->mlx, str, &a[i].w, &a[i].h);
-		a[i].pixels = (uint32_t*)mlx_get_data_addr(a[i].mlximg, &junk, &junk, &junk);
-		ft_bzero(str, ft_strlen(str));
-		ft_strdel(&str);
-		if (i != 21)
-			a[i].next = &a[i+1];
-		i++;
-	}
-	a[21].next = &a[0];
-	i = 0;
-	while (i <= WEST)
-	{
-	d->textures[2][i] = &a[0];
-	i++;
-	}
-	printf("%p\n", d->textures[2][0]->next->next);
-}
-
-void	load_textures(t_data *d)
-{
-	int	junk;
-	int superjunk;
-	char *super_sky[4] = {"textures/Surprise.xpm", "textures/Surprise1.xpm",
-		"textures/Surprise2.xpm", "textures/Surprise3.xpm"};
-
-	srand(time(NULL));
-	superjunk = rand(); // CHEAT
-	superjunk %= 4;
-	//superjunk = ((int)&d->mlx / 100) % 4; // random à partir d'une addr, à voir...
-	d->fog_color = (int[4]){0x433881, 0xe4b8dd, 0xffffff, 0x216c73}[superjunk];
-	if (!(d->textures[0][NORTH]->mlximg =
-				mlx_xpm_file_to_image(d->mlx, "./textures/north.xpm",
-					&d->textures[0][NORTH]->w, &d->textures[0][NORTH]->h)))
-	err_exit(d, 5, "mlx_xmp_file_to_image has failed", EXIT_FAILURE);	
-	if (!(d->textures[0][SOUTH]->mlximg = 
-				mlx_xpm_file_to_image(d->mlx, "./textures/south.xpm",
-					&d->textures[0][SOUTH]->w, &d->textures[0][SOUTH]->h)))
-	err_exit(d, 6, "mlx_xmp_file_to_image has failed", EXIT_FAILURE);	
-	if (!(d->textures[0][EAST]->mlximg =
-				mlx_xpm_file_to_image(d->mlx, "./textures/east.xpm",
-					&d->textures[0][EAST]->w, &d->textures[0][EAST]->h)))
-	err_exit(d, 7, "mlx_xmp_file_to_image has failed", EXIT_FAILURE);	
-	if (!(d->textures[0][WEST]->mlximg =
-				mlx_xpm_file_to_image(d->mlx, "./textures/west.xpm",
-					&d->textures[0][WEST]->w, &d->textures[0][WEST]->h)))
-	err_exit(d, 8, "mlx_xmp_file_to_image has failed", EXIT_FAILURE);
-	if (!(d->sky_texture.mlximg = mlx_xpm_file_to_image(d->mlx,
-					super_sky[superjunk], &d->sky_texture.w, &d->sky_texture.h)))
-	err_exit(d, 9, "mlx_xmp_file_to_image has failed", EXIT_FAILURE);
-	d->textures[0][NORTH]->pixels = (uint32_t*)mlx_get_data_addr(
-			d->textures[0][NORTH]->mlximg, &junk, &junk, &junk);
-	d->textures[0][SOUTH]->pixels = (uint32_t*)mlx_get_data_addr(
-			d->textures[0][SOUTH]->mlximg, &junk, &junk, &junk);
-	d->textures[0][EAST]->pixels = (uint32_t*)mlx_get_data_addr(
-			d->textures[0][EAST]->mlximg, &junk, &junk, &junk);
-	d->textures[0][WEST]->pixels = (uint32_t*)mlx_get_data_addr(
-			d->textures[0][WEST]->mlximg, &junk, &junk, &junk);
-	d->sky_texture.pixels = (uint32_t*)mlx_get_data_addr(
-			d->sky_texture.mlximg, &junk, &junk, &junk);
-	if (superjunk != 2)
-	for (int i = 0; i < d->textures[0][NORTH]->w; i++)
-	for (int j = 0; j < d->textures[0][NORTH]->h; j++)
-	{
-	modify_img(&d->textures[0][NORTH]->pixels[i + j * d->textures[0][NORTH]->w]);
-	modify_img(&d->textures[0][WEST]->pixels[i + j * d->textures[0][WEST]->w]);
-	modify_img(&d->textures[0][EAST]->pixels[i + j * d->textures[0][EAST]->w]);
-	modify_img(&d->textures[0][SOUTH]->pixels[i + j * d->textures[0][SOUTH]->w]);
-	}
-	test_anim(d);
-	test_anim_v2(d);
+	d->hook.can_i_move_x = 1;
+	d->hook.can_i_move_y = 1;
 }
 
 int		main(int ac, char **av)
@@ -211,9 +66,6 @@ int		main(int ac, char **av)
 	(void)av;
 	init_map(&d, "", 0, 0);
 	printf("%s\n", d.map);
-	for (int i = 0; i < 3; i++)
-		for (int j = 0; j < 4; j++)
-	d.textures[i][j] = (t_img *)malloc(sizeof(t_img));
 	init_player(&d);
 	init_mlx(&d);
 	mlx_mouse_hide(); // used to hide mouse

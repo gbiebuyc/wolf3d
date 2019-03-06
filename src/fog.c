@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 02:02:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/06 02:13:44 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/06 20:08:01 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,10 @@ uint32_t	rgb_mul(uint32_t a, double factor)
 			(ft_min(0xff, ((a >> 0) & 0xff) * factor) << 0));
 }
 
-uint32_t	calculate_fog(int y, int max_y, uint32_t fog_color, uint32_t p)
+extern inline uint32_t	calculate_fog(int y, int max_y, uint32_t fog_color, uint32_t p)
 {
-		double factor = (double)(max_y - y * 3) / max_y;
+	if (5 * y > max_y)
+		return (p);
+		double factor = (double)(max_y - y * 5) / max_y;
 		return (rgb_add(p, rgb_mul(rgb_sub(fog_color, p), factor)));
 }

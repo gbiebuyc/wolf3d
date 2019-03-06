@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 18:20:52 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/06 16:19:18 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/06 21:04:10 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void	draw_column(t_data *d, int block_h, int x, t_inter inter)
 
 	start = d->hooks.middle_screen - block_h / 2;
 	y = 0;
-	scaled_width = inter.xtexture * d->textures[inter.c - '1'][inter.orientation]->w;
-	increment = (double)d->textures[inter.c - '1'][inter.orientation]->h / (float)block_h;
+	scaled_width = inter.xtexture * d->textures[inter.c - '1'][inter.orientation].w;
+	increment = (double)d->textures[inter.c - '1'][inter.orientation].h / (float)block_h;
 	real_y = start < 0 ? -start * increment : 0;
 	while (y < d->camera.h && block_h > 0)
 	{
@@ -33,12 +33,12 @@ void	draw_column(t_data *d, int block_h, int x, t_inter inter)
 			{
 				d->camera.pixels[x + y * d->camera.w] =
 					calculate_fog(d->hooks.middle_screen - start, d->camera.h / 2, d->fog_color,
-							d->textures[inter.c - '1'][inter.orientation]->pixels[scaled_width +
-							(int)(real_y) * d->textures[inter.c - '1'][inter.orientation]->w]);
+							d->textures[inter.c - '1'][inter.orientation].pixels[scaled_width +
+							(int)(real_y) * d->textures[inter.c - '1'][inter.orientation].w]);
 			}
 			real_y += increment;
 			if ((int)real_y >=
-					d->textures[inter.c - '1'][inter.orientation]->h)
+					d->textures[inter.c - '1'][inter.orientation].h)
 				break;
 			block_h--;
 		}
@@ -89,7 +89,7 @@ void	draw_floor(t_data *d, int x, int block_h, t_inter inter, double angle)
 		pos_floor.y -= floor(pos_floor.y);
 		putpixel(&d->camera, x, (d->hooks.middle_screen - 1 + y),
 				calculate_fog(y, d->camera.h / 2, d->fog_color,
-					getpixel(d->textures[0][1], pos_floor.x, pos_floor.y)));
+					getpixel(&d->textures[0][1], pos_floor.x, pos_floor.y)));
 		y++;
 	}
 }

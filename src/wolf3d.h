@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/06 16:13:43 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/06 21:01:54 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ typedef	struct	s_hooks
 	int			middle_screen; //stocker quelque part ailleurs ?
 	char		run;
 	t_vec2f		scroll;
+	char		can_i_move_x;
+	char		can_i_move_y;
 }				t_hook;
 
 typedef struct	s_data
@@ -103,7 +105,7 @@ typedef struct	s_data
 	t_vec2f		pos;
 	t_vec2f		dir;
 	t_vec2f		plane;
-	t_img		*textures[3][4];
+	t_img		textures[3][4];
 	t_img		sky_texture;
 	t_hook		hooks;
 	uint32_t	fog_color;
@@ -153,5 +155,19 @@ uint32_t		calculate_fog(int y, int max_y, uint32_t fog_color, uint32_t p);
 
 int				proper_exit(t_data *d);
 void			err_exit(t_data *d, int mod, char *msg, int exit_code);
+
+/*
+** texture.c
+*/
+
+void			load_textures(t_data *d);
+
+/*
+** texture_anim.c
+*/
+
+void			anim_ryu(t_data *d);
+void			duplicate_faces(t_img *img);
+void			get_xpm_pos(int i, char *str, char **full_path);
 
 #endif

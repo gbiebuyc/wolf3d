@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 18:20:05 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/04 19:23:01 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/06 20:47:22 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_inter	find_intersection_hor(t_vec2f ray, t_data *d)
 	{
 		if ((c = get_map_char(floor(hit.x), floor(ray.y > 0 ?
 							hit.y : hit.y - 1), d)) != EMPTY_SQUARE)
-			break;
+			break ;
 		hit = add_vec2f(hit, delta);
 	}
 	return ((t_inter){get_vec2f_length(sub_vec2f(hit, d->pos)), c, hit,
@@ -85,7 +85,7 @@ t_inter	find_intersection_ver(t_vec2f ray, t_data *d)
 	{
 		if ((c = get_map_char(floor(ray.x > 0 ? hit.x : hit.x - 1),
 						floor(hit.y), d)) != EMPTY_SQUARE)
-			break;
+			break ;
 		hit = add_vec2f(hit, delta);
 	}
 	return ((t_inter){get_vec2f_length(sub_vec2f(hit, d->pos)), c, hit,

@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/06 16:16:44 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/06 21:03:16 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,11 @@ void	actualize_dir(double diff, t_vec2f *dir)
 
 void	move(t_data *d, t_vec2f dir)
 {	
-	if (fabs(dir.x) > fabs(dir.y))
-	{
+//	if (fabs(dir.x) > fabs(dir.y))
+//	{
+		if (d->hooks.can_i_move_x)
 		d->pos.x += dir.x;
-		if (get_map_char(d->pos.x + (dir.x > 0 ? COLLISION_DIST : -COLLISION_DIST),
+/*		if (get_map_char(d->pos.x + (dir.x > 0 ? COLLISION_DIST : -COLLISION_DIST),
 					d->pos.y + (dir.y > 0 ?
 						-COLLISION_DIST : COLLISION_DIST), d) != EMPTY_SQUARE)
 			d->pos.x = (dir.x > 0) ?
@@ -51,9 +52,10 @@ void	move(t_data *d, t_vec2f dir)
 				ceil(d->pos.y - dir.y) - COLLISION_DIST : floor(d->pos.y - dir.y) + COLLISION_DIST;
 	}
 	else
-	{
+	{*/
+		if (d->hooks.can_i_move_y)
 		d->pos.y += dir.y;
-		if (get_map_char(d->pos.x, d->pos.y + (dir.y > 0 ?
+/*		if (get_map_char(d->pos.x, d->pos.y + (dir.y > 0 ?
 						COLLISION_DIST : -COLLISION_DIST), d) != EMPTY_SQUARE)
 			d->pos.y = (dir.y > 0) ?
 				ceil(d->pos.y - dir.y) - COLLISION_DIST : floor(d->pos.y - dir.y) + COLLISION_DIST;
@@ -63,7 +65,7 @@ void	move(t_data *d, t_vec2f dir)
 						COLLISION_DIST : -COLLISION_DIST), d) != EMPTY_SQUARE)
 			d->pos.x = (dir.x > 0) ?
 				ceil(d->pos.x - dir.x) - COLLISION_DIST : floor(d->pos.x - dir.x) + COLLISION_DIST;
-	}
+	}*/
 /*	if (get_map_char(d->pos.x + (dir.x > 0 ? COLLISION_DIST : -COLLISION_DIST),
 				d->pos.y, d) != EMPTY_SQUARE)
 {
@@ -201,14 +203,15 @@ int		refresh_loop(t_data *d)
 	{
 		for (int i = NORTH; i <= WEST; i++)
 		{
-			if (!(time % 12))
-		d->textures[1][i] = d->textures[1][i]->next;
-		d->textures[2][i] = d->textures[2][i]->next;
+		d->textures[1][i] = *d->textures[1][i].next;
+		d->textures[2][i] = *d->textures[2][i].next;
 		}
 	}
 	if (time == 1000)
 		time = 0;
 	refresh_all(d);
+	d->hooks.can_i_move_x = 1;
+	d->hooks.can_i_move_y = 1;
 	return (0);
 }
 
@@ -233,7 +236,6 @@ int		mouse_move(int x, int y, t_data *d)
 	{
 	actualize_dir(0.0174533 * (x - oldx) / 5, &d->dir);
 	actualize_dir(0.0174533 * (x - oldx) / 5, &d->plane);
-	oldx = x;
 	}
 	if (y != oldy)
 	{
@@ -242,13 +244,11 @@ int		mouse_move(int x, int y, t_data *d)
 			d->hooks.middle_screen = -HEIGHT / 4;
 		if (d->hooks.middle_screen > HEIGHT)
 			d->hooks.middle_screen = HEIGHT;
-		oldy = y;
 	}
-	if (oldx <= 0 || oldy < -20 || x > WIDTH || y > HEIGHT)
 	{
 		mlx_mouse_move(d->win, WIDTH / 2, HEIGHT / 2);
-	oldx = WIDTH / 2;
-	oldy = HEIGHT / 2;
+		oldx = WIDTH / 2;
+		oldy = HEIGHT / 2;
 	}
 	return (0);	
 }
