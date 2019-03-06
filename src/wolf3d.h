@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/05 22:16:01 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/06 16:13:43 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@
 # include <stdio.h> // for debug
 //# include <ApplicationServices/ApplicationServices.h> // mouse
 
-
 # define WIDTH 1024
 # define HEIGHT 768
 # define SQUARE_DIST 100
@@ -35,7 +34,6 @@
 # define SKY_COLOR 0x00CED1
 # define WALL_CHAR '1'
 # define EMPTY_SQUARE ' '
-
 # define NORTH 0
 # define EAST 1
 # define SOUTH 2
@@ -44,9 +42,11 @@
 # define BACKWARD 2
 # define LEFT_STRAFE 3
 # define RIGHT_STRAFE 4
+# define LEFT_ROT 1
+# define RIGHT_ROT 2
 # define PATH "./maps/map2"
 # define GOOD_CHARS " 123"
-# define SCROLL_SPEED 0.01
+# define SCROLL_SPEED 0.003
 # define MINIMAPSIZE 8
 
 typedef struct	s_vec2
@@ -83,6 +83,7 @@ typedef	struct	s_hooks
 {
 	char		dir;
 	char		strafe_dir;
+	char		hor_rot;
 	char		minimap;
 	int			middle_screen; //stocker quelque part ailleurs ?
 	char		run;
@@ -144,6 +145,7 @@ double			get_vec2f_angle(t_vec2f v1, t_vec2f v2);
 void			init_map(t_data *d, char *tab, int cout, int fd);
 char			get_map_char(int x, int y, t_data *d);
 int				refresh_loop(t_data *d);
+uint32_t		calculate_fog(int y, int max_y, uint32_t fog_color, uint32_t p);
 
 /*
 ** exit.c

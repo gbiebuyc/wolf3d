@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/05 22:55:55 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/06 16:16:44 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,46 +81,48 @@ int		key_press(int keycode, t_data *d)
 {
 	if (keycode == 65307 || keycode == 53)
 		proper_exit(d);
-	if (keycode == 65361 || keycode == 123 || keycode == 0)
-	{
-		d->hooks.strafe_dir = LEFT_STRAFE;
-//		actualize_dir(-0.174533, &d->dir); old rot
-//		actualize_dir(-0.174533, &d->plane); old rot
-	}
-	if (keycode == 14)
-	{
-		actualize_dir(-0.174533, &d->dir);
-		actualize_dir(-0.174533, &d->plane);
-	}
-	else if (keycode == 65362 || keycode == 126 || keycode == 13) // Avant
+	else if (keycode == 109 || keycode == 46)
+		d->hooks.minimap = !(d->hooks.minimap); // GERER TRACE RAYON // COM A NE PAS SUPP
+	else if (keycode == 122 || keycode == 13) // Avant
 		d->hooks.dir = FORWARD;
-	else if (keycode == 65363 || keycode == 124 || keycode == 2)
-	{
-		d->hooks.strafe_dir = RIGHT_STRAFE;
-//		actualize_dir(0.174533, &d->dir); old rot
-//		actualize_dir(0.174533, &d->plane); old rot
-	}
-	else if (keycode == 65364 || keycode == 125 || keycode == 1) // Arriere
+	else if (keycode == 115 || keycode == 1) // Arriere
 		d->hooks.dir = BACKWARD;
-	if (keycode == 257 || keycode == 258) // both shift
+	else if (keycode == 113 || keycode == 0)
+		d->hooks.strafe_dir = LEFT_STRAFE;
+	else if (keycode == 100 || keycode == 2)
+		d->hooks.strafe_dir = RIGHT_STRAFE;
+	else if (keycode == 65361 || keycode == 123)
+		d->hooks.hor_rot = LEFT_ROT;
+	else if (keycode == 65363 || keycode == 124)
+		d->hooks.hor_rot = RIGHT_ROT;
+	else if (keycode == 65364 || keycode == 125) // Down key
+		;
+	else if (keycode == 65362 || keycode == 126) // Up key
+		;
+	else if (keycode == 65505 || keycode == 65506 ||
+			keycode == 257 || keycode == 258) // both shift
 		d->hooks.run = 1;
-	//refresh_all(d);
 	return (0);
 }
 
 int		key_release(int keycode, t_data *d)
 {
-	if (keycode == 46)
-		d->hooks.minimap = !(d->hooks.minimap); // GERER TRACE RAYON // COM A NE PAS SUPP
-	if ((keycode == 65362 || keycode == 126 || keycode == 13) && d->hooks.dir == FORWARD) // Avant	
+	if ((keycode == 122 || keycode == 13) && d->hooks.dir == FORWARD) // Avant
 		d->hooks.dir = 0;
-	if ((keycode == 65364 || keycode == 125 || keycode == 1) && d->hooks.dir == BACKWARD) // Arriere
+	if ((keycode == 115 || keycode == 1) && d->hooks.dir == BACKWARD) // Arriere
 		d->hooks.dir = 0;
-	if ((keycode == 65361 || keycode == 123 || keycode == 0) && d->hooks.strafe_dir == LEFT_STRAFE) //gauche
+	if ((keycode == 113 || keycode == 0) && d->hooks.strafe_dir == LEFT_STRAFE) //gauche
 		d->hooks.strafe_dir = 0;
-	if ((keycode == 65363 || keycode == 124 || keycode == 2) && d->hooks.strafe_dir == RIGHT_STRAFE) //droite
+	if ((keycode == 100 || keycode == 2) && d->hooks.strafe_dir == RIGHT_STRAFE) //droite
 		d->hooks.strafe_dir = 0;
-	if (keycode == 257 || keycode == 258)
+	else if (keycode == 65361 || keycode == 123 ||
+			keycode == 65363 || keycode == 124) // Hor rotate
+		d->hooks.hor_rot = 0;
+	else if (keycode == 65362 || keycode == 126 ||
+			keycode == 65364 || keycode == 125) // Ver rotate
+		;
+	else if (keycode == 65505 || keycode == 65506 ||
+			keycode == 257 || keycode == 258) // Run
 		d->hooks.run = 0;
 	return (0);
 }
@@ -174,7 +176,17 @@ int		refresh_loop(t_data *d)
 		else
 			actualize_dir(d->hooks.dir == BACKWARD ?
 					-M_PI / 4 : -3 * M_PI / 4, &tmp);
-			move(d, mul_vec2f(tmp,(!(d->hooks.dir) ? 0.05: -0.05) * (d->hooks.run ? 2 : 1)));
+		move(d, mul_vec2f(tmp,(!(d->hooks.dir) ? 0.05: -0.05) * (d->hooks.run ? 2 : 1)));
+	}
+	if (d->hooks.hor_rot == LEFT_ROT)
+	{
+		actualize_dir(-0.05, &d->dir);
+		actualize_dir(-0.05, &d->plane);
+	}
+	if (d->hooks.hor_rot == RIGHT_ROT)
+	{
+		actualize_dir(0.05, &d->dir);
+		actualize_dir(0.05, &d->plane);
 	}
 	d->hooks.scroll.x += SCROLL_SPEED;
 	d->hooks.scroll.y += SCROLL_SPEED / 4;
