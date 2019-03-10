@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/06 23:28:41 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/10 15:30:37 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,10 @@ int		main(int ac, char **av)
 	(void)ac;
 	(void)av;
 	init_map(&d, "", 0, 0);
-	printf("%s\n", d.map);
 	init_player(&d);
 	init_mlx(&d);
 	mlx_mouse_hide(); // used to hide mouse
 	load_textures(&d);
 //	refresh_all(&d);
-	printf("%p\n", &d.textures[1][0]);
 	mlx_loop(d.mlx);
 }

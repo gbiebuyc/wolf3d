@@ -6,17 +6,13 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/06 23:29:14 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/10 15:16:34 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
 #define ARROW_SENSITIVITY 0.2
-
-/*
-**  fonction suivante a changer de fichier
-*/
 
 void	actualize_dir(double diff, t_vec2f *dir)
 {
@@ -28,54 +24,42 @@ void	actualize_dir(double diff, t_vec2f *dir)
 	dir->x = x * cos(diff) - y * sin(diff);
 	dir->y = x * sin(diff) + y * cos(diff);
 }
-/*
-** fin a supp
-*/
 
 # define COLLISION_DIST 0.2 // max 0.5 car c'est la moitie d'un bloc.
 
+void	collide(t_vec2 blk, t_data *d)
+{
+	double	nearest_x;
+	double	nearest_y;
+	double	dx;
+	double	dy;
+	double	len;
+
+	if (get_map_char(blk.x, blk.y, d) == EMPTY_SQUARE)
+		return ;
+	nearest_x = fmax(blk.x, fmin(d->pos.x, blk.x + 1));
+	nearest_y = fmax(blk.y, fmin(d->pos.y, blk.y + 1));
+	dx = d->pos.x - nearest_x;
+	dy = d->pos.y - nearest_y;
+	if ((len = vec2f_length((t_vec2f){dx, dy})) > COLLISION_DIST)
+		return ;
+	d->pos.x = nearest_x + dx * COLLISION_DIST / len;
+	d->pos.y = nearest_y + dy * COLLISION_DIST / len;
+}
+
 void	move(t_data *d, t_vec2f dir)
 {	
-//	if (fabs(dir.x) > fabs(dir.y))
-//	{
-		d->pos.x += dir.x;
-/*		if (get_map_char(d->pos.x + (dir.x > 0 ? COLLISION_DIST : -COLLISION_DIST),
-					d->pos.y + (dir.y > 0 ?
-						-COLLISION_DIST : COLLISION_DIST), d) != EMPTY_SQUARE)
-			d->pos.x = (dir.x > 0) ?
-				ceil(d->pos.x - dir.x) - COLLISION_DIST : floor(d->pos.x - dir.x) + COLLISION_DIST;
-		d->pos.y += dir.y;
-		if (get_map_char(d->pos.x, d->pos.y + (dir.y > 0 ?
-						COLLISION_DIST : -COLLISION_DIST), d) != EMPTY_SQUARE)
-			d->pos.y = (dir.y > 0) ?
-				ceil(d->pos.y - dir.y) - COLLISION_DIST : floor(d->pos.y - dir.y) + COLLISION_DIST;
-	}
-	else
-	{*/
-		d->pos.y += dir.y;
-/*		if (get_map_char(d->pos.x, d->pos.y + (dir.y > 0 ?
-						COLLISION_DIST : -COLLISION_DIST), d) != EMPTY_SQUARE)
-			d->pos.y = (dir.y > 0) ?
-				ceil(d->pos.y - dir.y) - COLLISION_DIST : floor(d->pos.y - dir.y) + COLLISION_DIST;
-		d->pos.x += dir.x;
-		if (get_map_char(d->pos.x + (dir.x > 0 ? COLLISION_DIST : -COLLISION_DIST),
-					d->pos.y + (dir.y > 0 ?
-						COLLISION_DIST : -COLLISION_DIST), d) != EMPTY_SQUARE)
-			d->pos.x = (dir.x > 0) ?
-				ceil(d->pos.x - dir.x) - COLLISION_DIST : floor(d->pos.x - dir.x) + COLLISION_DIST;
-	}*/
-/*	if (get_map_char(d->pos.x + (dir.x > 0 ? COLLISION_DIST : -COLLISION_DIST),
-				d->pos.y, d) != EMPTY_SQUARE)
-{
-		d->pos.x = (dir.x > 0) ?
-			ceil(d->pos.x - dir.x) - COLLISION_DIST : floor(d->pos.x - dir.x) + COLLISION_DIST;
-		return ;
+	d->pos = add_vec2f(d->pos, dir);
+	// test collision with 8 surrounding blocks
+	collide((t_vec2){floor(d->pos.x) - 1, floor(d->pos.y) - 1}, d);
+	collide((t_vec2){floor(d->pos.x) - 0, floor(d->pos.y) - 1}, d);
+	collide((t_vec2){floor(d->pos.x) + 1, floor(d->pos.y) - 1}, d);
+	collide((t_vec2){floor(d->pos.x) + 1, floor(d->pos.y) - 0}, d);
+	collide((t_vec2){floor(d->pos.x) + 1, floor(d->pos.y) + 1}, d);
+	collide((t_vec2){floor(d->pos.x) - 0, floor(d->pos.y) + 1}, d);
+	collide((t_vec2){floor(d->pos.x) - 1, floor(d->pos.y) + 1}, d);
+	collide((t_vec2){floor(d->pos.x) - 1, floor(d->pos.y) - 0}, d);
 }
-	if (get_map_char(d->pos.x, d->pos.y + (dir.y > 0 ?
-				COLLISION_DIST : -COLLISION_DIST), d) != EMPTY_SQUARE)
-		d->pos.y = (dir.y > 0) ?
-			ceil(d->pos.y - dir.y) - COLLISION_DIST : floor(d->pos.y - dir.y) + COLLISION_DIST;
-*/}
 
 int		key_press(int keycode, t_data *d)
 {
