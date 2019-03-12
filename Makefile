@@ -6,22 +6,24 @@
 #    By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/05 15:21:27 by gbiebuyc          #+#    #+#              #
-#    Updated: 2019/03/06 18:21:14 by nallani          ###   ########.fr        #
+#    Updated: 2019/03/12 21:31:44 by nallani          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = wolf3d
 SRC = src/main.c \
 	  src/hooks.c \
-	  src/vec2.c \
 	  src/ray.c \
 	  src/image.c \
 	  src/main_image.c \
 	  src/map.c \
-	  src/fog.c \
+	  src/vec2.c \
+	  src/vec2_2.c \
 	  src/exit.c \
+	  src/fog.c \
 	  src/texture.c \
-	  src/texture_anim.c
+	  src/texture_anim.c \
+	  src/loop.c
 OBJ = $(SRC:.c=.o)
 FT_DIR = libft
 # On Ubuntu, install libxext-dev package beforehand.

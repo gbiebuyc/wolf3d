@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 16:34:51 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/12 19:44:52 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/12 20:47:00 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,10 @@ void	load_textures(t_data *d)
 		err_exit(d, 9, "mlx_xmp_file_to_image has failed", EXIT_FAILURE);
 	load_textures_2(d);
 	random_map(d, random);
-	d->textures[2][0] = *new_anim(d, 21, "./textures/SF2/");
+	d->textures[1][0] = *new_anim(d, RYU_FRAMES - 1, "./textures/SF2/", 0);
 //	anim_ryu(d);
-	anim_pika(d);
+//	anim_pika(d);
+	d->textures[2][0] = *new_anim(d, PIKA_FRAMES - 1, "./textures/pika/", 0);
 	duplicate_faces(d->textures[1]);
 	duplicate_faces(d->textures[2]);
 }

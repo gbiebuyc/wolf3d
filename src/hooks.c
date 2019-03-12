@@ -6,70 +6,21 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/10 15:16:34 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/12 21:45:42 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
-
-#define ARROW_SENSITIVITY 0.2
-
-void	actualize_dir(double diff, t_vec2f *dir)
-{
-	double	x;
-	double	y;
-
-	x = dir->x;
-	y = dir->y;
-	dir->x = x * cos(diff) - y * sin(diff);
-	dir->y = x * sin(diff) + y * cos(diff);
-}
-
-# define COLLISION_DIST 0.2 // max 0.5 car c'est la moitie d'un bloc.
-
-void	collide(t_vec2 blk, t_data *d)
-{
-	double	nearest_x;
-	double	nearest_y;
-	double	dx;
-	double	dy;
-	double	len;
-
-	if (get_map_char(blk.x, blk.y, d) == EMPTY_SQUARE)
-		return ;
-	nearest_x = fmax(blk.x, fmin(d->pos.x, blk.x + 1));
-	nearest_y = fmax(blk.y, fmin(d->pos.y, blk.y + 1));
-	dx = d->pos.x - nearest_x;
-	dy = d->pos.y - nearest_y;
-	if ((len = vec2f_length((t_vec2f){dx, dy})) > COLLISION_DIST)
-		return ;
-	d->pos.x = nearest_x + dx * COLLISION_DIST / len;
-	d->pos.y = nearest_y + dy * COLLISION_DIST / len;
-}
-
-void	move(t_data *d, t_vec2f dir)
-{	
-	d->pos = add_vec2f(d->pos, dir);
-	// test collision with 8 surrounding blocks
-	collide((t_vec2){floor(d->pos.x) - 1, floor(d->pos.y) - 1}, d);
-	collide((t_vec2){floor(d->pos.x) - 0, floor(d->pos.y) - 1}, d);
-	collide((t_vec2){floor(d->pos.x) + 1, floor(d->pos.y) - 1}, d);
-	collide((t_vec2){floor(d->pos.x) + 1, floor(d->pos.y) - 0}, d);
-	collide((t_vec2){floor(d->pos.x) + 1, floor(d->pos.y) + 1}, d);
-	collide((t_vec2){floor(d->pos.x) - 0, floor(d->pos.y) + 1}, d);
-	collide((t_vec2){floor(d->pos.x) - 1, floor(d->pos.y) + 1}, d);
-	collide((t_vec2){floor(d->pos.x) - 1, floor(d->pos.y) - 0}, d);
-}
 
 int		key_press(int keycode, t_data *d)
 {
 	if (keycode == 65307 || keycode == 53)
 		proper_exit(d);
 	else if (keycode == 109 || keycode == 46)
-		d->hooks.minimap = !(d->hooks.minimap); // GERER TRACE RAYON // COM A NE PAS SUPP
-	else if (keycode == 122 || keycode == 13) // Avant
+		d->hooks.minimap = !(d->hooks.minimap);
+	else if (keycode == 122 || keycode == 13)
 		d->hooks.dir = FORWARD;
-	else if (keycode == 115 || keycode == 1) // Arriere
+	else if (keycode == 115 || keycode == 1)
 		d->hooks.dir = BACKWARD;
 	else if (keycode == 113 || keycode == 0)
 		d->hooks.strafe_dir = LEFT_STRAFE;
@@ -80,33 +31,33 @@ int		key_press(int keycode, t_data *d)
 	else if (keycode == 65363 || keycode == 124)
 		d->hooks.hor_rot = RIGHT_ROT;
 	else if (keycode == 65364 || keycode == 125) // Down key
-		;
+		; // ??
 	else if (keycode == 65362 || keycode == 126) // Up key
-		;
+		; // ??
 	else if (keycode == 65505 || keycode == 65506 ||
-			keycode == 257 || keycode == 258) // both shift
+			keycode == 257 || keycode == 258)
 		d->hooks.run = 1;
 	return (0);
 }
 
 int		key_release(int keycode, t_data *d)
 {
-	if ((keycode == 122 || keycode == 13) && d->hooks.dir == FORWARD) // Avant
+	if ((keycode == 122 || keycode == 13) && d->hooks.dir == FORWARD)
 		d->hooks.dir = 0;
-	if ((keycode == 115 || keycode == 1) && d->hooks.dir == BACKWARD) // Arriere
+	if ((keycode == 115 || keycode == 1) && d->hooks.dir == BACKWARD)
 		d->hooks.dir = 0;
-	if ((keycode == 113 || keycode == 0) && d->hooks.strafe_dir == LEFT_STRAFE) //gauche
+	if ((keycode == 113 || keycode == 0) && d->hooks.strafe_dir == LEFT_STRAFE)
 		d->hooks.strafe_dir = 0;
-	if ((keycode == 100 || keycode == 2) && d->hooks.strafe_dir == RIGHT_STRAFE) //droite
+	if ((keycode == 100 || keycode == 2) && d->hooks.strafe_dir == RIGHT_STRAFE)
 		d->hooks.strafe_dir = 0;
 	else if (keycode == 65361 || keycode == 123 ||
 			keycode == 65363 || keycode == 124) // Hor rotate
 		d->hooks.hor_rot = 0;
 	else if (keycode == 65362 || keycode == 126 ||
 			keycode == 65364 || keycode == 125) // Ver rotate
-		;
+		; // ??
 	else if (keycode == 65505 || keycode == 65506 ||
-			keycode == 257 || keycode == 258) // Run
+			keycode == 257 || keycode == 258) 
 		d->hooks.run = 0;
 	return (0);
 }
@@ -131,67 +82,6 @@ int		mouse_release(int btn, int x, int y, t_data *d)
 	(void)x;
 	(void)y;
 	d->mouse_btn = false;
-	return (0);
-}
-
-int		refresh_loop(t_data *d)
-{
-	t_vec2f		tmp;
-	static int	time;
-
-	tmp = d->dir;
-	if (d->hooks.dir == FORWARD && d->hooks.strafe_dir == 0)
-		move(d, mul_vec2f(d->dir, 0.05 * (d->hooks.run ? 2 : 1)));
-	if (d->hooks.dir == BACKWARD && d->hooks.strafe_dir == 0)
-		move(d, mul_vec2f(d->dir, -0.05 * (d->hooks.run ? 2 : 1)));
-	if (d->hooks.strafe_dir == LEFT_STRAFE)
-	{
-		if (d->hooks.dir == 0)
-			actualize_dir(-M_PI / 2, &tmp);
-		else
-			actualize_dir(d->hooks.dir == FORWARD ?
-					-M_PI / 4 : -3 * M_PI / 4, &tmp);
-		move(d, mul_vec2f(tmp, 0.05 * (d->hooks.run ? 2 : 1)));
-	}
-	if (d->hooks.strafe_dir == RIGHT_STRAFE)
-	{
-		if (d->hooks.dir == 0)
-			actualize_dir(1 * M_PI / 2, &tmp);
-		else
-			actualize_dir(d->hooks.dir == BACKWARD ?
-					-M_PI / 4 : -3 * M_PI / 4, &tmp);
-		move(d, mul_vec2f(tmp,(!(d->hooks.dir) ? 0.05: -0.05) * (d->hooks.run ? 2 : 1)));
-	}
-	if (d->hooks.hor_rot == LEFT_ROT)
-	{
-		actualize_dir(-0.05, &d->dir);
-		actualize_dir(-0.05, &d->plane);
-	}
-	if (d->hooks.hor_rot == RIGHT_ROT)
-	{
-		actualize_dir(0.05, &d->dir);
-		actualize_dir(0.05, &d->plane);
-	}
-	d->hooks.scroll.x += SCROLL_SPEED;
-	d->hooks.scroll.y += SCROLL_SPEED / 4;
-	if ((int)d->hooks.scroll.x == 1)
-		d->hooks.scroll.x = 0;
-	if ((int)d->hooks.scroll.y == 1)
-		d->hooks.scroll.y = 0;
-	time++;
-		// ajouter un for pour chaque texture et initaliser toutes les textures
-		// ptet faire en tableau pour la performance ?
-	if (!(time % 2))
-	{
-		for (int i = NORTH; i <= WEST; i++)
-		{
-		d->textures[1][i] = *d->textures[1][i].next;
-		d->textures[2][i] = *d->textures[2][i].next;
-		}
-	}
-	if (time == 1000)
-		time = 0;
-	refresh_all(d);
 	return (0);
 }
 

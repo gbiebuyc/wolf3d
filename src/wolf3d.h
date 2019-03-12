@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/12 19:44:01 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/12 21:36:55 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # include <string.h>
 # include <errno.h>
 # include <stdio.h> // for debug
-//# include <ApplicationServices/ApplicationServices.h> // mouse
 
 # define WIDTH 1024
 # define HEIGHT 768
@@ -49,6 +48,11 @@
 # define SCROLL_SPEED 0.003
 # define MINIMAPSIZE 8
 # define MAX_SIZE_OF_PATH 150
+# define MAX_ANIM 2
+# define RYU_FRAMES 22
+# define PIKA_FRAMES 4
+# define ARROW_SENSITIVITY 0.2
+# define COLLISION_DIST 0.2
 
 typedef struct	s_vec2
 {
@@ -69,14 +73,14 @@ typedef struct	s_inter
 	t_vec2f		vec;
 	int			orientation;
 	double		xtexture;
-}				t_inter; // retour find_intersection, contient le char, longueur (rajouter endroit touche ?)
+}				t_inter;
 
 typedef struct	s_img
 {
-	int			w;
-	int			h;
-	uint32_t	*pixels;
-	void		*mlximg;
+	int				w;
+	int				h;
+	uint32_t		*pixels;
+	void			*mlximg;
 	struct s_img	*next;
 }				t_img;
 
@@ -86,7 +90,7 @@ typedef	struct	s_hooks
 	char		strafe_dir;
 	char		hor_rot;
 	char		minimap;
-	int			middle_screen; //stocker quelque part ailleurs ?
+	int			middle_screen; // stocker somewhere else ou osef ?
 	char		run;
 	t_vec2f		scroll;
 }				t_hook;
@@ -108,6 +112,7 @@ typedef struct	s_data
 	t_img		sky_texture;
 	t_hook		hooks;
 	uint32_t	fog_color;
+	t_img		*anim[2];
 }				t_data;
 
 typedef	struct	s_args
@@ -120,19 +125,18 @@ typedef	struct	s_args
 	t_inter		inter[2];
 }				t_args;
 
+typedef struct	s_exit_count
+{
+	short		max_anim;
+	short		max_frames[MAX_ANIM];
+}				t_exit_count;
+
 int				key_press(int keycode, t_data *d);
 int				key_release(int keycode, t_data *d);
 int				mouse_press(int btn, int x, int y, t_data *d);
 int				mouse_release(int btn, int x, int y, t_data *d);
 int				mouse_move(int x, int y, t_data *d);
 int				loop_hook(t_data *d);
-t_vec2			sub_vec2(t_vec2 v1, t_vec2 v2);
-t_vec2			add_vec2(t_vec2 v1, t_vec2 v2);
-t_vec2f			sub_vec2f(t_vec2f v1, t_vec2f v2);
-t_vec2f			add_vec2f(t_vec2f v1, t_vec2f v2);
-t_vec2f			mul_vec2f(t_vec2f v, double scalar);
-float			get_vec2f_length(t_vec2f v);
-double			vec2f_length(t_vec2f v);
 void			refresh_minimap(t_data *d);
 void			draw_ray(t_data *d, t_vec2f v2, uint32_t color);
 void			putpixel(t_img *img, int x, int y, uint32_t color);
@@ -168,6 +172,27 @@ void			load_textures(t_data *d);
 void			anim_ryu(t_data *d);
 void			anim_pika(t_data *d);
 void			duplicate_faces(t_img *img);
-t_img			*new_anim(t_data *d, short nb_of_frames, char *path);
+t_img			*new_anim(t_data *d, short nb_of_frames, char *path, int junk);
+/*
+** loop.c
+*/
+
+int				refresh_loop(t_data *d);
+
+/*
+** vec2.c
+*/
+
+t_vec2			sub_vec2(t_vec2 v1, t_vec2 v2);
+t_vec2f			sub_vec2f(t_vec2f v1, t_vec2f v2);
+t_vec2f			add_vec2f(t_vec2f v1, t_vec2f v2);
+
+/*
+** vec2_2.c
+*/
+
+t_vec2f			mul_vec2f(t_vec2f v, double scalar);
+float			get_vec2f_length(t_vec2f v);
+double			vec2f_length(t_vec2f v);
 
 #endif

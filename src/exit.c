@@ -6,21 +6,46 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 08:50:40 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/06 16:34:31 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/12 20:52:03 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
+short	get_max_frames(short nb)
+{
+	if (nb == 1)
+		return (PIKA_FRAMES);
+	if (nb == 0)
+		return (RYU_FRAMES);
+	printf("wahklhdklahklj ==> get_max_frames\n"); // a supp
+	return (0);
+}
+
 int		proper_exit(t_data *d)
 {
-	int	i;
+	int		i;
+	t_img	*tmp;
+	t_exit_count	count;
 
 	i = 0;
 	while (i <= WEST)
 	{
 		mlx_destroy_image(d->mlx, d->textures[0][i].mlximg);
 		i++;
+	}
+	count.max_anim = MAX_ANIM;
+	while (count.max_anim-- > 0)
+	{
+		count.max_frames[count.max_anim] = get_max_frames(count.max_anim);
+		while (count.max_frames[count.max_anim]--)
+		{
+			tmp = d->anim[count.max_anim]->next;
+			mlx_destroy_image(d->mlx, d->anim[count.max_anim]->mlximg);
+			d->anim[count.max_anim]->next = NULL;
+			free(d->anim[count.max_anim]);
+			d->anim[count.max_anim] = tmp;
+		}
 	}
 	mlx_destroy_image(d->mlx, d->sky_texture.mlximg);
 	mlx_destroy_image(d->mlx, d->minimap.mlximg);
