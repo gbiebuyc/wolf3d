@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/06 23:30:49 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/12 19:44:01 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@
 # define GOOD_CHARS " 123"
 # define SCROLL_SPEED 0.003
 # define MINIMAPSIZE 8
+# define MAX_SIZE_OF_PATH 150
 
 typedef struct	s_vec2
 {
@@ -167,6 +168,6 @@ void			load_textures(t_data *d);
 void			anim_ryu(t_data *d);
 void			anim_pika(t_data *d);
 void			duplicate_faces(t_img *img);
-void			get_xpm_pos(int i, char *str, char **full_path);
+t_img			*new_anim(t_data *d, short nb_of_frames, char *path);
 
 #endif
