@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 16:34:51 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/12 20:47:00 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/12 22:59:34 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void	modify_img(uint32_t *colo)
 	*colo = ((red / 2) << 16 | (green / 2) << 8 | (blue / 2));
 }
 
-void	random_map(t_data *d, int random)
+void	random_map(t_data *d, short random)
 {
-	int		i;
-	int		j;
+	short	i;
+	short	j;
 
 	i = -1;
 	if (random != 2)
@@ -48,7 +48,7 @@ void	random_map(t_data *d, int random)
 		}
 }
 
-void	load_textures_2(t_data *d)
+void	load_textures_2(t_data *d, short random)
 {
 	int		junk;
 
@@ -62,44 +62,40 @@ void	load_textures_2(t_data *d)
 			d->textures[0][WEST].mlximg, &junk, &junk, &junk);
 	d->sky_texture.pixels = (uint32_t*)mlx_get_data_addr(
 			d->sky_texture.mlximg, &junk, &junk, &junk);
+	d->anim[0] = new_anim(d, RYU_FRAMES - 1, "./textures/SF2/", 0);
+	d->textures[1][0] = *d->anim[0];
+	d->anim[1] = new_anim(d, PIKA_FRAMES - 1, "./textures/pika/", 0);
+	d->textures[2][0] = *d->anim[1];
+	duplicate_faces(d->textures[1]);
+	duplicate_faces(d->textures[2]);
+	random_map(d, random);
 }
 
 void	load_textures(t_data *d)
 {
-	int random;
-	char *super_sky[4] = {"textures/Surprise.xpm", "textures/Surprise1.xpm",
-		"textures/Surprise2.xpm", "textures/Surprise3.xpm"};
+	short random;
 
-	srand(time(NULL));
-	random = rand(); // CHEAT
-	random %= 4;
-	//random = ((int)&d->mlx / 100) % 4; // random à partir d'une addr, à voir...
+	random = ((int)&d->mlx / 10000) % 4;
 	d->fog_color = (int[4]){0x433881, 0xe4b8dd, 0xffffff, 0x216c73}[random];
 	if (!(d->textures[0][NORTH].mlximg =
 				mlx_xpm_file_to_image(d->mlx, "./textures/north.xpm",
 					&d->textures[0][NORTH].w, &d->textures[0][NORTH].h)))
-		err_exit(d, 5, "mlx_xmp_file_to_image has failed", EXIT_FAILURE);	
-	if (!(d->textures[0][SOUTH].mlximg = 
+		err_exit(d, 5, "mlx_xmp_file_to_image has failed", EXIT_FAILURE);
+	if (!(d->textures[0][SOUTH].mlximg =
 				mlx_xpm_file_to_image(d->mlx, "./textures/south.xpm",
 					&d->textures[0][SOUTH].w, &d->textures[0][SOUTH].h)))
-		err_exit(d, 6, "mlx_xmp_file_to_image has failed", EXIT_FAILURE);	
+		err_exit(d, 6, "mlx_xmp_file_to_image has failed", EXIT_FAILURE);
 	if (!(d->textures[0][EAST].mlximg =
 				mlx_xpm_file_to_image(d->mlx, "./textures/east.xpm",
 					&d->textures[0][EAST].w, &d->textures[0][EAST].h)))
-		err_exit(d, 7, "mlx_xmp_file_to_image has failed", EXIT_FAILURE);	
+		err_exit(d, 7, "mlx_xmp_file_to_image has failed", EXIT_FAILURE);
 	if (!(d->textures[0][WEST].mlximg =
 				mlx_xpm_file_to_image(d->mlx, "./textures/west.xpm",
 					&d->textures[0][WEST].w, &d->textures[0][WEST].h)))
 		err_exit(d, 8, "mlx_xmp_file_to_image has failed", EXIT_FAILURE);
 	if (!(d->sky_texture.mlximg = mlx_xpm_file_to_image(d->mlx,
-					super_sky[random], &d->sky_texture.w, &d->sky_texture.h)))
+					get_xpm_pos(random, "textures/sky/")
+					, &d->sky_texture.w, &d->sky_texture.h)))
 		err_exit(d, 9, "mlx_xmp_file_to_image has failed", EXIT_FAILURE);
-	load_textures_2(d);
-	random_map(d, random);
-	d->textures[1][0] = *new_anim(d, RYU_FRAMES - 1, "./textures/SF2/", 0);
-//	anim_ryu(d);
-//	anim_pika(d);
-	d->textures[2][0] = *new_anim(d, PIKA_FRAMES - 1, "./textures/pika/", 0);
-	duplicate_faces(d->textures[1]);
-	duplicate_faces(d->textures[2]);
+	load_textures_2(d, (short)random);
 }

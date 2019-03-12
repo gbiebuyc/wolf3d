@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 20:53:08 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/12 21:41:02 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/12 22:53:05 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	collide(t_vec2 blk, t_data *d)
 }
 
 void	move(t_data *d, t_vec2f dir)
-{	
+{
 	d->pos = add_vec2f(d->pos, dir);
 	// test collision with 8 surrounding blocks
 	collide((t_vec2){floor(d->pos.x) - 1, floor(d->pos.y) - 1}, d);
@@ -49,6 +49,7 @@ void	move(t_data *d, t_vec2f dir)
 int		refresh_loop_3(t_data *d)
 {
 	static int	time;
+	int			i;
 
 	if (d->hooks.hor_rot == RIGHT_ROT)
 	{
@@ -61,14 +62,13 @@ int		refresh_loop_3(t_data *d)
 		d->hooks.scroll.x = 0;
 	if ((int)d->hooks.scroll.y == 1)
 		d->hooks.scroll.y = 0;
+	i = NORTH - 1;
 	if (!(++time % 2))
-	{
-		for (int i = NORTH; i <= WEST; i++)
+		while (++i <= WEST)
 		{
-		d->textures[1][i] = *d->textures[1][i].next;
-		d->textures[2][i] = *d->textures[2][i].next;
+			d->textures[1][i] = *d->textures[1][i].next;
+			d->textures[2][i] = *d->textures[2][i].next;
 		}
-	}
 	if (time == 1000)
 		time = 0;
 	refresh_all(d);
@@ -84,7 +84,8 @@ int		refresh_loop_2(t_data *d, t_vec2f tmp)
 		else
 			actualize_dir(d->hooks.dir == BACKWARD ?
 					-M_PI / 4 : -3 * M_PI / 4, &tmp);
-		move(d, mul_vec2f(tmp,(!(d->hooks.dir) ? 0.05: -0.05) * (d->hooks.run ? 2 : 1)));
+		move(d, mul_vec2f(tmp, (!(d->hooks.dir) ? 0.05 : -0.05) *
+					(d->hooks.run ? 2 : 1)));
 	}
 	if (d->hooks.hor_rot == LEFT_ROT)
 	{
@@ -114,4 +115,3 @@ int		refresh_loop(t_data *d)
 	}
 	return (refresh_loop_2(d, tmp));
 }
-

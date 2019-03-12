@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 08:50:40 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/12 20:52:03 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/12 21:53:18 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ short	get_max_frames(short nb)
 		return (PIKA_FRAMES);
 	if (nb == 0)
 		return (RYU_FRAMES);
-	printf("wahklhdklahklj ==> get_max_frames\n"); // a supp
 	return (0);
 }
 

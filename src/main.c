@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/12 20:40:47 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/12 21:50:01 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ void	init_mlx(t_data *d, int junk)
 			d->minimap.mlximg, &junk, &junk, &junk);
 	mlx_hook(d->win, 2, 1L << 0, key_press, d);
 	mlx_hook(d->win, 3, 1L << 1, key_release, d);
-	mlx_hook(d->win, 4, 1L << 2, mouse_press, d);
-	mlx_hook(d->win, 5, 1L << 3, mouse_release, d);
 	mlx_hook(d->win, 6, 1L << 6, mouse_move, d);
 	mlx_hook(d->win, 17, 1L << 17, proper_exit, d);
 	mlx_loop_hook(d->mlx, &refresh_loop, d);

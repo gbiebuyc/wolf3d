@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 21:52:27 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/05 19:00:41 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/12 22:30:19 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		check_length(int x, short mod)
 
 	if (mod)
 	{
-		if (!(max_x)) 
+		if (!(max_x))
 			max_x = -1;
 		if (max_x == -1)
 			max_x = x;
@@ -31,7 +31,7 @@ int		check_length(int x, short mod)
 	return (max_x);
 }
 
-void	check_str(char	*str)
+void	check_str(char *str)
 {
 	char	*good_chars;
 	int		i;
@@ -72,26 +72,12 @@ void	error_test(int i, int mod, int *fd)
 		}
 }
 
-void	init_map(t_data *d, char *map, int count, int fd)
+void	init_map_2(t_data *d, char *map, int count, int fd)
 {
 	int		i;
 	char	*str;
 	char	*tmp;
 
-	error_test(0, 0, &fd);
-	while ((i = get_next_line(fd, &str) > 0))
-	{
-		check_length(ft_strlen(str), 1);
-		check_str(str);
-		count++;
-		free(str);
-	}
-	error_test(i, 1, NULL);
-	d->mapsize.x = check_length(-1, 0);
-	d->mapsize.y = count;
-	close(fd);
-	error_test(0, 0, &fd);
-	count = 0;
 	while ((i = get_next_line(fd, &str) > 0))
 	{
 		tmp = map;
@@ -107,4 +93,25 @@ void	init_map(t_data *d, char *map, int count, int fd)
 	}
 	error_test(i, 1, NULL);
 	d->map = map;
+}
+
+void	init_map(t_data *d, char *map, int count, int fd)
+{
+	int		i;
+	char	*str;
+
+	error_test(0, 0, &fd);
+	while ((i = get_next_line(fd, &str) > 0))
+	{
+		check_length(ft_strlen(str), 1);
+		check_str(str);
+		count++;
+		free(str);
+	}
+	error_test(i, 1, NULL);
+	d->mapsize.x = check_length(-1, 0);
+	d->mapsize.y = count;
+	close(fd);
+	error_test(0, 0, &fd);
+	init_map_2(d, map, 0, fd);
 }

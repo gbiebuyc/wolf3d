@@ -6,44 +6,39 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 18:20:52 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/06 22:55:31 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/12 23:17:01 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void	draw_column(t_data *d, int block_h, int x, t_inter inter)
+void		draw_column(t_data *d, int block_h, int x, t_inter inter)
 {
-	int		start;
-	int		y;
-	int		scaled_width;
-	double	increment;
-	double	real_y;
+	t_var	a;
 
-	start = d->hooks.middle_screen - block_h / 2;
-	y = 0;
-	scaled_width = inter.xtexture * d->textures[inter.c - '1'][inter.orientation].w;
-	increment = (double)d->textures[inter.c - '1'][inter.orientation].h / (float)block_h;
-	real_y = start < 0 ? -start * increment : 0;
-	while (y < d->camera.h && block_h > 0)
-	{
-		if (y > start)
+	a.start = d->hooks.middle_screen - block_h / 2;
+	a.y = -1;
+	a.scaled_width = inter.xtexture * d->textures[inter.c -
+		'1'][inter.orientation].w;
+	a.increment = (double)d->textures[inter.c - '1'][inter.orientation].h
+		/ (float)block_h;
+	a.real_y = a.start < 0 ? -a.start * a.increment : 0;
+	while (++a.y < d->camera.h && block_h > 0)
+		if (a.y > a.start)
 		{
-			if (x >= 0 && y >= 0 && y < d->camera.h && x < d->camera.w)
-			{
-				d->camera.pixels[x + y * d->camera.w] =
-					calculate_fog(d->hooks.middle_screen - start, d->camera.h / 2, d->fog_color,
-							d->textures[inter.c - '1'][inter.orientation].pixels[scaled_width +
-							(int)(real_y) * d->textures[inter.c - '1'][inter.orientation].w]);
-			}
-			real_y += increment;
-			if ((int)real_y >=
+			if (x >= 0 && a.y >= 0 && a.y < d->camera.h && x < d->camera.w)
+				d->camera.pixels[x + a.y * d->camera.w] =
+					calculate_fog(d->hooks.middle_screen - a.start, d->camera.h
+							/ 2, d->fog_color, d->textures[inter.c - '1']
+							[inter.orientation].pixels[a.scaled_width +
+							(int)(a.real_y) * d->textures[inter.c - '1']
+							[inter.orientation].w]);
+			a.real_y += a.increment;
+			if ((int)a.real_y >=
 					d->textures[inter.c - '1'][inter.orientation].h)
-				break;
+				break ;
 			block_h--;
 		}
-		y++;
-	}
 }
 
 uint32_t	getpixel(t_img *texture, double x, double y)
@@ -52,153 +47,50 @@ uint32_t	getpixel(t_img *texture, double x, double y)
 			(int)(texture->h * y) * texture->w]);
 }
 
-void	draw_floor(t_data *d, int x, int block_h, t_inter inter, double angle)
+void		draw_floor(t_data *d, t_args inf, int block_h, t_vec2f ray)
 {
-	t_vec2f	ray;
-	t_vec2f	pos_floor;
-	t_vec2f	pos_sky;
 	int		y;
+	t_vec2f	pos_floor;
 
-	ray = sub_vec2f(inter.vec, d->pos);
-	ray = mul_vec2f(ray, 1.0 / vec2f_length(ray));
 	y = ft_max(block_h / 2, 1);
-	while (y <= (d->hooks.middle_screen)) // sky
-	{
-		pos_sky = add_vec2f(mul_vec2f(d->pos, 0.2), mul_vec2f(ray,
-					1.0 / (((double)y / (d->camera.h / 2)) * cos(angle))));
-		pos_sky.x = pos_sky.x - floor(pos_sky.x) + d->hooks.scroll.x;
-		pos_sky.y = pos_sky.y - floor(pos_sky.y) + d->hooks.scroll.y;
-		pos_sky.x -= ((int)pos_sky.x == 1 ? 1: 0);
-		pos_sky.y -= ((int)pos_sky.y == 1 ? 1: 0);
-		if ((int)(pos_sky.y * d->sky_texture.h) * d->sky_texture.w + (int)(pos_sky.x * d->sky_texture.w) >
-				d->sky_texture.w * d->sky_texture.h)
-		{
-			pos_sky.y = 0;
-		}
-		putpixel(&d->camera, x, (d->hooks.middle_screen - y),
-				calculate_fog(y, d->camera.h / 2, d->fog_color,
-					getpixel(&d->sky_texture, pos_sky.x, pos_sky.y)));
-		y++;
-	}
-	y = ft_max(block_h / 2, 1);
-	while (y + d->hooks.middle_screen <= d->camera.h) // floor
+	while (y + d->hooks.middle_screen <= d->camera.h)
 	{
 		pos_floor = add_vec2f(d->pos, mul_vec2f(ray,
-					1.0 / (((double)y / (d->camera.h / 2)) * cos(angle))));
+					1.0 / (((double)y / (d->camera.h / 2)) * cos(inf.angle))));
 		pos_floor.x -= floor(pos_floor.x);
 		pos_floor.y -= floor(pos_floor.y);
-		putpixel(&d->camera, x, (d->hooks.middle_screen - 1 + y),
+		putpixel(&d->camera, inf.x, (d->hooks.middle_screen - 1 + y),
 				calculate_fog(y, d->camera.h / 2, d->fog_color,
 					getpixel(&d->textures[0][1], pos_floor.x, pos_floor.y)));
 		y++;
 	}
 }
 
-void	find_intersection(t_args *args)
+void		draw_sky_and_floor(t_data *d, t_args inf, int block_h)
 {
-	args->inter[0] = find_intersection_ver(args->ray_dir, args->d);
-	args->inter[1] = find_intersection_hor(args->ray_dir, args->d); // bug ligne milieu ecran // fixed ?
-	args->dist = 0.0;
-	if (args->inter[0].c != EMPTY_SQUARE && args->inter[0].l < args->inter[1].l) // Vertical intersection ray is shorter
-	{
-		if (args->d->hooks.minimap)
-		draw_ray(args->d, args->inter[0].vec, 0xFF0000);
-		args->dist = sqrt(args->inter[0].l);
-	}
-	else if (args->inter[1].c != EMPTY_SQUARE) // Horizontal ray is shorter
-	{
-		if (args->d->hooks.minimap)
-		draw_ray(args->d, args->inter[1].vec, 0xFF);
-		args->dist = sqrt(args->inter[1].l);
-		args->inter[0] = args->inter[1]; // argument envoye a draw_column
-	}
-	else
-		args->inter[0] = args->inter[(args->d->dir.x == 0 ? 1: 0)]; //magic fix if 0
-//	printf("ver: %f   hor: %f\n", c1.l, c2.l); // debug
-//	printf("%c\n", c1.c); // debug
-
-	args->dist *= cos(args->angle); // correction de la distortion
-	if (args->inter[0].c != EMPTY_SQUARE)
-		draw_column(args->d, args->d->camera.h / args->dist /* sqrt(get_vec2f_length(d->dir))*/, args->x, args->inter[0]); // remettre com si dir change (sqrt(1))
-	draw_floor(args->d, args->x, args->d->camera.h / args->dist, args->inter[0], args->angle);
-	// besoin de modifier le vecteur dir (dont delete me)
-}
-
-void	set_args(t_args	*args, t_data *d, t_vec2f ray_dir, int x)
-{
-	args->d = d;
-	args->ray_dir = ray_dir;
-	args->x = x;
-	args->angle = get_vec2f_angle(d->dir, ray_dir);
-}
-
-void	refresh_image(t_data *d)
-{
-	t_vec2		coord;
-	t_vec2f		ray_dir;
-	pthread_t	id[4];
-	t_args		args[4];
-
-	coord.x = 0;	
-	while (coord.x < WIDTH && !(coord.y = 0))
-	{
-		while (++coord.y < 5 && (coord.x + coord.y <= WIDTH))
-		{
-		// ray_dir = dir + plane * x / w
-		ray_dir = add_vec2f(d->dir, mul_vec2f(d->plane,
-					2.0 * (coord.x  + coord.y)/ WIDTH - 1.0));
-		set_args(&args[coord.y - 1], d, ray_dir, WIDTH - coord.x - coord.y);
-	//	if (WIDTH - coord.x - coord.y == WIDTH / 2) // middle_screen ray
-		if (pthread_create(&id[coord.y - 1], NULL, (void *)&find_intersection, &args[coord.y - 1]))
-			err_exit(d, 10, strerror(errno), EXIT_FAILURE);
-		}
-		coord.x += 4;
-		pthread_join(id[0], NULL);
-		pthread_join(id[1], NULL);
-		pthread_join(id[2], NULL);
-		pthread_join(id[3], NULL);
-	}
-}
-
-void	reset_camera(t_data *d) // permet de reinitialiser l'image avec le sol et le ciel
-{
-	int		x;
+	t_vec2f	ray;
+	t_vec2f	pos_sky;
 	int		y;
 
-	y = 0;
-	while (y < d->hooks.middle_screen)
+	ray = sub_vec2f(inf.inter[0].vec, d->pos);
+	ray = mul_vec2f(ray, 1.0 / vec2f_length(ray));
+	y = ft_max(block_h / 2, 1);
+	while (y <= (d->hooks.middle_screen))
 	{
-		x = 0;
-		while (x < d->camera.w)
-		{
-			d->camera.pixels[x + y * d->camera.w] = SKY_COLOR;
-			x++;
-		}
+		pos_sky = add_vec2f(mul_vec2f(d->pos, 0.2), mul_vec2f(ray,
+					1.0 / (((double)y / (d->camera.h / 2)) * cos(inf.angle))));
+		pos_sky.x = pos_sky.x - floor(pos_sky.x) + d->hooks.scroll.x;
+		pos_sky.y = pos_sky.y - floor(pos_sky.y) + d->hooks.scroll.y;
+		pos_sky.x -= ((int)pos_sky.x == 1 ? 1 : 0);
+		pos_sky.y -= ((int)pos_sky.y == 1 ? 1 : 0);
+		if ((int)(pos_sky.y * d->sky_texture.h) * d->sky_texture.w
+				+ (int)(pos_sky.x * d->sky_texture.w) > d->sky_texture.w *
+				d->sky_texture.h)
+			pos_sky.y = 0;
+		putpixel(&d->camera, inf.x, (d->hooks.middle_screen - y),
+				calculate_fog(y, d->camera.h / 2, d->fog_color,
+					getpixel(&d->sky_texture, pos_sky.x, pos_sky.y)));
 		y++;
 	}
-	while (y < d->camera.h)
-	{
-		x = 0;
-		while (x < d->camera.w)
-		{
-			d->camera.pixels[x + y * d->camera.w] = GROUND_COLOR;
-			x++;
-		}
-		y++;
-	}
-}
-
-void	refresh_all(t_data *d)
-{
-	//reset_camera(d); // reset l'image de la camera // remplacé par textures sky et floor
-	if (d->hooks.minimap)
-		refresh_minimap(d);
-	refresh_image(d);
-	mlx_put_image_to_window(d->mlx, d->win, d->camera.mlximg, 0, 0);
-	for (int i = 0; i < d->minimap.w * d->minimap.h; i++)
-	{
-		d->minimap.pixels[i] += 0x80 << 24;
-	}
-	if (d->hooks.minimap)
-	mlx_put_image_to_window(d->mlx, d->win, d->minimap.mlximg, WIDTH - d->minimap.w, 0);
+	draw_floor(d, inf, block_h, ray);
 }

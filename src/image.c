@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 18:40:06 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/04 20:07:17 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/12 22:00:25 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ int		find_colo_mini(char block)
 		return (0xFF);
 	if (block == '3')
 		return (0xCC7700);
-	printf("debug find_colo%c\n", block);
 	return (0);
 }
 
@@ -74,7 +73,7 @@ void	refresh_player(t_data *d)
 	dx = -radius;
 	while (dx <= radius)
 	{
-		dy = (int)sqrt(radius*radius - dx*dx);
+		dy = (int)sqrt(radius * radius - dx * dx);
 		while (dy >= 0)
 		{
 			putpixel(&d->minimap, x + dx, y + dy, 0xFF);
@@ -91,7 +90,8 @@ void	refresh_minimap(t_data *d)
 	int		y;
 
 	x = 0; // a calculer en fonction de la position du joueur voir des bords
-	ft_memset(d->minimap.pixels, 0, d->minimap.w * d->minimap.h * sizeof(uint32_t));
+	ft_memset(d->minimap.pixels, 0, d->minimap.w * d->minimap.h *
+			sizeof(uint32_t));
 	refresh_player(d);
 	while (x < MINIMAPSIZE + 1)
 	{
@@ -99,12 +99,12 @@ void	refresh_minimap(t_data *d)
 		while (y < MINIMAPSIZE + 1)
 		{
 			if (get_map_char(floor(d->pos.x) + x - MINIMAPSIZE / 2,
-					   floor(d->pos.y) + y - MINIMAPSIZE / 2, d) != EMPTY_SQUARE)
+						floor(d->pos.y) + y - MINIMAPSIZE / 2, d) !=
+					EMPTY_SQUARE)
 				put_block(&d->minimap, (double)x - (d->pos.x - floor(d->pos.x)),
 						(double)y - (d->pos.y - floor(d->pos.y)), 0xFF00);
 			y++;
 		}
 		x++;
 	}
-	//mlx_put_image_to_window(d->mlx, d->win, d->minimap.mlximg, WIDTH - d->minimap.w, 0);
 }

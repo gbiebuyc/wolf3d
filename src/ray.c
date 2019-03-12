@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 18:20:05 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/06 20:47:22 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/12 21:54:53 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_inter	find_intersection_hor(t_vec2f ray, t_data *d)
 	int		i;
 
 	if (ray.y < 0)
-		hit.y = floor(d->pos.y); // floor() pour éviter rounding bug dans négatif
+		hit.y = floor(d->pos.y);
 	else
 		hit.y = ceil(d->pos.y);
 	hit.x = d->pos.x + (hit.y - d->pos.y) * ray.x / ray.y;

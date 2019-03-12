@@ -6,7 +6,7 @@
 #    By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/05 15:21:27 by gbiebuyc          #+#    #+#              #
-#    Updated: 2019/03/12 21:31:44 by nallani          ###   ########.fr        #
+#    Updated: 2019/03/12 22:07:26 by nallani          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ NAME = wolf3d
 SRC = src/main.c \
 	  src/hooks.c \
 	  src/ray.c \
+	  src/multithread.c \
 	  src/image.c \
 	  src/main_image.c \
 	  src/map.c \
