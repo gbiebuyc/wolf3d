@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 20:53:08 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/12 22:53:05 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/13 22:09:12 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	collide(t_vec2 blk, t_data *d)
 void	move(t_data *d, t_vec2f dir)
 {
 	d->pos = add_vec2f(d->pos, dir);
-	// test collision with 8 surrounding blocks
 	collide((t_vec2){floor(d->pos.x) - 1, floor(d->pos.y) - 1}, d);
 	collide((t_vec2){floor(d->pos.x) - 0, floor(d->pos.y) - 1}, d);
 	collide((t_vec2){floor(d->pos.x) + 1, floor(d->pos.y) - 1}, d);

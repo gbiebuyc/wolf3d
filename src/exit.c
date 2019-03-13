@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 08:50:40 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/13 21:57:28 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/13 22:06:32 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	free_textures(t_img *img, void *mlx)
 {
 	t_img	*tmp;
-	t_img 	*cmp;
+	t_img	*cmp;
 
 	cmp = img;
 	img = img->next;

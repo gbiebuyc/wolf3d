@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/12 22:32:07 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/13 22:06:12 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,11 @@ int		key_press(int keycode, t_data *d)
 		proper_exit(d);
 	else if (keycode == 109 || keycode == 46)
 		d->hooks.minimap = !(d->hooks.minimap);
-	else if (keycode == 122 || keycode == 13)
+	else if (keycode == 122 || keycode == 13 || keycode == 65362 || keycode
+			== 126)
 		d->hooks.dir = FORWARD;
-	else if (keycode == 115 || keycode == 1)
+	else if (keycode == 115 || keycode == 1 || keycode == 65364 ||
+			keycode == 125)
 		d->hooks.dir = BACKWARD;
 	else if (keycode == 113 || keycode == 0)
 		d->hooks.strafe_dir = LEFT_STRAFE;
@@ -30,10 +32,6 @@ int		key_press(int keycode, t_data *d)
 		d->hooks.hor_rot = LEFT_ROT;
 	else if (keycode == 65363 || keycode == 124)
 		d->hooks.hor_rot = RIGHT_ROT;
-	else if (keycode == 65364 || keycode == 125)// Down key
-		; // ??
-	else if (keycode == 65362 || keycode == 126)// Up key
-		; // ??
 	else if (keycode == 65505 || keycode == 65506 ||
 			keycode == 257 || keycode == 258)
 		d->hooks.run = 1;
@@ -42,20 +40,19 @@ int		key_press(int keycode, t_data *d)
 
 int		key_release(int keycode, t_data *d)
 {
-	if ((keycode == 122 || keycode == 13) && d->hooks.dir == FORWARD)
+	if ((keycode == 122 || keycode == 13 || keycode == 65362 ||
+				keycode == 126) && d->hooks.dir == FORWARD)
 		d->hooks.dir = 0;
-	if ((keycode == 115 || keycode == 1) && d->hooks.dir == BACKWARD)
+	if ((keycode == 115 || keycode == 1 || keycode == 65364 ||
+				keycode == 125) && d->hooks.dir == BACKWARD)
 		d->hooks.dir = 0;
 	if ((keycode == 113 || keycode == 0) && d->hooks.strafe_dir == LEFT_STRAFE)
 		d->hooks.strafe_dir = 0;
 	if ((keycode == 100 || keycode == 2) && d->hooks.strafe_dir == RIGHT_STRAFE)
 		d->hooks.strafe_dir = 0;
 	else if (keycode == 65361 || keycode == 123 ||
-			keycode == 65363 || keycode == 124)// Hor rotate
+			keycode == 65363 || keycode == 124)
 		d->hooks.hor_rot = 0;
-	else if (keycode == 65362 || keycode == 126 ||
-			keycode == 65364 || keycode == 125)// Ver rotate
-		; // ??
 	else if (keycode == 65505 || keycode == 65506 ||
 			keycode == 257 || keycode == 258)
 		d->hooks.run = 0;
