@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 18:40:06 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/12 22:00:25 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/13 18:53:05 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	putpixel(t_img *img, int x, int y, uint32_t color)
 		img->pixels[x + y * img->w] = color;
 	else if (!printed_warning)
 	{
+		printf("%p\n", img);
 		printf("pixel outside image:%d, %d, colo:%d\n", x, y, color); // cheat
 		printed_warning = true;
 	}

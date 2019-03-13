@@ -6,33 +6,29 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 08:50:40 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/13 18:46:40 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/13 21:57:28 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-short	get_max_frames(short nb)
-{
-	if (nb == 1)
-		return (PIKA_FRAMES);
-	if (nb == 0)
-		return (RYU_FRAMES);
-	return (0);
-}
-
-void	free_textures(t_img *img, short nb_of_frames, void *mlx)
+void	free_textures(t_img *img, void *mlx)
 {
 	t_img	*tmp;
+	t_img 	*cmp;
 
-	while (nb_of_frames-- > 0)
+	cmp = img;
+	img = img->next;
+	while (cmp != img)
 	{
 		tmp = img->next;
 		mlx_destroy_image(mlx, img->mlximg);
 		free(img);
-		img = NULL;
+		img->next = NULL;
 		img = tmp;
 	}
+	mlx_destroy_image(mlx, cmp->mlximg);
+	free(cmp);
 }
 
 int		proper_exit(t_data *d)
@@ -48,11 +44,12 @@ int		proper_exit(t_data *d)
 	}
 	count = MAX_ANIM;
 	while (count-- > 0)
-		free_textures(d->anim[count], get_max_frames(count), d->mlx);
+		free_textures(d->anim[count], d->mlx);
 	mlx_destroy_image(d->mlx, d->sky_texture.mlximg);
 	mlx_destroy_image(d->mlx, d->minimap.mlximg);
 	mlx_destroy_image(d->mlx, d->camera.mlximg);
-	free(d->map);
+	if (d->mapsize.x)
+		free(d->map);
 	mlx_destroy_window(d->mlx, d->win);
 	free(d->mlx);
 	exit(0);
@@ -63,7 +60,7 @@ void	err_exit(t_data *d, int mod, char *msg, int exit_code)
 {
 	ft_putendl_fd(msg, STDERR_FILENO);
 	if (mod > 10)
-		free_textures(d->anim[0], get_max_frames(0), d->mlx);
+		free_textures(d->anim[0], d->mlx);
 	if (mod > 9)
 		mlx_destroy_image(d->mlx, d->sky_texture.mlximg);
 	if (mod > 8)
@@ -82,7 +79,7 @@ void	err_exit(t_data *d, int mod, char *msg, int exit_code)
 		mlx_destroy_window(d->mlx, d->win);
 	if (mod > 1)
 		free(d->mlx);
-	if (mod > 0)
+	if (mod > 0 && d->mapsize.x)
 		free(d->map);
 	exit(exit_code);
 }

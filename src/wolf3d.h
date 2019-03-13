@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/12 23:17:38 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/13 19:37:06 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
 # define RIGHT_STRAFE 4
 # define LEFT_ROT 1
 # define RIGHT_ROT 2
-# define PATH "./maps/map2"
+# define PATH "./maps/map3"
 # define GOOD_CHARS " 123"
 # define SCROLL_SPEED 0.003
 # define MINIMAPSIZE 8

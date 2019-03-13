@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/12 21:50:01 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/13 19:46:05 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int		main(int ac, char **av)
 	init_mlx(&d, 0);
 	mlx_mouse_hide();
 	load_textures(&d);
+	printf("window : %p\nmap : %p\n", &d.camera, &d.minimap);
 	refresh_all(&d);
 	mlx_loop(d.mlx);
 }

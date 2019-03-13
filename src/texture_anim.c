@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 18:20:07 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/13 18:31:58 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/13 18:48:34 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	duplicate_faces(t_img *img)
 
 t_img	*error_new_anim(t_img *start, int mod, t_img *last, void *mlx)
 {
-	static int	count = 1;
 	if (mod)
 		free(last);
 	if (!(start))
@@ -52,7 +51,6 @@ t_img	*error_new_anim(t_img *start, int mod, t_img *last, void *mlx)
 		last = start->next;
 		mlx_destroy_image(mlx, start->mlximg);
 		free(start);
-		printf("%d\n", count++);
 	}
 	return (NULL);
 }

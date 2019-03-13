@@ -6,7 +6,7 @@
 #    By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/05 15:21:27 by gbiebuyc          #+#    #+#              #
-#    Updated: 2019/03/12 22:07:26 by nallani          ###   ########.fr        #
+#    Updated: 2019/03/13 20:00:15 by nallani          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,11 +40,13 @@ CFLAGS = -I $(FT_DIR) -I $(MLX_DIR) -Wall -Wextra -Werror
 
 all: $(NAME)
 
-$(NAME): $(OBJ) src/wolf3d.h
+$(NAME): $(OBJ)
 	make -C $(FT_DIR)
 	make -C $(MLX_DIR)
 	$(CC) -o $(NAME) $(OBJ) $(LDFLAGS)
 
+%.o: %.c
+	gcc -O3 -c -o $@ $< $(CFLAGS)
 clean:
 	make -C $(FT_DIR) clean
 	make -C $(MLX_DIR) clean
