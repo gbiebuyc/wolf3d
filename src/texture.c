@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 16:34:51 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/12 22:59:34 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/13 11:34:59 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	load_textures(t_data *d)
 {
 	short random;
 
-	random = ((int)&d->mlx / 10000) % 4;
+	random = ((intptr_t)&d->mlx / 10000) % 4;
 	d->fog_color = (int[4]){0x433881, 0xe4b8dd, 0xffffff, 0x216c73}[random];
 	if (!(d->textures[0][NORTH].mlximg =
 				mlx_xpm_file_to_image(d->mlx, "./textures/north.xpm",

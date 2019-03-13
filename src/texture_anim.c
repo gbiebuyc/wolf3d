@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 18:20:07 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/12 22:49:51 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/13 11:14:29 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*get_xpm_pos(int i, char *str)
 {
-	int				size_of_i;
+	//int				size_of_i; // set but not used ?
 	int				tmp;
 	char			*itoa_nb;
 	static	char	full_path[MAX_SIZE_OF_PATH];
@@ -27,7 +27,7 @@ char	*get_xpm_pos(int i, char *str)
 		exit(EXIT_FAILURE);
 		// return null ?
 	}
-	size_of_i = ft_strlen(itoa_nb) + 1;
+	//size_of_i = ft_strlen(itoa_nb) + 1;
 	tmp = -1;
 	while (str[++tmp])
 		full_path[tmp] = str[tmp];
@@ -56,7 +56,7 @@ t_img	*new_anim(t_data *d, short nb_of_frames, char *path, int junk)
 	while (--i >= 0)
 	{
 		if (!(a[0] = (t_img *)malloc(sizeof(t_img))))
-			;//do error
+		{};//do error
 		if (i == nb_of_frames)
 			a[2] = a[0];
 		a[0]->next = a[1];
