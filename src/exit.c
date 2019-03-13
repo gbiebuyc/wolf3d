@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 08:50:40 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/12 21:53:18 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/13 18:46:40 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,24 @@ short	get_max_frames(short nb)
 	return (0);
 }
 
+void	free_textures(t_img *img, short nb_of_frames, void *mlx)
+{
+	t_img	*tmp;
+
+	while (nb_of_frames-- > 0)
+	{
+		tmp = img->next;
+		mlx_destroy_image(mlx, img->mlximg);
+		free(img);
+		img = NULL;
+		img = tmp;
+	}
+}
+
 int		proper_exit(t_data *d)
 {
 	int		i;
-	t_img	*tmp;
-	t_exit_count	count;
+	short	count;
 
 	i = 0;
 	while (i <= WEST)
@@ -33,19 +46,9 @@ int		proper_exit(t_data *d)
 		mlx_destroy_image(d->mlx, d->textures[0][i].mlximg);
 		i++;
 	}
-	count.max_anim = MAX_ANIM;
-	while (count.max_anim-- > 0)
-	{
-		count.max_frames[count.max_anim] = get_max_frames(count.max_anim);
-		while (count.max_frames[count.max_anim]--)
-		{
-			tmp = d->anim[count.max_anim]->next;
-			mlx_destroy_image(d->mlx, d->anim[count.max_anim]->mlximg);
-			d->anim[count.max_anim]->next = NULL;
-			free(d->anim[count.max_anim]);
-			d->anim[count.max_anim] = tmp;
-		}
-	}
+	count = MAX_ANIM;
+	while (count-- > 0)
+		free_textures(d->anim[count], get_max_frames(count), d->mlx);
 	mlx_destroy_image(d->mlx, d->sky_texture.mlximg);
 	mlx_destroy_image(d->mlx, d->minimap.mlximg);
 	mlx_destroy_image(d->mlx, d->camera.mlximg);
@@ -56,9 +59,11 @@ int		proper_exit(t_data *d)
 	return (421);
 }
 
-void	err_exit(t_data *d, int mod, char *msg, int exit_code) // UNTESTED
+void	err_exit(t_data *d, int mod, char *msg, int exit_code)
 {
 	ft_putendl_fd(msg, STDERR_FILENO);
+	if (mod > 10)
+		free_textures(d->anim[0], get_max_frames(0), d->mlx);
 	if (mod > 9)
 		mlx_destroy_image(d->mlx, d->sky_texture.mlximg);
 	if (mod > 8)

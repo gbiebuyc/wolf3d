@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 16:34:51 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/13 11:34:59 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/13 18:46:49 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,11 @@ void	load_textures_2(t_data *d, short random)
 			d->textures[0][WEST].mlximg, &junk, &junk, &junk);
 	d->sky_texture.pixels = (uint32_t*)mlx_get_data_addr(
 			d->sky_texture.mlximg, &junk, &junk, &junk);
-	d->anim[0] = new_anim(d, RYU_FRAMES - 1, "./textures/SF2/", 0);
+	if (!(d->anim[0] = new_anim(d, RYU_FRAMES - 1, "./textures/SF2/", 0)))
+		err_exit(d, 10, "mlx_xpm_file_to_image has failed", EXIT_FAILURE);
 	d->textures[1][0] = *d->anim[0];
-	d->anim[1] = new_anim(d, PIKA_FRAMES - 1, "./textures/pika/", 0);
+	if (!(d->anim[1] = new_anim(d, PIKA_FRAMES - 1, "./textures/pika/", 0)))
+		err_exit(d, 11, "mlx_xpm_file_to_image has failed", EXIT_FAILURE);
 	d->textures[2][0] = *d->anim[1];
 	duplicate_faces(d->textures[1]);
 	duplicate_faces(d->textures[2]);
