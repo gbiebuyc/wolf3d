@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 20:53:08 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/14 19:09:06 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/14 19:30:01 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,9 @@ void	move(t_data *d, t_vec2f dir)
 	collide((t_vec2){floor(d->pos.x) - 1, floor(d->pos.y) - 0}, d);
 }
 
-int		refresh_loop_3(t_data *d)
+int		refresh_loop_3(t_data *d, short i)
 {
 	static int	time;
-	int			i;
 
 	if (d->hooks.hor_rot == RIGHT_ROT)
 	{
@@ -61,7 +60,6 @@ int		refresh_loop_3(t_data *d)
 		d->hooks.scroll.x = 0;
 	if ((int)d->hooks.scroll.y == 1)
 		d->hooks.scroll.y = 0;
-	i = NORTH - 1;
 	if (!(++time % 2))
 		while (++i <= WEST)
 		{
@@ -92,7 +90,7 @@ int		refresh_loop_2(t_data *d, t_vec2f tmp)
 		actualize_dir(-0.05, &d->dir);
 		actualize_dir(-0.05, &d->plane);
 	}
-	return (refresh_loop_3(d));
+	return (refresh_loop_3(d, NORTH - 1));
 }
 
 int		refresh_loop(t_data *d)

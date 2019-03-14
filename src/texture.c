@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 16:34:51 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/14 19:22:37 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/14 20:09:57 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,14 @@ void	random_map(t_data *d, short random)
 		}
 }
 
+void	load_textures_3(t_data *d, short random)
+{
+	duplicate_faces(d->textures[1]);
+	duplicate_faces(d->textures[2]);
+	duplicate_faces(d->textures[3]);
+	random_map(d, random);
+}
+
 void	load_textures_2(t_data *d, short random)
 {
 	int		junk;
@@ -72,10 +80,7 @@ void	load_textures_2(t_data *d, short random)
 		err_exit(d, 12, "mlx_xpm_file_to_image has failed", EXIT_FAILURE);
 	d->textures[3][0] = *d->anim[2]->next->next->next->next->next->next
 		->next->next->next->next->next->next->next->next->next->next;
-	duplicate_faces(d->textures[1]);
-	duplicate_faces(d->textures[2]);
-	duplicate_faces(d->textures[3]);
-	random_map(d, random);
+	load_textures_3(d, random);
 }
 
 void	load_textures(t_data *d)
