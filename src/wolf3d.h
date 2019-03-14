@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/14 21:18:04 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/14 21:45:31 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ typedef struct	s_data
 	t_img		minimap;
 	char		*map_path;
 	char		*map;
+	char		race;
 	t_vec2		mapsize;
 	t_vec2f		pos;
 	t_vec2f		dir;

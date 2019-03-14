@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/14 21:26:04 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/14 21:53:37 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*get_map(char av)
 	return (path);
 }
 
-void	init_player(t_data *d)
+void	init_player(t_data *d, char av)
 {
 	d->pos = (t_vec2f){3.5, 3.5};
 	d->dir = (t_vec2f){0, 1};
@@ -60,6 +60,7 @@ void	init_player(t_data *d)
 	d->hooks.run = 0;
 	d->hooks.scroll.x = 0;
 	d->hooks.scroll.y = 0;
+	d->race = (av == 'r' ? 1 : 0);
 }
 
 int		main(int ac, char **av)
@@ -70,7 +71,8 @@ int		main(int ac, char **av)
 	(void)av;
 	d.map_path = get_map(ac < 2 ? '0' : av[1][0]);
 	init_map(&d, "", 0, 0);
-	init_player(&d);
+	init_player(&d, ac < 3 ? '0' : av[2][0]);
+	printf("%d\n", (int)d.race);
 	init_mlx(&d, 0);
 	mlx_mouse_hide();
 	load_textures(&d);

@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 20:53:08 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/14 19:30:01 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/14 22:40:41 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	move(t_data *d, t_vec2f dir)
 int		refresh_loop_3(t_data *d, short i)
 {
 	static int	time;
+	static unsigned int score;
 
 	if (d->hooks.hor_rot == RIGHT_ROT)
 	{
@@ -67,15 +68,31 @@ int		refresh_loop_3(t_data *d, short i)
 			d->textures[1][i] = *d->textures[1][i].next;
 			d->textures[2][i] = *d->textures[2][i].next;
 		}
-	if (time == 1000)
-		time = 0;
+	if (time == 10 && !(time = 0))
+		score++;
 	refresh_all(d);
+	if (d->race)
+		mlx_string_put(d->mlx, d->win, 30, 20, 0xFFFFFF, ft_itoa_static(score));
 	return (0);
+}
+
+void	racing_time(t_data *d, t_vec2f tmp)
+{
+	t_vec2f		tmp2;
+
+	tmp2 = d->dir;
+	if (d->hooks.strafe_dir == RIGHT_STRAFE)
+		actualize_dir(1 * M_PI / 2, &tmp);
+	if (d->hooks.strafe_dir == LEFT_STRAFE)
+		actualize_dir(-M_PI / 2, &tmp);
+	tmp2 = mul_vec2f(tmp2, 0.1);
+	tmp = mul_vec2f(tmp, 0.05);
+	move(d, add_vec2f(tmp, tmp2));
 }
 
 int		refresh_loop_2(t_data *d, t_vec2f tmp)
 {
-	if (d->hooks.strafe_dir == RIGHT_STRAFE)
+	if (d->hooks.strafe_dir == RIGHT_STRAFE && !(d->race))
 	{
 		if (d->hooks.dir == 0)
 			actualize_dir(1 * M_PI / 2, &tmp);
@@ -85,6 +102,8 @@ int		refresh_loop_2(t_data *d, t_vec2f tmp)
 		move(d, mul_vec2f(tmp, (!(d->hooks.dir) ? 0.05 : -0.05) *
 					(d->hooks.run ? 2 : 1)));
 	}
+	if (d->race)
+		racing_time(d, tmp);
 	if (d->hooks.hor_rot == LEFT_ROT)
 	{
 		actualize_dir(-0.05, &d->dir);
@@ -98,11 +117,11 @@ int		refresh_loop(t_data *d)
 	t_vec2f		tmp;
 
 	tmp = d->dir;
-	if (d->hooks.dir == FORWARD && d->hooks.strafe_dir == 0)
+	if (d->hooks.dir == FORWARD && d->hooks.strafe_dir == 0 && !(d->race))
 		move(d, mul_vec2f(d->dir, 0.05 * (d->hooks.run ? 2 : 1)));
-	if (d->hooks.dir == BACKWARD && d->hooks.strafe_dir == 0)
+	if (d->hooks.dir == BACKWARD && d->hooks.strafe_dir == 0 && !(d->race))
 		move(d, mul_vec2f(d->dir, -0.05 * (d->hooks.run ? 2 : 1)));
-	if (d->hooks.strafe_dir == LEFT_STRAFE)
+	if (d->hooks.strafe_dir == LEFT_STRAFE && !(d->race))
 	{
 		if (d->hooks.dir == 0)
 			actualize_dir(-M_PI / 2, &tmp);

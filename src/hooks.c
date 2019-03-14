@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/14 18:11:46 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/14 22:08:18 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int		key_press(int keycode, t_data *d)
 		d->hooks.hor_rot = LEFT_ROT;
 	else if (keycode == 65363 || keycode == 124)
 		d->hooks.hor_rot = RIGHT_ROT;
-	else if (keycode == 65505 || keycode == 65506 ||
-			keycode == 257 || keycode == 258)
+	else if ((keycode == 65505 || keycode == 65506 ||
+			keycode == 257 || keycode == 258) && !(d->race))
 		d->hooks.run = 1;
 	refresh_loop(d);
 	return (0);
