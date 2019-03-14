@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 21:52:27 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/14 17:54:11 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/14 21:24:41 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	check_str(char *str)
 	}
 }
 
-void	error_test(int i, int mod, int *fd)
+void	error_test(int i, int mod, int *fd, char *path)
 {
 	if (i < 0)
 	{
@@ -65,7 +65,7 @@ void	error_test(int i, int mod, int *fd)
 		exit(EXIT_FAILURE);
 	}
 	if (!(mod))
-		if ((*fd = open(PATH, O_RDONLY)) < 0)
+		if ((*fd = open(path, O_RDONLY)) < 0)
 		{
 			perror("open_map");
 			exit(EXIT_FAILURE);
@@ -91,7 +91,7 @@ void	init_map_2(t_data *d, char *map, unsigned int count, int fd)
 		free(str);
 		count++;
 	}
-	error_test(i, 1, NULL);
+	error_test(i, 1, NULL, NULL);
 	d->map = map;
 }
 
@@ -100,7 +100,7 @@ void	init_map(t_data *d, char *map, int count, int fd)
 	int		i;
 	char	*str;
 
-	error_test(0, 0, &fd);
+	error_test(0, 0, &fd, d->map_path);
 	while ((i = get_next_line(fd, &str) > 0))
 	{
 		check_length(ft_strlen(str), 1);
@@ -108,10 +108,10 @@ void	init_map(t_data *d, char *map, int count, int fd)
 		count++;
 		free(str);
 	}
-	error_test(i, 1, NULL);
+	error_test(i, 1, NULL, NULL);
 	d->mapsize.x = check_length(-1, 0);
 	d->mapsize.y = count;
 	close(fd);
-	error_test(0, 0, &fd);
+	error_test(0, 0, &fd, d->map_path);
 	init_map_2(d, map, 0, fd);
 }

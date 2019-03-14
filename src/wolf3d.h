@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/14 19:22:48 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/14 21:18:04 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@
 # define RIGHT_STRAFE 4
 # define LEFT_ROT 1
 # define RIGHT_ROT 2
-# define PATH "./maps/map1"
+# define MAP_PATH "./maps/map0"
 # define GOOD_CHARS " 1234"
 # define SCROLL_SPEED 0.003
 # define MINIMAPSIZE 8
@@ -107,6 +107,7 @@ typedef struct	s_data
 	void		*win;
 	t_img		camera;
 	t_img		minimap;
+	char		*map_path;
 	char		*map;
 	t_vec2		mapsize;
 	t_vec2f		pos;

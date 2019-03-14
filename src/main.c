@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/14 18:04:52 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/14 21:26:04 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,15 @@ void	init_mlx(t_data *d, int junk)
 	mlx_loop_hook(d->mlx, &refresh_loop, d);
 }
 
+char	*get_map(char av)
+{
+	static char	path[12] = MAP_PATH;
+
+	if (av >= '0' && av <= '9')
+		path[10] = av;
+	return (path);
+}
+
 void	init_player(t_data *d)
 {
 	d->pos = (t_vec2f){3.5, 3.5};
@@ -59,6 +68,7 @@ int		main(int ac, char **av)
 
 	(void)ac;
 	(void)av;
+	d.map_path = get_map(ac < 2 ? '0' : av[1][0]);
 	init_map(&d, "", 0, 0);
 	init_player(&d);
 	init_mlx(&d, 0);
