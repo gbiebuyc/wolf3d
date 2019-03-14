@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 20:53:08 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/13 22:09:12 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/14 19:09:06 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int		refresh_loop_3(t_data *d)
 	if (!(++time % 2))
 		while (++i <= WEST)
 		{
+			d->textures[3][i] = *d->textures[3][i].next;
 			d->textures[1][i] = *d->textures[1][i].next;
 			d->textures[2][i] = *d->textures[2][i].next;
 		}

@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/13 19:37:06 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/14 19:22:48 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,11 @@
 # include <stdlib.h>
 # include <math.h>
 # include <stdint.h>
-# include <stdbool.h>
 # include <pthread.h>
 # include <fcntl.h>
 # include <string.h>
 # include <errno.h>
-# include <stdio.h> // for debug
+# include <stdio.h>
 
 # define WIDTH 1024
 # define HEIGHT 768
@@ -41,13 +40,13 @@
 # define RIGHT_STRAFE 4
 # define LEFT_ROT 1
 # define RIGHT_ROT 2
-# define PATH "./maps/map3"
-# define GOOD_CHARS " 123"
+# define PATH "./maps/map1"
+# define GOOD_CHARS " 1234"
 # define SCROLL_SPEED 0.003
 # define MINIMAPSIZE 8
 # define MAX_SIZE_OF_PATH 150
 # define MAX_ANIM 2
-# define RYU_FRAMES 22
+# define SF_FRAMES 22
 # define PIKA_FRAMES 4
 # define ARROW_SENSITIVITY 0.2
 # define COLLISION_DIST 0.2
@@ -60,6 +59,7 @@ typedef struct	s_var
 	double		increment;
 	double		real_y;
 }				t_var;
+
 typedef struct	s_vec2
 {
 	int			x;
@@ -96,7 +96,7 @@ typedef	struct	s_hooks
 	char		strafe_dir;
 	char		hor_rot;
 	char		minimap;
-	int			middle_screen; // stocker somewhere else ou osef ?
+	int			middle_screen;
 	char		run;
 	t_vec2f		scroll;
 }				t_hook;
@@ -112,11 +112,11 @@ typedef struct	s_data
 	t_vec2f		pos;
 	t_vec2f		dir;
 	t_vec2f		plane;
-	t_img		textures[3][4];
+	t_img		textures[4][4];
 	t_img		sky_texture;
 	t_hook		hooks;
 	uint32_t	fog_color;
-	t_img		*anim[2];
+	t_img		*anim[3];
 }				t_data;
 
 typedef	struct	s_args

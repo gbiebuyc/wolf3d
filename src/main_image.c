@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 18:20:52 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/12 23:17:01 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/14 18:27:28 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void		draw_column(t_data *d, int block_h, int x, t_inter inter)
 	a.scaled_width = inter.xtexture * d->textures[inter.c -
 		'1'][inter.orientation].w;
 	a.increment = (double)d->textures[inter.c - '1'][inter.orientation].h
-		/ (float)block_h;
+		/ (double)block_h;
 	a.real_y = a.start < 0 ? -a.start * a.increment : 0;
 	while (++a.y < d->camera.h && block_h > 0)
 		if (a.y > a.start)
@@ -53,7 +53,7 @@ void		draw_floor(t_data *d, t_args inf, int block_h, t_vec2f ray)
 	t_vec2f	pos_floor;
 
 	y = ft_max(block_h / 2, 1);
-	while (y + d->hooks.middle_screen <= d->camera.h)
+	while (y + d->hooks.middle_screen < d->camera.h)
 	{
 		pos_floor = add_vec2f(d->pos, mul_vec2f(ray,
 					1.0 / (((double)y / (d->camera.h / 2)) * cos(inf.angle))));

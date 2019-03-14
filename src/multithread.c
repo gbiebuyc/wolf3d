@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 22:07:49 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/12 23:20:48 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/14 19:08:06 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ void	find_intersection(t_args *args)
 			args->inter[1].l)
 	{
 		if (args->d->hooks.minimap)
-			draw_ray(args->d, args->inter[0].vec, 0xFF0000); //supp ?
+			draw_ray(args->d, args->inter[0].vec, 0xCCCCCC);
 		args->dist = sqrt(args->inter[0].l);
 	}
 	else if (args->inter[1].c != EMPTY_SQUARE)
 	{
 		if (args->d->hooks.minimap)
-			draw_ray(args->d, args->inter[1].vec, 0xFF); //supp ?
+			draw_ray(args->d, args->inter[1].vec, 0xCCCCCC);
 		args->dist = sqrt(args->inter[1].l);
 		args->inter[0] = args->inter[1];
 	}
@@ -66,7 +66,7 @@ void	refresh_image(t_data *d)
 			if (pthread_create(&id[coord.y - 1], NULL,
 						(void *)&find_intersection,
 						&args[coord.y - 1]))
-				err_exit(d, 10, strerror(errno), EXIT_FAILURE);
+				err_exit(d, 13, strerror(errno), EXIT_FAILURE);
 		}
 		coord.x += 4;
 		pthread_join(id[0], NULL);

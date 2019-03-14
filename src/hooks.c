@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/13 22:06:12 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/14 18:11:46 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int		key_press(int keycode, t_data *d)
 	else if (keycode == 65505 || keycode == 65506 ||
 			keycode == 257 || keycode == 258)
 		d->hooks.run = 1;
+	refresh_loop(d);
 	return (0);
 }
 
@@ -85,5 +86,5 @@ int		mouse_move(int x, int y, t_data *d)
 	mlx_mouse_move(d->win, WIDTH / 2, HEIGHT / 2);
 	oldx = WIDTH / 2;
 	oldy = HEIGHT / 2;
-	return (0);
+	return (refresh_loop(d));
 }

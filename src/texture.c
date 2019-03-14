@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 16:34:51 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/13 22:12:39 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/14 19:22:37 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,19 @@ void	load_textures_2(t_data *d, short random)
 			d->textures[0][WEST].mlximg, &junk, &junk, &junk);
 	d->sky_texture.pixels = (uint32_t*)mlx_get_data_addr(
 			d->sky_texture.mlximg, &junk, &junk, &junk);
-	if (!(d->anim[0] = new_anim(d, RYU_FRAMES - 1, "./textures/SF2/", 0)))
+	if (!(d->anim[0] = new_anim(d, SF_FRAMES - 1, "./textures/SF2/", 0)))
 		err_exit(d, 10, "mlx_xpm_file_to_image has failed", EXIT_FAILURE);
 	d->textures[1][0] = *d->anim[0];
 	if (!(d->anim[1] = new_anim(d, PIKA_FRAMES - 1, "./textures/pika/", 0)))
 		err_exit(d, 11, "mlx_xpm_file_to_image has failed", EXIT_FAILURE);
 	d->textures[2][0] = *d->anim[1];
+	if (!(d->anim[2] = new_anim(d, SF_FRAMES - 1, "./textures/chun_li/", 0)))
+		err_exit(d, 12, "mlx_xpm_file_to_image has failed", EXIT_FAILURE);
+	d->textures[3][0] = *d->anim[2]->next->next->next->next->next->next
+		->next->next->next->next->next->next->next->next->next->next;
 	duplicate_faces(d->textures[1]);
 	duplicate_faces(d->textures[2]);
+	duplicate_faces(d->textures[3]);
 	random_map(d, random);
 }
 

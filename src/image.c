@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 18:40:06 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/13 22:06:56 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/14 17:45:52 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,8 @@
 
 void	putpixel(t_img *img, int x, int y, uint32_t color)
 {
-	static bool printed_warning;
-
 	if (x >= 0 && x < img->w && y >= 0 && y < img->h)
 		img->pixels[x + y * img->w] = color;
-	else if (!printed_warning)
-	{
-		printf("%p\n", img);
-		printf("pixel outside image:%d, %d, colo:%d\n", x, y, color); // cheat // where is it from ??
-		printed_warning = true;
-	}
 }
 
 void	put_block(t_img *minimap, double x, double y, int colo)
@@ -90,13 +82,13 @@ void	refresh_minimap(t_data *d)
 	int		x;
 	int		y;
 
-	x = 0; // a calculer en fonction de la position du joueur voir des bords
+	x = 0;
 	ft_memset(d->minimap.pixels, 0, d->minimap.w * d->minimap.h *
 			sizeof(uint32_t));
 	refresh_player(d);
 	while (x < MINIMAPSIZE + 1)
 	{
-		y = 0; // a calculer en fonction de la position du joueur voir des bords
+		y = 0;
 		while (y < MINIMAPSIZE + 1)
 		{
 			if (get_map_char(floor(d->pos.x) + x - MINIMAPSIZE / 2,

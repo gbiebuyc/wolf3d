@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 08:50:40 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/13 22:06:32 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/14 19:07:58 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,18 @@ int		proper_exit(t_data *d)
 	return (421);
 }
 
+void	err_exit_2(t_data *d, int mod)
+{
+	if (mod > 11)
+		free_textures(d->anim[1], d->mlx);
+	if (mod > 12)
+		free_textures(d->anim[2], d->mlx);
+}
+
 void	err_exit(t_data *d, int mod, char *msg, int exit_code)
 {
 	ft_putendl_fd(msg, STDERR_FILENO);
+	err_exit_2(d, mod);
 	if (mod > 10)
 		free_textures(d->anim[0], d->mlx);
 	if (mod > 9)

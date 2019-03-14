@@ -6,7 +6,7 @@
 #    By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/05 15:21:27 by gbiebuyc          #+#    #+#              #
-#    Updated: 2019/03/13 20:00:15 by nallani          ###   ########.fr        #
+#    Updated: 2019/03/14 18:08:00 by nallani          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ else
 	MLX_DIR = minilibx_macos
 	LDFLAGS = -lm -L $(FT_DIR) -lft -L $(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
 endif
-CFLAGS = -I $(FT_DIR) -I $(MLX_DIR) -Wall -Wextra -Werror
+CFLAGS = -I $(FT_DIR) -I $(MLX_DIR) -Wall -Wextra -Werror -O3
 .PHONY: all clean fclean re
 
 all: $(NAME)
@@ -45,8 +45,6 @@ $(NAME): $(OBJ)
 	make -C $(MLX_DIR)
 	$(CC) -o $(NAME) $(OBJ) $(LDFLAGS)
 
-%.o: %.c
-	gcc -O3 -c -o $@ $< $(CFLAGS)
 clean:
 	make -C $(FT_DIR) clean
 	make -C $(MLX_DIR) clean

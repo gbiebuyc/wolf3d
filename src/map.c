@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 21:52:27 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/13 19:39:53 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/14 17:54:11 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,12 @@ void	error_test(int i, int mod, int *fd)
 	if (!(mod))
 		if ((*fd = open(PATH, O_RDONLY)) < 0)
 		{
-			perror("open_map error");
+			perror("open_map");
 			exit(EXIT_FAILURE);
 		}
 }
 
-void	init_map_2(t_data *d, char *map, int count, int fd)
+void	init_map_2(t_data *d, char *map, unsigned int count, int fd)
 {
 	int		i;
 	char	*str;
@@ -83,7 +83,7 @@ void	init_map_2(t_data *d, char *map, int count, int fd)
 		tmp = map;
 		if (!(map = ft_strjoin(map, str)))
 		{
-			perror("ft_strejoin_error");
+			perror("ft_strejoin");
 			exit(EXIT_FAILURE);
 		}
 		if (count)
