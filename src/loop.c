@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 20:53:08 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/15 20:22:02 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/15 20:34:49 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,9 @@ void	racing_time(t_data *d, t_vec2f tmp)
 		actualize_dir(1 * M_PI / 2, &tmp);
 	if (d->hooks.strafe_dir == LEFT_STRAFE)
 		actualize_dir(-M_PI / 2, &tmp);
-	tmp2 = mul_vec2f(tmp2, 0.1);
+	tmp2 = mul_vec2f(tmp2, 0.125);
 	tmp = mul_vec2f(tmp, 0.05);
-	move(d, add_vec2f(tmp, tmp2));
+	move(d, add_vec2f(d->hooks.strafe_dir ? tmp : (t_vec2f){0, 0}, tmp2));
 }
 
 int		refresh_loop_2(t_data *d, t_vec2f tmp)
