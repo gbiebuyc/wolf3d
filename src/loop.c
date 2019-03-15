@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 20:53:08 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/15 20:34:49 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/15 20:39:21 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void	move(t_data *d, t_vec2f dir)
 int		refresh_loop_3(t_data *d, short i)
 {
 	static int	time;
-	static unsigned int score;
 
 	if (d->hooks.hor_rot == RIGHT_ROT && d->gamestate != GAMEOVER)
 	{
@@ -71,10 +70,11 @@ int		refresh_loop_3(t_data *d, short i)
 			d->textures[2][i] = *d->textures[2][i].next;
 		}
 	if ((time %= 10) == 0 && d->gamestate == RACE)
-		score++;
+		d->score++;
 	refresh_all(d);
 	if (d->gamestate == RACE || d->gamestate == GAMEOVER)
-		mlx_string_put(d->mlx, d->win, 30, 20, 0xFFFFFF, ft_itoa_static(score));
+		mlx_string_put(d->mlx, d->win, 30, 20, 0xFFFFFF,
+				ft_itoa_static(d->score));
 	return (0);
 }
 
