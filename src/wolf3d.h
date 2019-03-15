@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/15 19:14:50 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/15 20:35:28 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ typedef struct	s_data
 	t_hook		hooks;
 	uint32_t	fog_color;
 	t_img		*anim[3];
+	size_t		score;
 }				t_data;
 
 typedef	struct	s_args
