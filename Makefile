@@ -6,7 +6,7 @@
 #    By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/05 15:21:27 by gbiebuyc          #+#    #+#              #
-#    Updated: 2019/03/14 18:08:00 by nallani          ###   ########.fr        #
+#    Updated: 2019/03/15 20:50:38 by nallani          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ SRC = src/main.c \
 	  src/fog.c \
 	  src/texture.c \
 	  src/texture_anim.c \
+	  src/collision.c \
 	  src/loop.c
 OBJ = $(SRC:.c=.o)
 FT_DIR = libft

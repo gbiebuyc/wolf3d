@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/15 20:35:28 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/15 20:57:32 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,10 @@ void			anim_ryu(t_data *d);
 void			anim_pika(t_data *d);
 void			duplicate_faces(t_img *img);
 t_img			*new_anim(t_data *d, short nb_of_frames, char *path, int junk);
+/*
+** collision.c
+*/
+void			move(t_data *d, t_vec2f dir);
 /*
 ** loop.c
 */

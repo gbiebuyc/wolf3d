@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/15 19:23:02 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/15 20:58:37 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int		key_press(int keycode, t_data *d)
 	else if (keycode == 65363 || keycode == 124)
 		d->hooks.hor_rot = RIGHT_ROT;
 	else if ((keycode == 65505 || keycode == 65506 ||
-			keycode == 257 || keycode == 258) && (d->gamestate != RACE))
+				keycode == 257 || keycode == 258) && (d->gamestate != RACE))
 		d->hooks.run = 1;
 	key_press_2(keycode, d);
 	refresh_loop(d);
@@ -76,6 +76,8 @@ int		mouse_move(int x, int y, t_data *d)
 	static int	oldx;
 	static int	oldy;
 
+	if (d->gamestate != PLAY)
+		return (refresh_loop(d));
 	if (oldx == 0 && oldy == 0)
 	{
 		oldx = x;
@@ -87,13 +89,11 @@ int		mouse_move(int x, int y, t_data *d)
 		actualize_dir(0.0174533 * (x - oldx) / 5, &d->plane);
 	}
 	if (y != oldy)
-	{
 		d->hooks.middle_screen -= (y - oldy);
-		if (d->hooks.middle_screen < -HEIGHT / 4)
-			d->hooks.middle_screen = -HEIGHT / 4;
-		if (d->hooks.middle_screen > HEIGHT)
-			d->hooks.middle_screen = HEIGHT;
-	}
+	if (d->hooks.middle_screen < -HEIGHT / 4)
+		d->hooks.middle_screen = -HEIGHT / 4;
+	if (d->hooks.middle_screen > HEIGHT)
+		d->hooks.middle_screen = HEIGHT;
 	mlx_mouse_move(d->win, WIDTH / 2, HEIGHT / 2);
 	oldx = WIDTH / 2;
 	oldy = HEIGHT / 2;

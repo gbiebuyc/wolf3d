@@ -6,51 +6,14 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 20:53:08 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/15 20:39:21 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/15 20:53:36 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void	collide(t_vec2 blk, t_data *d)
+int		refresh_loop_3(t_data *d, short i, int *time)
 {
-	double	nearest_x;
-	double	nearest_y;
-	double	dx;
-	double	dy;
-	double	len;
-
-	if (get_map_char(blk.x, blk.y, d) == EMPTY_SQUARE)
-		return ;
-	nearest_x = fmax(blk.x, fmin(d->pos.x, blk.x + 1));
-	nearest_y = fmax(blk.y, fmin(d->pos.y, blk.y + 1));
-	dx = d->pos.x - nearest_x;
-	dy = d->pos.y - nearest_y;
-	if ((len = vec2f_length((t_vec2f){dx, dy})) > COLLISION_DIST)
-		return ;
-	d->pos.x = nearest_x + dx * COLLISION_DIST / len;
-	d->pos.y = nearest_y + dy * COLLISION_DIST / len;
-	if (d->gamestate == RACE)
-		d->gamestate = GAMEOVER;
-}
-
-void	move(t_data *d, t_vec2f dir)
-{
-	d->pos = add_vec2f(d->pos, dir);
-	collide((t_vec2){floor(d->pos.x) - 1, floor(d->pos.y) - 1}, d);
-	collide((t_vec2){floor(d->pos.x) - 0, floor(d->pos.y) - 1}, d);
-	collide((t_vec2){floor(d->pos.x) + 1, floor(d->pos.y) - 1}, d);
-	collide((t_vec2){floor(d->pos.x) + 1, floor(d->pos.y) - 0}, d);
-	collide((t_vec2){floor(d->pos.x) + 1, floor(d->pos.y) + 1}, d);
-	collide((t_vec2){floor(d->pos.x) - 0, floor(d->pos.y) + 1}, d);
-	collide((t_vec2){floor(d->pos.x) - 1, floor(d->pos.y) + 1}, d);
-	collide((t_vec2){floor(d->pos.x) - 1, floor(d->pos.y) - 0}, d);
-}
-
-int		refresh_loop_3(t_data *d, short i)
-{
-	static int	time;
-
 	if (d->hooks.hor_rot == RIGHT_ROT && d->gamestate != GAMEOVER)
 	{
 		actualize_dir(0.05, &d->dir);
@@ -62,14 +25,14 @@ int		refresh_loop_3(t_data *d, short i)
 		d->hooks.scroll.x = 0;
 	if ((int)d->hooks.scroll.y == 1)
 		d->hooks.scroll.y = 0;
-	if (!(++time % 2))
+	if (!(*time % 2))
 		while (++i <= WEST)
 		{
 			d->textures[3][i] = *d->textures[3][i].next;
 			d->textures[1][i] = *d->textures[1][i].next;
 			d->textures[2][i] = *d->textures[2][i].next;
 		}
-	if ((time %= 10) == 0 && d->gamestate == RACE)
+	if ((*time %= 10) == 0 && d->gamestate == RACE)
 		d->score++;
 	refresh_all(d);
 	if (d->gamestate == RACE || d->gamestate == GAMEOVER)
@@ -94,6 +57,9 @@ void	racing_time(t_data *d, t_vec2f tmp)
 
 int		refresh_loop_2(t_data *d, t_vec2f tmp)
 {
+	static int	time;
+
+	time++;
 	if (d->hooks.strafe_dir == RIGHT_STRAFE && (d->gamestate == PLAY))
 	{
 		if (d->hooks.dir == 0)
@@ -111,7 +77,7 @@ int		refresh_loop_2(t_data *d, t_vec2f tmp)
 		actualize_dir(-0.05, &d->dir);
 		actualize_dir(-0.05, &d->plane);
 	}
-	return (refresh_loop_3(d, NORTH - 1));
+	return (refresh_loop_3(d, NORTH - 1, &time));
 }
 
 int		refresh_loop(t_data *d)
@@ -119,9 +85,11 @@ int		refresh_loop(t_data *d)
 	t_vec2f		tmp;
 
 	tmp = d->dir;
-	if (d->hooks.dir == FORWARD && d->hooks.strafe_dir == 0 && (d->gamestate == PLAY))
+	if (d->hooks.dir == FORWARD && d->hooks.strafe_dir == 0 &&
+			(d->gamestate == PLAY))
 		move(d, mul_vec2f(d->dir, 0.05 * (d->hooks.run ? 2 : 1)));
-	if (d->hooks.dir == BACKWARD && d->hooks.strafe_dir == 0 && (d->gamestate == PLAY))
+	if (d->hooks.dir == BACKWARD && d->hooks.strafe_dir == 0 &&
+			(d->gamestate == PLAY))
 		move(d, mul_vec2f(d->dir, -0.05 * (d->hooks.run ? 2 : 1)));
 	if (d->hooks.strafe_dir == LEFT_STRAFE && (d->gamestate == PLAY))
 	{
