@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 22:07:49 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/14 22:00:22 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/15 19:09:43 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,11 @@ void	refresh_all(t_data *d)
 	mlx_put_image_to_window(d->mlx, d->win, d->camera.mlximg, 0, 0);
 	i = -1;
 	while (++i < d->minimap.w * d->minimap.h)
-		d->minimap.pixels[i] += 0x80 << 24;
+		d->minimap.pixels[i] |= 0x80 << 24;
 	if (d->hooks.minimap)
 		mlx_put_image_to_window(d->mlx, d->win, d->minimap.mlximg, WIDTH -
 				d->minimap.w, 0);
+	if (d->gamestate == GAMEOVER)
+		mlx_string_put(d->mlx, d->win, WIDTH / 2, HEIGHT / 2, 0xFFFFFF,
+				"GAME OVER! PRESS R TO RETRY");
 }

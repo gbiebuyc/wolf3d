@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/14 21:45:31 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/15 19:14:50 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,13 @@
 # define PIKA_FRAMES 4
 # define ARROW_SENSITIVITY 0.2
 # define COLLISION_DIST 0.2
+
+enum			e_gamestate
+{
+	PLAY,
+	RACE,
+	GAMEOVER,
+};
 
 typedef struct	s_var
 {
@@ -107,9 +114,9 @@ typedef struct	s_data
 	void		*win;
 	t_img		camera;
 	t_img		minimap;
-	char		*map_path;
+	char		map_path[100];
 	char		*map;
-	char		race;
+	int			gamestate;
 	t_vec2		mapsize;
 	t_vec2f		pos;
 	t_vec2f		dir;
@@ -136,6 +143,11 @@ typedef struct	s_exit_count
 	short		max_anim;
 	short		max_frames[MAX_ANIM];
 }				t_exit_count;
+
+/*
+** main.c
+*/
+void			init_player(t_data *d);
 
 /*
 ** multithread.c

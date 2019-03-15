@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 18:20:07 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/13 18:48:34 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/15 13:35:22 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ t_img	*new_anim(t_data *d, short nb_of_frames, char *path, int junk)
 	t_img			*a[3];
 
 	i = nb_of_frames + 1;
+	a[0] = NULL;
 	a[1] = NULL;
 	a[2] = NULL;
 	while (--i >= 0)

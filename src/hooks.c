@@ -6,11 +6,21 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/14 22:08:18 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/15 19:23:02 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
+
+int		key_press_2(int keycode, t_data *d)
+{
+	if ((keycode == 114 || keycode == 15) && d->gamestate == GAMEOVER)
+	{
+		d->gamestate = RACE;
+		init_player(d);
+	}
+	return (0);
+}
 
 int		key_press(int keycode, t_data *d)
 {
@@ -33,8 +43,9 @@ int		key_press(int keycode, t_data *d)
 	else if (keycode == 65363 || keycode == 124)
 		d->hooks.hor_rot = RIGHT_ROT;
 	else if ((keycode == 65505 || keycode == 65506 ||
-			keycode == 257 || keycode == 258) && !(d->race))
+			keycode == 257 || keycode == 258) && (d->gamestate != RACE))
 		d->hooks.run = 1;
+	key_press_2(keycode, d);
 	refresh_loop(d);
 	return (0);
 }

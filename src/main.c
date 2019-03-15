@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/14 21:53:37 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/15 18:46:36 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,7 @@ void	init_mlx(t_data *d, int junk)
 	mlx_loop_hook(d->mlx, &refresh_loop, d);
 }
 
-char	*get_map(char av)
-{
-	static char	path[12] = MAP_PATH;
-
-	if (av >= '0' && av <= '9')
-		path[10] = av;
-	return (path);
-}
-
-void	init_player(t_data *d, char av)
+void	init_player(t_data *d)
 {
 	d->pos = (t_vec2f){3.5, 3.5};
 	d->dir = (t_vec2f){0, 1};
@@ -60,19 +51,38 @@ void	init_player(t_data *d, char av)
 	d->hooks.run = 0;
 	d->hooks.scroll.x = 0;
 	d->hooks.scroll.y = 0;
-	d->race = (av == 'r' ? 1 : 0);
+}
+
+void	parse_argv(char **argv, t_data *d)
+{
+	while (*++argv)
+	{
+		while (**argv)
+		{
+			if (**argv >= '0' && **argv <= '9')
+				d->map_path[ft_strlen(d->map_path) - 1] = **argv;
+			else if (**argv == 'r')
+				d->gamestate = RACE;
+			else
+			{
+				ft_putstr_fd("usage: wolf3d [map nbr] [r]\n"
+						"r = race mode\n", STDERR_FILENO);
+				exit(EXIT_FAILURE);
+			}
+			(*argv)++;
+		}
+	}
 }
 
 int		main(int ac, char **av)
 {
 	t_data		d;
 
-	(void)ac;
-	(void)av;
-	d.map_path = get_map(ac < 2 ? '0' : av[1][0]);
+	d = (t_data){.map_path = MAP_PATH, .gamestate = PLAY};
+	if (ac >= 2)
+		parse_argv(av, &d);
 	init_map(&d, "", 0, 0);
-	init_player(&d, ac < 3 ? '0' : av[2][0]);
-	printf("%d\n", (int)d.race);
+	init_player(&d);
 	init_mlx(&d, 0);
 	mlx_mouse_hide();
 	load_textures(&d);
