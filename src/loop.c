@@ -6,11 +6,20 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 20:53:08 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/16 00:02:52 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/16 16:08:30 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
+
+int		refresh_loop_4(t_data *d)
+{
+	refresh_all(d);
+	if (d->gamestate == RACE || d->gamestate == GAMEOVER)
+		mlx_string_put(d->mlx, d->win, 30, 20, 0xFFFFFF,
+				ft_itoa_static(d->score));
+	return (0);
+}
 
 int		refresh_loop_3(t_data *d, short i, int *time)
 {
@@ -35,13 +44,7 @@ int		refresh_loop_3(t_data *d, short i, int *time)
 		}
 	if ((*time %= 10) == 0 && d->gamestate == RACE)
 		d->score++;
-	refresh_all(d);
-	if (d->gamestate == RACE || d->gamestate == GAMEOVER)
-		mlx_string_put(d->mlx, d->win, 30, 20, 0xFFFFFF,
-				ft_itoa_static(d->score));
-	if (d->gamestate == WIPESCREEN)
-		wipe(d);
-	return (0);
+	return (refresh_loop_4(d));
 }
 
 void	racing_time(t_data *d, t_vec2f tmp)

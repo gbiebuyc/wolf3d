@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 23:03:28 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/16 03:34:26 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/16 16:05:10 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 int		get_random_offset(int x)
 {
-	return ((uint8_t[]){0, 1, 2, 1, 1, 2, 3, 2, 3, 4, 5, 6, 6, 5, 5, 6, 7, 8, 8,
+	return ((char[]){0, 1, 2, 1, 1, 2, 3, 2, 3, 4, 5, 6, 6, 5, 5, 6, 7, 8, 8,
 			7, 8, 7, 7, 8, 10, 11, 10, 11, 12, 12, 11, 11, 11, 11, 12, 11, 10,
 			11, 11, 10, 10, 10, 8, 8, 7, 7, 7, 8, 8, 7, 7, 8, 10, 11, 11, 12,
 			11, 10, 10, 8, 10, 10, 10, 10, 8, 8, 8, 10, 8, 10, 11, 10, 10, 11,
@@ -29,8 +29,8 @@ int		get_random_offset(int x)
 			8, 8, 8}[x * 160 / WIDTH] * 20);
 }
 
-# define RANDOM_RANGE 240
-# define WIPE_SPEED (HEIGHT / 20)
+#define RANDOM_RANGE 240
+#define WIPE_SPEED (HEIGHT / 20)
 
 void	wipe(t_data *d)
 {

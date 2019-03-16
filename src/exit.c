@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 08:50:40 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/16 03:53:39 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/16 17:02:11 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int		proper_exit(t_data *d)
 	if (d->mapsize.x)
 		free(d->map);
 	mlx_destroy_window(d->mlx, d->win);
-	free(d->mlx); // T'as vu où qu'il fallait free l'id de connection de la mlx?
 	free(d->framebuf2);
 	exit(0);
 	return (421);

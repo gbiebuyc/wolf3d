@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 22:07:49 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/15 19:09:43 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/16 15:51:54 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ void	refresh_all(t_data *d)
 	if (d->hooks.minimap)
 		refresh_minimap(d);
 	refresh_image(d);
+	if (d->gamestate == WIPESCREEN)
+		wipe(d);
 	mlx_put_image_to_window(d->mlx, d->win, d->camera.mlximg, 0, 0);
 	i = -1;
 	while (++i < d->minimap.w * d->minimap.h)
