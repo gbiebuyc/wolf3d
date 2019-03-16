@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/16 03:39:03 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/16 22:34:08 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ typedef struct	s_data
 	size_t		score;
 	int			wipe_offset;
 	uint32_t	*framebuf2;
+	char		ignore_mouse;
 }				t_data;
 
 typedef	struct	s_args

@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/16 21:47:30 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/16 22:34:23 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	init_player(t_data *d)
 	d->hooks.scroll.x = 0;
 	d->hooks.scroll.y = 0;
 	d->score = 0;
+	d->ignore_mouse = 0;
 }
 
 void	parse_argv(char **argv, t_data *d)
@@ -84,7 +85,8 @@ int		main(int ac, char **av)
 	init_map(&d, "", 0, 0);
 	init_player(&d);
 	init_mlx(&d, 0);
-	mlx_mouse_hide();
+	if (d.gamestate == PLAY)
+		mlx_mouse_hide();
 	load_textures(&d);
 	refresh_all(&d);
 	mlx_loop(d.mlx);

@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/16 00:04:25 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/16 22:39:32 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,14 @@ int		key_press_2(int keycode, t_data *d)
 		ft_memcpy(d->framebuf2, d->camera.pixels,
 				sizeof(*d->framebuf2) * WIDTH * HEIGHT);
 		init_player(d);
+	}
+	if (keycode == 35 && d->gamestate == PLAY)
+	{
+		d->ignore_mouse = !(d->ignore_mouse);
+		if (d->ignore_mouse == 1)
+			mlx_mouse_show();
+		else
+			mlx_mouse_hide();
 	}
 	return (0);
 }
@@ -73,18 +81,24 @@ int		key_release(int keycode, t_data *d)
 	return (0);
 }
 
+void	set_values_mouse(int *x, int *y, int newx, int newy)
+{
+	*x = newx;
+	*y = newy;
+}
+
 int		mouse_move(int x, int y, t_data *d)
 {
 	static int	oldx;
 	static int	oldy;
 
-	if (d->gamestate != PLAY)
-		return (refresh_loop(d));
-	if (oldx == 0 && oldy == 0)
+	if (d->gamestate != PLAY || d->ignore_mouse == 1)
 	{
-		oldx = x;
-		oldy = y;
+		set_values_mouse(&oldx, &oldy, 0, 0);
+		return (refresh_loop(d));
 	}
+	if (oldx == 0 && oldy == 0)
+		set_values_mouse(&oldx, &oldy, x, y);
 	if (x != oldx)
 	{
 		actualize_dir(0.0174533 * (x - oldx) / 5, &d->dir);
