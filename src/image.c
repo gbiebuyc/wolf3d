@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 18:40:06 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/14 17:45:52 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/16 22:06:10 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,25 +31,12 @@ void	put_block(t_img *minimap, double x, double y, int colo)
 		j = 0;
 		while (j < SQUARE_W)
 		{
-			if (i == 0 || j == 0 || i == SQUARE_W - 1 || j == SQUARE_W - 1)
-				putpixel(minimap, x + i, y + j, 0);
-			else
+			if (!(i == 0 || j == 0 || i == SQUARE_W - 1 || j == SQUARE_W - 1))
 				putpixel(minimap, x + i, y + j, colo);
 			j++;
 		}
 		i++;
 	}
-}
-
-int		find_colo_mini(char block)
-{
-	if (block == WALL_CHAR)
-		return (0xFF00);
-	if (block == '2')
-		return (0xFF);
-	if (block == '3')
-		return (0xCC7700);
-	return (0);
 }
 
 void	refresh_player(t_data *d)
@@ -81,10 +68,12 @@ void	refresh_minimap(t_data *d)
 {
 	int		x;
 	int		y;
+	int		i;
 
 	x = 0;
-	ft_memset(d->minimap.pixels, 0, d->minimap.w * d->minimap.h *
-			sizeof(uint32_t));
+	i = 0;
+	while (i < d->minimap.w * d->minimap.h)
+		d->minimap.pixels[i++] = 0x80 << 24;
 	refresh_player(d);
 	while (x < MINIMAPSIZE + 1)
 	{
@@ -95,7 +84,7 @@ void	refresh_minimap(t_data *d)
 						floor(d->pos.y) + y - MINIMAPSIZE / 2, d) !=
 					EMPTY_SQUARE)
 				put_block(&d->minimap, (double)x - (d->pos.x - floor(d->pos.x)),
-						(double)y - (d->pos.y - floor(d->pos.y)), 0xFF00);
+						(double)y - (d->pos.y - floor(d->pos.y)), 0x8000FF00);
 			y++;
 		}
 		x++;

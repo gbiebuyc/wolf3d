@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 08:50:40 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/16 17:02:11 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/16 21:48:16 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ void	err_exit_2(t_data *d, int mod)
 		free_textures(d->anim[1], d->mlx);
 	if (mod > 12)
 		free_textures(d->anim[2], d->mlx);
+	if (mod > 13)
+		free(d->framebuf2);
 }
 
 void	err_exit(t_data *d, int mod, char *msg, int exit_code)

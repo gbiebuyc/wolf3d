@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 16:34:51 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/14 20:09:57 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/16 21:50:46 by nallani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ void	load_textures_2(t_data *d, short random)
 	d->textures[3][0] = *d->anim[2]->next->next->next->next->next->next
 		->next->next->next->next->next->next->next->next->next->next;
 	load_textures_3(d, random);
+	if (!(d->framebuf2 = malloc(sizeof(*d->framebuf2) * WIDTH * HEIGHT)))
+		err_exit(d, 13, "d->framebuf2 malloc has failed", EXIT_FAILURE);
 }
 
 void	load_textures(t_data *d)
