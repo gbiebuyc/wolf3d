@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 21:52:27 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/14 21:24:41 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/16 16:43:36 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void	check_str(char *str)
 
 void	error_test(int i, int mod, int *fd, char *path)
 {
+	char	msg_buf[10 + MAX_SIZE_OF_PATH];
+
 	if (i < 0)
 	{
 		ft_putstr_fd("get_next_line_fail\n", 2);
@@ -67,7 +69,8 @@ void	error_test(int i, int mod, int *fd, char *path)
 	if (!(mod))
 		if ((*fd = open(path, O_RDONLY)) < 0)
 		{
-			perror("open_map");
+			ft_strcat(ft_strcpy(msg_buf, "open_map: "), path);
+			perror(msg_buf);
 			exit(EXIT_FAILURE);
 		}
 }
