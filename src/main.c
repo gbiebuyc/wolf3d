@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/15 23:44:30 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/16 04:07:07 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	init_player(t_data *d)
 	d->dir = (t_vec2f){0, 1};
 	d->plane = (t_vec2f){0.66, 0};
 	d->hooks.dir = 0;
-	d->hooks.minimap = 1;
 	d->hooks.strafe_dir = 0;
 	d->hooks.hor_rot = 0;
 	d->hooks.middle_screen = HEIGHT / 2;
@@ -79,7 +78,7 @@ int		main(int ac, char **av)
 {
 	t_data		d;
 
-	d = (t_data){.map_path = MAP_PATH, .gamestate = PLAY};
+	d = (t_data){.map_path = MAP_PATH, .gamestate = PLAY, .hooks.minimap = 1};
 	if (ac >= 2)
 		parse_argv(av, &d);
 	init_map(&d, "", 0, 0);
