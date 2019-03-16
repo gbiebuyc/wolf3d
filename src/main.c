@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 19:00:33 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/15 20:32:31 by gbiebuyc         ###   ########.fr       */
+/*   Updated: 2019/03/15 23:44:30 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ int		main(int ac, char **av)
 	init_map(&d, "", 0, 0);
 	init_player(&d);
 	init_mlx(&d, 0);
+	d.framebuf2 = malloc(sizeof(*d.framebuf2) * WIDTH * HEIGHT);
 	mlx_mouse_hide();
 	load_textures(&d);
 	refresh_all(&d);

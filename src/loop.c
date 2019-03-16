@@ -6,7 +6,7 @@
 /*   By: nallani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 20:53:08 by nallani           #+#    #+#             */
-/*   Updated: 2019/03/15 20:53:36 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/16 00:02:52 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int		refresh_loop_3(t_data *d, short i, int *time)
 {
-	if (d->hooks.hor_rot == RIGHT_ROT && d->gamestate != GAMEOVER)
+	if (d->hooks.hor_rot == RIGHT_ROT && d->gamestate != GAMEOVER &&
+			d->gamestate != WIPESCREEN)
 	{
 		actualize_dir(0.05, &d->dir);
 		actualize_dir(0.05, &d->plane);
@@ -38,6 +39,8 @@ int		refresh_loop_3(t_data *d, short i, int *time)
 	if (d->gamestate == RACE || d->gamestate == GAMEOVER)
 		mlx_string_put(d->mlx, d->win, 30, 20, 0xFFFFFF,
 				ft_itoa_static(d->score));
+	if (d->gamestate == WIPESCREEN)
+		wipe(d);
 	return (0);
 }
 
@@ -72,7 +75,8 @@ int		refresh_loop_2(t_data *d, t_vec2f tmp)
 	}
 	if (d->gamestate == RACE)
 		racing_time(d, tmp);
-	if (d->hooks.hor_rot == LEFT_ROT && d->gamestate != GAMEOVER)
+	if (d->hooks.hor_rot == LEFT_ROT && d->gamestate != GAMEOVER &&
+			d->gamestate != WIPESCREEN)
 	{
 		actualize_dir(-0.05, &d->dir);
 		actualize_dir(-0.05, &d->plane);

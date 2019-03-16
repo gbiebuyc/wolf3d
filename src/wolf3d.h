@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <gbiebuyc@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 18:58:23 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/15 20:57:32 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/16 03:39:03 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@
 
 # define WIDTH 1024
 # define HEIGHT 768
-# define SQUARE_DIST 100
 # define SQUARE_W 32
 # define WALL_CHAR '1'
 # define EMPTY_SQUARE ' '
@@ -56,6 +55,7 @@ enum			e_gamestate
 	PLAY,
 	RACE,
 	GAMEOVER,
+	WIPESCREEN
 };
 
 typedef struct	s_var
@@ -127,6 +127,8 @@ typedef struct	s_data
 	uint32_t	fog_color;
 	t_img		*anim[3];
 	size_t		score;
+	int			wipe_offset;
+	uint32_t	*framebuf2;
 }				t_data;
 
 typedef	struct	s_args
@@ -226,5 +228,10 @@ float			get_vec2f_length(t_vec2f v);
 double			vec2f_length(t_vec2f v);
 double			get_vec2f_angle(t_vec2f v1, t_vec2f v2);
 t_vec2			convert_vec2f(t_vec2f v);
+
+/*
+** wipe.c
+*/
+void			wipe(t_data *d);
 
 #endif

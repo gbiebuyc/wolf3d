@@ -6,7 +6,7 @@
 /*   By: gbiebuyc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 21:26:29 by gbiebuyc          #+#    #+#             */
-/*   Updated: 2019/03/15 20:58:37 by nallani          ###   ########.fr       */
+/*   Updated: 2019/03/16 00:04:25 by gbiebuyc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ int		key_press_2(int keycode, t_data *d)
 {
 	if ((keycode == 114 || keycode == 15) && d->gamestate == GAMEOVER)
 	{
-		d->gamestate = RACE;
+		d->gamestate = WIPESCREEN;
+		ft_memcpy(d->framebuf2, d->camera.pixels,
+				sizeof(*d->framebuf2) * WIDTH * HEIGHT);
 		init_player(d);
 	}
 	return (0);
